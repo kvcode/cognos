@@ -1,0 +1,68 @@
+/* === Container === */
+.custom-prompt-page-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+
+/* === Left Pane === */
+.left-pane {
+  width: 250px; /* fixed width */
+  background-color: #f7f7f7;
+  border-right: 1px solid #ccc;
+  padding: 10px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.left-pane-group {
+  margin-bottom: 20px;
+}
+
+.left-pane-group-header {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.left-pane-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.left-pane-button {
+  padding: 5px 10px;
+  cursor: grab;
+  background-color: #e1e1e1;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.left-pane-button:active {
+  cursor: grabbing;
+  background-color: #d1d1d1;
+}
+
+/* === Right Pane === */
+.right-pane {
+  flex: 1; /* takes remaining space */
+  padding: 10px;
+  background-color: #fff;
+  overflow-y: auto;
+  position: relative;
+  min-width: 300px;
+}
+
+.right-pane .prompt-card {
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #e6f0ff;
+  border: 1px solid #99c0ff;
+  border-radius: 4px;
+}
+
+.right-pane.drop-hover {
+  outline: 2px dashed #007bff;
+}
