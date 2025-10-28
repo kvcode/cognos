@@ -16,74 +16,51 @@ define([], function() {
     console.log("[DragNDrop] 🌱 initialize() called");
 
     try {
+      // Log the state of LeftPane and RightPane
+      console.log("[DragNDrop] 🧳 LeftPane:", this.leftPane);
+      console.log("[DragNDrop] 🧳 RightPane:", this.rightPane);
+
       // Check if LeftPane and RightPane are available
-      if (!this.leftPane || !this.rightPane) {
-        console.error("[DragNDrop] ❌ LeftPane or RightPane missing");
+      if (!this.leftPane && !this.rightPane) {
+        console.error("[DragNDrop] ❌ Both LeftPane and RightPane are missing.");
+        return;
+      }
+
+      if (!this.leftPane) {
+        console.error("[DragNDrop] ❌ LeftPane is missing.");
+        return;
+      }
+
+      if (!this.rightPane) {
+        console.error("[DragNDrop] ❌ RightPane is missing.");
         return;
       }
 
       console.log("[DragNDrop] 🔗 LeftPane and RightPane are available");
 
-      // Ensure RightPane cards container exists
+      // Ensure RightPane cards container exists (for visualization purposes only)
       const dropTarget = this.rightPane.cardsContainer;
       if (!dropTarget) {
-        console.error("[DragNDrop] ❌ RightPane cardsContainer missing");
+        console.error("[DragNDrop] ❌ RightPane cardsContainer missing.");
         return;
       }
 
       console.log("[DragNDrop] ✅ RightPane cardsContainer found");
 
-      // Bind event handlers for dragover and drop
-      this.boundDragOver = (e) => {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = "copy";
-        console.log("[DragNDrop] 🖱 DragOver event fired");
-      };
+      // For now, we won't bind drag-and-drop interaction, just visualize the panes.
+      // So, no event listeners for dragover and drop will be attached.
+      console.log("[DragNDrop] ❌ Drag and Drop functionality is disabled.");
 
-      this.boundDrop = (e) => {
-        e.preventDefault();
-        try {
-          const dataStr = e.dataTransfer.getData("text/plain");
-          console.log("[DragNDrop] 🛬 Drop event fired. Data received:", dataStr);
+      // Append both LeftPane and RightPane to the DOM (visualization only)
+      if (this.leftPane && typeof this.leftPane.draw === "function") {
+        this.leftPane.draw(oControlHost);
+        console.log("[DragNDrop] ✅ LeftPane drawn");
+      }
 
-          const data = JSON.parse(dataStr);
-          if (!data.optionName || !data.parameterName) {
-            console.warn("[DragNDrop] ⚠️ Invalid drop data:", data);
-            return;
-          }
-
-          console.log("[DragNDrop] ✅ Drop data parsed successfully:", data);
-
-          // Check if card already exists in the RightPane
-          const existing = Array.from(dropTarget.children).find(card => {
-            return card.dataset.optionName === data.optionName;
-          });
-
-          if (existing) {
-            console.log("[DragNDrop] ⚠️ Card already exists for:", data.optionName);
-            return;
-          }
-
-          console.log("[DragNDrop] ✅ Card not found. Proceeding to add.");
-
-          // Add card via RightPane
-          if (this.rightPane && typeof this.rightPane.addCard === "function") {
-            this.rightPane.addCard(data);
-            console.log("[DragNDrop] ✅ Card added for:", data.optionName);
-          } else {
-            console.error("[DragNDrop] ❌ rightPane.addCard not available");
-          }
-
-        } catch (err) {
-          console.error("[DragNDrop] ❌ Drop handler error:", err);
-        }
-      };
-
-      // Attach the event listeners for dragover and drop
-      dropTarget.addEventListener("dragover", this.boundDragOver);
-      dropTarget.addEventListener("drop", this.boundDrop);
-
-      console.log("[DragNDrop] ✅ Event listeners attached to RightPane");
+      if (this.rightPane && typeof this.rightPane.draw === "function") {
+        this.rightPane.draw(oControlHost);
+        console.log("[DragNDrop] ✅ RightPane drawn");
+      }
 
       // If initialization callback exists, call it
       if (typeof fnDoneInitializing === 'function') {
@@ -101,13 +78,7 @@ define([], function() {
     console.log("[DragNDrop] 🧨 destroy() called");
 
     try {
-      if (this.rightPane && this.rightPane.cardsContainer) {
-        // Remove event listeners
-        this.rightPane.cardsContainer.removeEventListener("dragover", this.boundDragOver);
-        this.rightPane.cardsContainer.removeEventListener("drop", this.boundDrop);
-        console.log("[DragNDrop] ✅ Event listeners removed from RightPane");
-      }
-
+      // Since interaction is disabled, no need to remove event listeners.
       // Reset all instance variables
       this.leftPane = null;
       this.rightPane = null;
