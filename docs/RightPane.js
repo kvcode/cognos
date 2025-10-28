@@ -15,9 +15,15 @@ define([], function() {
     console.log("[RightPane] 🔧 initialize() called");
 
     try {
-      // Create main container
+      // Create main container for RightPane
       this.domNode = document.createElement("div");
       this.domNode.className = "right-pane";
+
+      // Add background color for better visualization
+      this.domNode.style.backgroundColor = "#d3d3d3";  // light gray background
+      this.domNode.style.padding = "10px";
+      this.domNode.style.height = "100%"; // Adjust height if necessary
+      this.domNode.style.position = "relative"; // Ensure positioning for drop area
 
       // Container for cards
       this.cardsContainer = document.createElement("div");
