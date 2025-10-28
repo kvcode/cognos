@@ -10,7 +10,7 @@ define([], function () {
 
     const config = oControlHost.configuration || {};
     const basePaths = config.BaseScriptPaths || {};
-    const fallbackBase = config.BaseScriptPath || "https://kvcode.github.io/cognos/";
+    const fallbackBase = config.BaseScriptPath || "/cognos4/samples/javascript/CustomPromptPageGH/";
 
     // Inject CSS
     const cssPath = basePaths.LeftPaneCSS || fallbackBase + "LeftPane.css";
