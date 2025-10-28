@@ -1,138 +1,195 @@
 define([], function() {
   "use strict";
 
-  console.log("[DragNDrop] === Module Loaded ===");
+  console.log("[CustomPromptPage] === Module Loaded ===");
 
-  function DragNDrop() {
-    console.log("[DragNDrop] 🏗 Constructor called");
+  // === Constructor ===
+  function CustomPromptPage() {
+    console.log("[CustomPromptPage] 🏗 Constructor called");
+    this.domNode = null;
     this.leftPane = null;
     this.rightPane = null;
-    this.boundDragOver = null;
-    this.boundDrop = null;
+    this.dragDrop = null;
+    this.leftPaneReady = false;
+    this.rightPaneReady = false;
   }
 
   // === Initialization ===
-  DragNDrop.prototype.initialize = function(oControlHost, fnDoneInitializing) {
-    console.log("[DragNDrop] 🌱 initialize() called");
-
+  CustomPromptPage.prototype.initialize = function(oControlHost, fnDoneInitializing) {
+    console.log("[CustomPromptPage] 🔧 initialize() called");
+/*
     try {
-      // Check if LeftPane and RightPane are available
-      if (!this.leftPane) {
-        console.error("[DragNDrop] ❌ LeftPane is missing");
-      } else {
-        console.log("[DragNDrop] ✅ LeftPane is available");
-      }
+      // Create main container
+      this.domNode = document.createElement("div");
+      this.domNode.className = "custom-prompt-page-container";
+      console.log("[CustomPromptPage] 📦 DOM node created:", this.domNode);
 
-      if (!this.rightPane) {
-        console.error("[DragNDrop] ❌ RightPane is missing");
-      } else {
-        console.log("[DragNDrop] ✅ RightPane is available");
-      }
+      // Read config
+      const config = oControlHost.configuration || {};
+      console.log("[CustomPromptPage] ⚙️ Raw configuration received:", config);
 
-      // If both are not available, exit early
-      if (!this.leftPane || !this.rightPane) {
-        console.error("[DragNDrop] ❌ Both LeftPane and RightPane are missing, cannot initialize DragNDrop.");
-        return;
-      }
+      const basePaths = config.BaseScriptPaths || {};
+      const fallbackBase = config.BaseScriptPath || "/cognos4/samples/javascript/CustomPromptPage/";
+      console.log("[CustomPromptPage] 🧩 BaseScriptPaths detected:", basePaths);
+      console.log("[CustomPromptPage] 🧩 Fallback BaseScriptPath:", fallbackBase);
 
-      console.log("[DragNDrop] 🔗 Both LeftPane and RightPane are available, proceeding...");
+      // Determine final paths
+      const LeftPanePath = basePaths.LeftPane || (fallbackBase + "LeftPane.js");
+      const RightPanePath = basePaths.RightPane || (fallbackBase + "RightPane.js");
+      const DragDropPath = basePaths.DragDrop || (fallbackBase + "DragNDrop.js");
 
-      // Ensure RightPane cards container exists
-      const dropTarget = this.rightPane.cardsContainer;
-      if (!dropTarget) {
-        console.error("[DragNDrop] ❌ RightPane cardsContainer missing");
-        return;
-      }
+      console.log("[CustomPromptPage] ✅ Computed module paths:", {
+        LeftPanePath,
+        RightPanePath,
+        DragDropPath
+      });
 
-      console.log("[DragNDrop] ✅ RightPane cardsContainer found");
-
-      // Bind event handlers for dragover and drop
-      this.boundDragOver = (e) => {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = "copy";
-        console.log("[DragNDrop] 🖱 DragOver event fired");
-      };
-
-      this.boundDrop = (e) => {
-        e.preventDefault();
+      // --- Load LeftPane first (mandatory)
+      console.log(`[CustomPromptPage] 🚀 Attempting to load LeftPane from: ${LeftPanePath}`);
+      require([LeftPanePath], (LeftPane) => {
+        console.log(`[CustomPromptPage] ✅ LeftPane module loaded successfully from: ${LeftPanePath}`);
         try {
-          const dataStr = e.dataTransfer.getData("text/plain");
-          console.log("[DragNDrop] 🛬 Drop event fired. Data received:", dataStr);
+          this.leftPane = new LeftPane();
+          console.log("[CustomPromptPage] 🧱 LeftPane instance created:", this.leftPane);
 
-          const data = JSON.parse(dataStr);
-          if (!data.optionName || !data.parameterName) {
-            console.warn("[DragNDrop] ⚠️ Invalid drop data:", data);
-            return;
-          }
-
-          console.log("[DragNDrop] ✅ Drop data parsed successfully:", data);
-
-          // Check if card already exists in the RightPane
-          const existing = Array.from(dropTarget.children).find(card => {
-            return card.dataset.optionName === data.optionName;
+          this.leftPane.initialize(oControlHost, () => {
+            console.log("[CustomPromptPage] ✅ LeftPane initialized successfully");
+            this.leftPaneReady = true;
+            this.tryInitializeDragDrop(oControlHost, fnDoneInitializing, DragDropPath);
           });
-
-          if (existing) {
-            console.log("[DragNDrop] ⚠️ Card already exists for:", data.optionName);
-            return;
-          }
-
-          console.log("[DragNDrop] ✅ Card not found. Proceeding to add.");
-
-          // Add card via RightPane
-          if (this.rightPane && typeof this.rightPane.addCard === "function") {
-            this.rightPane.addCard(data);
-            console.log("[DragNDrop] ✅ Card added for:", data.optionName);
-          } else {
-            console.error("[DragNDrop] ❌ rightPane.addCard not available");
-          }
-
-        } catch (err) {
-          console.error("[DragNDrop] ❌ Drop handler error:", err);
+        } catch (initErr) {
+          console.error("[CustomPromptPage] ❌ Error initializing LeftPane:", initErr);
+          fnDoneInitializing();
         }
-      };
-
-      // Attach the event listeners for dragover and drop
-      dropTarget.addEventListener("dragover", this.boundDragOver);
-      dropTarget.addEventListener("drop", this.boundDrop);
-
-      console.log("[DragNDrop] ✅ Event listeners attached to RightPane");
-
-      // If initialization callback exists, call it
-      if (typeof fnDoneInitializing === 'function') {
+      }, (err) => {
+        console.error("[CustomPromptPage] ❌ Failed to load LeftPane module:", err);
         fnDoneInitializing();
-        console.log("[DragNDrop] ✅ fnDoneInitializing callback called");
-      }
+      });
 
     } catch (err) {
-      console.error("[DragNDrop] ❌ Error during initialization:", err);
+      console.error("[CustomPromptPage] ❌ Fatal error during initialize():", err);
+      fnDoneInitializing();
+    }
+     */
+  };
+/*
+  // === Try to Initialize DragDrop ===
+  CustomPromptPage.prototype.tryInitializeDragDrop = function(oControlHost, fnDoneInitializing, DragDropPath) {
+    if (this.leftPaneReady) {
+      console.log("[CustomPromptPage] 🔄 Attempting to load DragDrop after LeftPane is initialized");
+
+      require([DragDropPath], (DragDrop) => {
+        console.log(`[CustomPromptPage] ✅ DragDrop module loaded successfully from: ${DragDropPath}`);
+        try {
+          this.dragDrop = new DragDrop();
+          console.log("[CustomPromptPage] 🧱 DragDrop instance created:", this.dragDrop);
+
+          this.dragDrop.initialize(oControlHost, () => {
+            console.log("[CustomPromptPage] ✅ DragDrop initialized successfully");
+
+            if (this.leftPane && this.rightPane) {
+              console.log("[CustomPromptPage] 🔗 Connecting LeftPane & RightPane via DragDrop");
+              this.dragDrop.connectPanes(this.leftPane, this.rightPane, oControlHost);
+            }
+          });
+        } catch (err) {
+          console.error("[CustomPromptPage] ❌ Error initializing DragDrop:", err);
+        }
+      }, (err) => {
+        console.warn("[CustomPromptPage] ⚠️ DragDrop module NOT found or failed to load:", err);
+      });
     }
   };
+
+  // === Load Remaining Modules ===
+  CustomPromptPage.prototype.tryLoadOtherModules = function(oControlHost, fnDoneInitializing, paths) {
+    console.log("[CustomPromptPage] 🔄 tryLoadOtherModules() called with paths:", paths);
+
+    const { RightPanePath } = paths;
+
+    console.log(`[CustomPromptPage] 🚀 Attempting to load RightPane from: ${RightPanePath}`);
+    require([RightPanePath], (RightPane) => {
+      console.log(`[CustomPromptPage] ✅ RightPane module loaded successfully from: ${RightPanePath}`);
+      try {
+        this.rightPane = new RightPane();
+        console.log("[CustomPromptPage] 🧱 RightPane instance created:", this.rightPane);
+
+        this.rightPane.initialize(oControlHost, () => {
+          console.log("[CustomPromptPage] ✅ RightPane initialized successfully");
+          this.rightPaneReady = true;
+          this.tryInitializeDragDrop(oControlHost, fnDoneInitializing, paths.DragDropPath);
+        });
+      } catch (err) {
+        console.error("[CustomPromptPage] ❌ Error initializing RightPane:", err);
+      }
+    }, (err) => {
+      console.warn("[CustomPromptPage] ⚠️ RightPane module NOT found or failed to load:", err);
+    });
+  };
+
+  // === Draw ===
+  CustomPromptPage.prototype.draw = function(oControlHost) {
+    console.log("[CustomPromptPage] 🖼 draw() called");
+
+    try {
+      if (!this.domNode) {
+        console.warn("[CustomPromptPage] ⚠️ domNode not initialized, aborting draw");
+        return;
+      }
+
+      this.domNode.innerHTML = "";
+      console.log("[CustomPromptPage] 🧹 Cleared previous DOM content");
+
+      const layout = document.createElement("div");
+      layout.className = "custom-prompt-layout";
+
+      if (this.leftPane && this.leftPane.domNode) {
+        console.log("[CustomPromptPage] 🧩 Drawing LeftPane...");
+        this.leftPane.draw(oControlHost);
+        layout.appendChild(this.leftPane.domNode);
+      }
+
+      if (this.rightPane && this.rightPane.domNode) {
+        console.log("[CustomPromptPage] 🧩 Drawing RightPane...");
+        this.rightPane.draw(oControlHost);
+        layout.appendChild(this.rightPane.domNode);
+      }
+
+      this.domNode.appendChild(layout);
+      oControlHost.container.appendChild(this.domNode);
+      console.log("[CustomPromptPage] ✅ Layout rendered successfully");
+    } catch (err) {
+      console.error("[CustomPromptPage] ❌ Error during draw():", err);
+    }
+      
+  };
+
 
   // === Destroy ===
-  DragNDrop.prototype.destroy = function() {
-    console.log("[DragNDrop] 🧨 destroy() called");
+  CustomPromptPage.prototype.destroy = function() {
+    console.log("[CustomPromptPage] 🧨 destroy() called");
 
     try {
-      if (this.rightPane && this.rightPane.cardsContainer) {
-        // Remove event listeners
-        this.rightPane.cardsContainer.removeEventListener("dragover", this.boundDragOver);
-        this.rightPane.cardsContainer.removeEventListener("drop", this.boundDrop);
-        console.log("[DragNDrop] ✅ Event listeners removed from RightPane");
+      if (this.leftPane) {
+        this.leftPane.destroy();
+        this.leftPane = null;
       }
-
-      // Reset all instance variables
-      this.leftPane = null;
-      this.rightPane = null;
-      this.boundDragOver = null;
-      this.boundDrop = null;
-
-      console.log("[DragNDrop] ✅ destroy() complete — all instance variables reset");
-
+      if (this.rightPane) {
+        this.rightPane.destroy();
+        this.rightPane = null;
+      }
+      if (this.dragDrop) {
+        this.dragDrop.destroy();
+        this.dragDrop = null;
+      }
+      if (this.domNode && this.domNode.parentNode) {
+        this.domNode.parentNode.removeChild(this.domNode);
+      }
+      console.log("[CustomPromptPage] ✅ destroy() complete");
     } catch (err) {
-      console.error("[DragNDrop] ❌ destroy() failed:", err);
+      console.error("[CustomPromptPage] ❌ Error during destroy():", err);
     }
   };
-
-  return DragNDrop;
+*/
+  return CustomPromptPage;
 });
