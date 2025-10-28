@@ -1,0 +1,35 @@
+{
+  "control": {
+    "id": "customPromptPage",
+    "name": "Custom Prompt Page",
+    "description": "Custom prompt page with modular left pane, drag/drop support, and configurable script paths",
+    "version": "1.2",
+    "author": "KK",
+    "css": [
+      "LeftPane.css"
+    ],
+    "js": [
+      "preLoad.js",
+      "CustomPromptPage.js",
+      "LeftPane.js",
+      "RightPane.js",
+      "DragDrop.js"
+    ],
+    "properties": [
+      {
+        "name": "BaseScriptPaths",
+        "displayName": "Base Script Paths",
+        "type": "json",
+        "defaultValue": "{}",
+        "description": "JSON object with absolute URLs for JS modules. Example: {\"CustomPromptPage\": \"/path/CustomPromptPage.js\", \"LeftPane\": \"/path/LeftPane.js\", \"RightPane\": \"/path/RightPane.js\", \"DragDrop\": \"/path/DragDrop.js\"}"
+      },
+      {
+        "name": "buttonGroups",
+        "displayName": "Button Groups Config",
+        "type": "json",
+        "defaultValue": "[]",
+        "description": "JSON array defining grouped buttons (labels, icons, queries, etc.) for the left pane"
+      }
+    ]
+  }
+}
