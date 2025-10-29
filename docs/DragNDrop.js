@@ -203,6 +203,15 @@ define([], function () {
           }
         };
 
+        console.log(
+          "[DragNDrop] 📏 dropTarget size:",
+          dropTarget.offsetWidth,
+          "x",
+          dropTarget.offsetHeight,
+          "position:",
+          getComputedStyle(dropTarget).position
+        );
+
         // Attach event listeners
         dropTarget.addEventListener("dragover", this.boundDragOver);
         dropTarget.addEventListener("dragleave", this.boundDragLeave);
