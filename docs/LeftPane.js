@@ -73,7 +73,7 @@ define([], function () {
           header.className = "left-pane-group-header";
           header.style.cursor = "pointer";
 
-          // Optional SVG icon
+          // Optional SVG icon for GROUP (not buttons)
           if (group.groupIcon && typeof group.groupIcon === "string") {
             const iconContainer = document.createElement("span");
             iconContainer.className = "left-pane-group-icon";
@@ -118,21 +118,9 @@ define([], function () {
                 const button = document.createElement("button");
                 button.className = "left-pane-button";
                 button.textContent = btn.label || `Button ${bIdx}`;
-                button.style.display = "flex";
-                button.style.alignItems = "center";
-                button.style.gap = "6px";
 
-                // Inject SVG icon if present
-                if (btn.icon && typeof btn.icon === "string") {
-                  const spanIcon = document.createElement("span");
-                  spanIcon.className = "left-pane-button-icon";
-                  spanIcon.style.display = "inline-block";
-                  spanIcon.style.width = "20px";
-                  spanIcon.style.height = "20px";
-                  spanIcon.style.flexShrink = "0";
-                  spanIcon.innerHTML = btn.icon;
-                  button.prepend(spanIcon);
-                }
+                // NO ICONS on buttons - just clean text
+                // Icons are only for group headers
 
                 buttonsContainer.appendChild(button);
               });
