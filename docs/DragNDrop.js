@@ -74,136 +74,146 @@ define([], function () {
 
   // === Setup Drag Handlers on LeftPane Buttons ===
   DragNDrop.prototype.setupDragHandlers = function (oControlHost) {
-    console.log("[DragNDrop] 🎯 Setting up drag handlers on LeftPane buttons");
+    console.log("[DragNDrop] 🎯 Set up started for drag handlers on LeftPane buttons");
 
-    try {
-      if (!this.leftPane || !this.leftPane.domNode) {
-        console.error("[DragNDrop] ❌ LeftPane domNode not available");
-        return;
-      }
+    // ✅ Wait for CustomPromptPage.js to finish drawing
+    document.addEventListener("PromptPageReady", () => {
+      console.log("[DragNDrop] 🚀 PromptPageReady event received, setting up handlers");
 
-      // Find all buttons in LeftPane
-      const buttons = this.leftPane.domNode.querySelectorAll(".left-pane-button");
-      console.log("[DragNDrop] 🔍 Found buttons:", buttons.length);
+      try {
+        if (!this.leftPane || !this.leftPane.domNode) {
+          console.error("[DragNDrop] ❌ LeftPane domNode not available");
+          return;
+        }
 
-      if (buttons.length === 0) {
-        console.warn("[DragNDrop] ⚠️ No buttons found in LeftPane");
-        return;
-      }
+        // Find all buttons in LeftPane
+        const buttons = this.leftPane.domNode.querySelectorAll(".left-pane-button");
+        console.log("[DragNDrop] 🔍 Found buttons:", buttons.length);
 
-      buttons.forEach((button, idx) => {
-        console.log(`[DragNDrop] 🔧 Setting up drag for button [${idx}]:`, button.textContent);
+        if (buttons.length === 0) {
+          console.warn("[DragNDrop] ⚠️ No buttons found in LeftPane");
+          return;
+        }
 
-        // Make button draggable
-        button.draggable = true;
-        button.setAttribute("draggable", "true");
+        buttons.forEach((button, idx) => {
+          console.log(`[DragNDrop] 🔧 Setting up drag for button [${idx}]:`, button.textContent);
 
-        // Dragstart handler
-        button.addEventListener("dragstart", (e) => {
-          console.log(`[DragNDrop] 🎯 Drag started: ${button.textContent}`);
+          // Make button draggable
+          button.draggable = true;
+          button.setAttribute("draggable", "true");
 
-          const dragData = {
-            optionName: button.textContent.trim(),
-            sourceIndex: idx,
-            timestamp: Date.now(),
-          };
+          // Dragstart handler
+          button.addEventListener("dragstart", (e) => {
+            console.log(`[DragNDrop] 🎯 Drag started: ${button.textContent}`);
 
-          e.dataTransfer.setData("text/plain", JSON.stringify(dragData));
-          e.dataTransfer.effectAllowed = "copy";
+            const dragData = {
+              optionName: button.textContent.trim(),
+              sourceIndex: idx,
+              timestamp: Date.now(),
+            };
 
-          button.style.opacity = "0.5";
-          button.classList.add("dragging");
+            e.dataTransfer.setData("text/plain", JSON.stringify(dragData));
+            e.dataTransfer.effectAllowed = "copy";
 
-          console.log("[DragNDrop] 📦 Drag data set:", dragData);
+            button.style.opacity = "0.5";
+            button.classList.add("dragging");
+
+            console.log("[DragNDrop] 📦 Drag data set:", dragData);
+          });
+
+          // Dragend handler
+          button.addEventListener("dragend", (e) => {
+            console.log(`[DragNDrop] 🏁 Drag ended: ${button.textContent}`);
+            button.style.opacity = "1";
+            button.classList.remove("dragging");
+          });
+
+          console.log(`[DragNDrop] ✅ Button [${idx}] is now draggable`);
         });
 
-        // Dragend handler
-        button.addEventListener("dragend", (e) => {
-          console.log(`[DragNDrop] 🏁 Drag ended: ${button.textContent}`);
-          button.style.opacity = "1";
-          button.classList.remove("dragging");
-        });
-
-        console.log(`[DragNDrop] ✅ Button [${idx}] is now draggable`);
-      });
-
-      console.log("[DragNDrop] ✅ All buttons setup complete");
-    } catch (err) {
-      console.error("[DragNDrop] ❌ Error setting up drag handlers:", err);
-      console.error("[DragNDrop] 🔍 Stack trace:", err.stack);
-    }
+        console.log("[DragNDrop] ✅ All buttons setup complete");
+      } catch (err) {
+        console.error("[DragNDrop] ❌ Error setting up drag handlers:", err);
+        console.error("[DragNDrop] 🔍 Stack trace:", err.stack);
+      }
+    });
   };
 
   // === Setup Drop Zone on RightPane ===
   DragNDrop.prototype.setupDropZone = function (oControlHost, dropTarget) {
-    console.log("[DragNDrop] 🎯 Setting up drop zone on RightPane");
-    console.log("[DragNDrop] 🔍 Drop target:", dropTarget);
+    console.log("[DragNDrop] 🎯 Set up drop zone on RightPane started waiting for event");
 
-    try {
-      // Dragover handler
-      this.boundDragOver = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        e.dataTransfer.dropEffect = "copy";
+    // ✅ Wait for CustomPromptPage.js to finish drawing
+    document.addEventListener("PromptPageReady", () => {
+      console.log("[DragNDrop] 🚀 PromptPageReady event received, setting up RightPane drop zone handlers");
+      console.log("[DragNDrop] 🔍 Drop target:", dropTarget);
 
-        dropTarget.classList.add("drop-hover");
-        console.log("[DragNDrop] 🔄 Dragging over drop zone");
-      };
+      try {
+        // Dragover handler
+        this.boundDragOver = (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          e.dataTransfer.dropEffect = "copy";
 
-      // Dragleave handler
-      this.boundDragLeave = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
+          dropTarget.classList.add("drop-hover");
+          console.log("[DragNDrop] 🔄 Dragging over drop zone");
+        };
 
-        dropTarget.classList.remove("drop-hover");
-        console.log("[DragNDrop] 🔙 Left drop zone");
-      };
+        // Dragleave handler
+        this.boundDragLeave = (e) => {
+          e.preventDefault();
+          e.stopPropagation();
 
-      // Drop handler
-      this.boundDrop = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
+          dropTarget.classList.remove("drop-hover");
+          console.log("[DragNDrop] 🔙 Left drop zone");
+        };
 
-        dropTarget.classList.remove("drop-hover");
+        // Drop handler
+        this.boundDrop = (e) => {
+          e.preventDefault();
+          e.stopPropagation();
 
-        console.log("[DragNDrop] 📥 Drop event triggered");
+          dropTarget.classList.remove("drop-hover");
 
-        try {
-          const dataString = e.dataTransfer.getData("text/plain");
-          console.log("[DragNDrop] 📦 Raw data received:", dataString);
+          console.log("[DragNDrop] 📥 Drop event triggered");
 
-          if (!dataString) {
-            console.warn("[DragNDrop] ⚠️ No data in drop event");
-            return;
+          try {
+            const dataString = e.dataTransfer.getData("text/plain");
+            console.log("[DragNDrop] 📦 Raw data received:", dataString);
+
+            if (!dataString) {
+              console.warn("[DragNDrop] ⚠️ No data in drop event");
+              return;
+            }
+
+            const data = JSON.parse(dataString);
+            console.log("[DragNDrop] ✅ Parsed drop data:", data);
+
+            // Add card to RightPane
+            if (this.rightPane && typeof this.rightPane.addCard === "function") {
+              console.log("[DragNDrop] ➕ Adding card to RightPane:", data.optionName);
+              this.rightPane.addCard(data);
+              console.log("[DragNDrop] ✅ Card added successfully");
+            } else {
+              console.error("[DragNDrop] ❌ RightPane.addCard() not available");
+            }
+          } catch (parseErr) {
+            console.error("[DragNDrop] ❌ Error parsing drop data:", parseErr);
+            console.error("[DragNDrop] 🔍 Stack trace:", parseErr.stack);
           }
+        };
 
-          const data = JSON.parse(dataString);
-          console.log("[DragNDrop] ✅ Parsed drop data:", data);
+        // Attach event listeners
+        dropTarget.addEventListener("dragover", this.boundDragOver);
+        dropTarget.addEventListener("dragleave", this.boundDragLeave);
+        dropTarget.addEventListener("drop", this.boundDrop);
 
-          // Add card to RightPane
-          if (this.rightPane && typeof this.rightPane.addCard === "function") {
-            console.log("[DragNDrop] ➕ Adding card to RightPane:", data.optionName);
-            this.rightPane.addCard(data);
-            console.log("[DragNDrop] ✅ Card added successfully");
-          } else {
-            console.error("[DragNDrop] ❌ RightPane.addCard() not available");
-          }
-        } catch (parseErr) {
-          console.error("[DragNDrop] ❌ Error parsing drop data:", parseErr);
-          console.error("[DragNDrop] 🔍 Stack trace:", parseErr.stack);
-        }
-      };
-
-      // Attach event listeners
-      dropTarget.addEventListener("dragover", this.boundDragOver);
-      dropTarget.addEventListener("dragleave", this.boundDragLeave);
-      dropTarget.addEventListener("drop", this.boundDrop);
-
-      console.log("[DragNDrop] ✅ Drop zone setup complete");
-    } catch (err) {
-      console.error("[DragNDrop] ❌ Error setting up drop zone:", err);
-      console.error("[DragNDrop] 🔍 Stack trace:", err.stack);
-    }
+        console.log("[DragNDrop] ✅ Drop zone setup complete");
+      } catch (err) {
+        console.error("[DragNDrop] ❌ Error setting up drop zone:", err);
+        console.error("[DragNDrop] 🔍 Stack trace:", err.stack);
+      }
+    });
   };
 
   // === Destroy ===
