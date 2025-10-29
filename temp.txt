@@ -10,3 +10,38 @@ undefined
 console.log('Container:', document.querySelector('.custom-prompt-page-container'));
 Container: null debugger eval code:1:9
 undefined 
+
+console.log('LeftPane buttons:', document.querySelectorAll('.left-pane-button'));
+console.log('LeftPane container:', document.querySelector('.left-pane-container'));
+LeftPane buttons: 
+NodeList []
+​
+length: 0
+​
+<prototype>: NodeListPrototype { item: item(), keys: keys(), values: values(), … }
+​​
+constructor: function NodeList()
+​​
+entries: function entries()
+​​
+flatpickr: function flatpickr(e)​​
+forEach: function forEach()
+​​
+item: function item()
+​​
+keys: function keys()
+​​
+length: 
+​​
+values: function values()
+​​
+Symbol(Symbol.iterator): function values()
+​​
+Symbol(Symbol.toStringTag): "NodeList"
+​​
+<get length()>: function length()
+​​
+<prototype>: Object { … }
+debugger eval code:1:9
+LeftPane container: null debugger eval code:2:9
+undefined 
