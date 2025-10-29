@@ -7,11 +7,17 @@ define([], function () {
     console.log("[DragNDrop] 🏗 Constructor called");
     this.leftPane = null;
     this.rightPane = null;
-    this.boundDragOver = null;
-    this.boundDragLeave = null;
-    this.boundDrop = null;
     this.isSetup = false;
-    this.dropZoneSetup = false; // Track if drop zone is set up
+
+    // Mouse drag state
+    this.isDragging = false;
+    this.dragData = null;
+    this.floatingElement = null;
+    this.dropZone = null;
+
+    // Bound functions for cleanup
+    this.boundMouseMove = null;
+    this.boundMouseUp = null;
   }
 
   // === Initialization ===
@@ -33,10 +39,6 @@ define([], function () {
       }
 
       console.log("[DragNDrop] ✅ Both panes validated");
-
-      // DON'T setup drop zone here - it has no size yet!
-      // Will be set up in draw() after DOM is rendered
-
       console.log("[DragNDrop] ✅ Initialization complete (handlers will be set in draw())");
 
       if (fnDoneInitializing) {
@@ -53,10 +55,11 @@ define([], function () {
     console.log("[DragNDrop] 🖼 draw() called");
 
     try {
-      // Setup drop zone NOW - after DOM is rendered
-      this.setupDropZone();
+      // Store drop zone reference
+      this.dropZone = this.rightPane.cardsContainer;
+      console.log("[DragNDrop] 📍 Drop zone stored:", this.dropZone);
 
-      // Setup drag handlers - buttons exist after panes are drawn!
+      // Setup mouse-based drag handlers
       this.setupDragHandlers();
       console.log("[DragNDrop] ✅ draw() complete");
     } catch (err) {
@@ -64,9 +67,9 @@ define([], function () {
     }
   };
 
-  // === Setup Drag Handlers ===
+  // === Setup Drag Handlers (Mouse-Based) ===
   DragNDrop.prototype.setupDragHandlers = function () {
-    console.log("[DragNDrop] 🎯 Setting up drag handlers");
+    console.log("[DragNDrop] 🎯 Setting up mouse-based drag handlers");
 
     try {
       if (!this.leftPane || !this.leftPane.domNode) {
@@ -74,7 +77,7 @@ define([], function () {
         return;
       }
 
-      // Check if already setup to prevent duplicates
+      // Check if already setup
       if (this.isSetup) {
         console.warn("[DragNDrop] ⚠️ Already setup, skipping");
         return;
@@ -89,201 +92,172 @@ define([], function () {
       }
 
       buttons.forEach((button, idx) => {
-        // Make draggable
-        button.draggable = true;
         button.style.cursor = "grab";
 
-        // Dragstart
-        button.addEventListener("dragstart", (e) => {
-          console.log(`[DragNDrop] 🎯 Drag started: ${button.textContent.trim()}`);
-          console.log("[DragNDrop] 🔍 Button rect:", button.getBoundingClientRect());
-          console.log("[DragNDrop] 🔍 Button parent:", button.parentElement);
-          console.log("[DragNDrop] 🔍 All parent z-indexes:");
+        // Mouse down - start drag
+        button.addEventListener("mousedown", (e) => {
+          e.preventDefault(); // Prevent text selection
+          console.log(`[DragNDrop] 🖱 Mouse down on: ${button.textContent.trim()}`);
 
-          let parent = button.parentElement;
-          while (parent) {
-            const styles = getComputedStyle(parent);
-            console.log(
-              `  - ${parent.className}: z-index=${styles.zIndex}, pointer-events=${styles.pointerEvents}, position=${styles.position}`
-            );
-            parent = parent.parentElement;
-            if (!parent || parent === document.body) break;
-          }
-
-          const dragData = {
+          // Store drag data
+          this.dragData = {
             optionName: button.textContent.trim(),
             sourceIndex: idx,
             timestamp: Date.now(),
           };
 
-          // Set data
-          e.dataTransfer.setData("text/plain", JSON.stringify(dragData));
-          e.dataTransfer.effectAllowed = "copy";
+          // Create floating element
+          this.createFloatingElement(button.textContent.trim(), e.clientX, e.clientY);
 
-          // Create custom drag image (button itself might not work)
-          try {
-            const dragGhost = document.createElement("div");
-            dragGhost.textContent = button.textContent.trim();
-            dragGhost.style.position = "absolute";
-            dragGhost.style.top = "-1000px";
-            dragGhost.style.left = "-1000px";
-            dragGhost.style.padding = "8px 12px";
-            dragGhost.style.background = "#e1e1e1";
-            dragGhost.style.border = "1px solid #ccc";
-            dragGhost.style.borderRadius = "3px";
-            dragGhost.style.opacity = "0.8";
-            dragGhost.style.pointerEvents = "none"; // CRITICAL!
-            document.body.appendChild(dragGhost);
-
-            e.dataTransfer.setDragImage(dragGhost, 10, 10);
-
-            // Clean up after a moment
-            setTimeout(() => {
-              if (dragGhost.parentNode) {
-                document.body.removeChild(dragGhost);
-              }
-            }, 100);
-
-            console.log("[DragNDrop] ✅ Custom drag ghost created");
-          } catch (err) {
-            console.warn("[DragNDrop] ⚠️ setDragImage failed:", err);
-          }
-
+          // Visual feedback on source button
           button.style.opacity = "0.5";
-          button.style.cursor = "grabbing";
 
-          console.log("[DragNDrop] 📦 Data:", dragData);
-          console.log("[DragNDrop] ✅ effectAllowed:", e.dataTransfer.effectAllowed);
-          console.log("[DragNDrop] ✅ types:", e.dataTransfer.types);
+          // Start tracking mouse movement
+          this.startDrag();
 
-          // Check if any default was prevented
-          console.log("[DragNDrop] 🔍 defaultPrevented:", e.defaultPrevented);
-          console.log("[DragNDrop] 🔍 Event phase:", e.eventPhase);
-        });
-
-        // Dragend
-        button.addEventListener("dragend", (e) => {
-          console.log(`[DragNDrop] 🏁 DRAGEND fired!`);
-          console.log("[DragNDrop] 🔍 dropEffect:", e.dataTransfer.dropEffect);
-          button.style.opacity = "1";
-          button.style.cursor = "grab";
+          console.log("[DragNDrop] 📦 Drag data:", this.dragData);
         });
       });
 
       this.isSetup = true;
-      console.log("[DragNDrop] ✅ Drag handlers complete");
+      console.log("[DragNDrop] ✅ Mouse drag handlers complete");
     } catch (err) {
       console.error("[DragNDrop] ❌ setupDragHandlers error:", err);
     }
   };
 
-  // === Setup Drop Zone ===
-  DragNDrop.prototype.setupDropZone = function () {
-    console.log("[DragNDrop] 🎯 Setting up drop zone");
+  // === Create Floating Element ===
+  DragNDrop.prototype.createFloatingElement = function (text, x, y) {
+    console.log("[DragNDrop] 🎨 Creating floating element");
 
-    // Prevent duplicate setup
-    if (this.dropZoneSetup) {
-      console.log("[DragNDrop] ⚠️ Drop zone already set up, skipping");
+    // Create floating div
+    this.floatingElement = document.createElement("div");
+    this.floatingElement.className = "drag-floating";
+    this.floatingElement.textContent = text;
+    this.floatingElement.style.left = x + 10 + "px"; // Offset from cursor
+    this.floatingElement.style.top = y + 10 + "px";
+
+    document.body.appendChild(this.floatingElement);
+    console.log("[DragNDrop] ✅ Floating element created");
+  };
+
+  // === Start Drag (Track Mouse) ===
+  DragNDrop.prototype.startDrag = function () {
+    console.log("[DragNDrop] 🚀 Starting drag tracking");
+    this.isDragging = true;
+
+    // Mouse move handler
+    this.boundMouseMove = (e) => {
+      if (!this.isDragging) return;
+
+      // Update floating element position
+      if (this.floatingElement) {
+        this.floatingElement.style.left = e.clientX + 10 + "px";
+        this.floatingElement.style.top = e.clientY + 10 + "px";
+      }
+
+      // Check if over drop zone
+      this.checkDropZone(e.clientX, e.clientY);
+    };
+
+    // Mouse up handler
+    this.boundMouseUp = (e) => {
+      console.log("[DragNDrop] 🖱 Mouse up detected");
+      this.endDrag(e.clientX, e.clientY);
+    };
+
+    // Attach to document (so we track everywhere)
+    document.addEventListener("mousemove", this.boundMouseMove);
+    document.addEventListener("mouseup", this.boundMouseUp);
+
+    console.log("[DragNDrop] ✅ Drag tracking started");
+  };
+
+  // === Check if Over Drop Zone ===
+  DragNDrop.prototype.checkDropZone = function (x, y) {
+    if (!this.dropZone) return;
+
+    const rect = this.dropZone.getBoundingClientRect();
+    const isOver = x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+
+    if (isOver) {
+      this.dropZone.classList.add("drop-hover");
+    } else {
+      this.dropZone.classList.remove("drop-hover");
+    }
+  };
+
+  // === End Drag ===
+  DragNDrop.prototype.endDrag = function (x, y) {
+    console.log("[DragNDrop] 🏁 Ending drag at:", x, y);
+
+    // Check if over drop zone
+    if (!this.dropZone) {
+      console.warn("[DragNDrop] ⚠️ No drop zone available");
+      this.cleanup();
       return;
     }
 
-    try {
-      const dropTarget = this.rightPane.cardsContainer;
-      console.log("[DragNDrop] 📍 Target:", dropTarget);
+    const rect = this.dropZone.getBoundingClientRect();
+    const isOver = x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
 
-      // Dragover
-      this.boundDragOver = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        e.dataTransfer.dropEffect = "copy";
-        dropTarget.classList.add("drop-hover");
-        console.log("[DragNDrop] 🔄 DRAGOVER - event fired!");
-        console.log("[DragNDrop] 🔍 Mouse position:", e.clientX, e.clientY);
-        console.log("[DragNDrop] 🔍 Target:", e.target);
-      };
+    console.log("[DragNDrop] 🔍 Drop zone rect:", rect);
+    console.log("[DragNDrop] 🔍 Mouse position:", x, y);
+    console.log("[DragNDrop] 🔍 Is over drop zone:", isOver);
 
-      // Dragleave
-      this.boundDragLeave = (e) => {
-        e.preventDefault();
-        dropTarget.classList.remove("drop-hover");
-        console.log("[DragNDrop] 🔙 DRAGLEAVE");
-      };
+    if (isOver) {
+      console.log("[DragNDrop] ✅ Dropped over target!");
 
-      // Drop
-      this.boundDrop = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        dropTarget.classList.remove("drop-hover");
-
-        console.log("[DragNDrop] 📥 DROP!");
-
-        try {
-          const dataString = e.dataTransfer.getData("text/plain");
-          console.log("[DragNDrop] 📦 Received:", dataString);
-
-          if (!dataString) {
-            console.warn("[DragNDrop] ⚠️ No data");
-            return;
-          }
-
-          const data = JSON.parse(dataString);
-          console.log("[DragNDrop] ✅ Parsed:", data);
-
-          if (this.rightPane && this.rightPane.addCard) {
-            this.rightPane.addCard(data);
-            console.log("[DragNDrop] ✅ Card added!");
-          } else {
-            console.error("[DragNDrop] ❌ addCard() missing");
-          }
-        } catch (err) {
-          console.error("[DragNDrop] ❌ Drop error:", err);
-        }
-      };
-
-      // Attach listeners
-      dropTarget.addEventListener("dragover", this.boundDragOver);
-      dropTarget.addEventListener("dragleave", this.boundDragLeave);
-      dropTarget.addEventListener("drop", this.boundDrop);
-
-      console.log("[DragNDrop] ✅ Drop zone complete");
-      console.log("[DragNDrop] 📍 Drop zone rect:", dropTarget.getBoundingClientRect());
-      console.log("[DragNDrop] 📍 Drop zone styles:", {
-        position: getComputedStyle(dropTarget).position,
-        zIndex: getComputedStyle(dropTarget).zIndex,
-        pointerEvents: getComputedStyle(dropTarget).pointerEvents,
-        display: getComputedStyle(dropTarget).display,
-      });
-
-      // Add GLOBAL drag listeners to document to see if ANY drag events fire
-      document.addEventListener(
-        "drag",
-        () => {
-          console.log("[DragNDrop] 🌍 GLOBAL: drag event on document");
-        },
-        { once: true }
-      ); // only log once to avoid spam
-
-      document.addEventListener(
-        "dragover",
-        (e) => {
-          console.log("[DragNDrop] 🌍 GLOBAL: dragover on", e.target);
-        },
-        { once: true }
-      );
-
-      document.addEventListener(
-        "dragenter",
-        (e) => {
-          console.log("[DragNDrop] 🌍 GLOBAL: dragenter on", e.target);
-        },
-        { once: true }
-      );
-
-      this.dropZoneSetup = true; // Mark as set up
-      console.log("[DragNDrop] ✅ Drop zone setup complete!");
-    } catch (err) {
-      console.error("[DragNDrop] ❌ setupDropZone error:", err);
+      // Add card to RightPane
+      if (this.rightPane && this.rightPane.addCard) {
+        this.rightPane.addCard(this.dragData);
+        console.log("[DragNDrop] ✅ Card added to RightPane:", this.dragData.optionName);
+      } else {
+        console.error("[DragNDrop] ❌ RightPane.addCard() not available");
+      }
+    } else {
+      console.log("[DragNDrop] ❌ Dropped outside target zone");
     }
+
+    this.cleanup();
+  };
+
+  // === Cleanup ===
+  DragNDrop.prototype.cleanup = function () {
+    console.log("[DragNDrop] 🧹 Cleaning up drag operation");
+
+    // Remove floating element
+    if (this.floatingElement && this.floatingElement.parentNode) {
+      document.body.removeChild(this.floatingElement);
+      this.floatingElement = null;
+    }
+
+    // Remove drop zone highlight
+    if (this.dropZone) {
+      this.dropZone.classList.remove("drop-hover");
+    }
+
+    // Reset button opacity
+    const buttons = this.leftPane.domNode.querySelectorAll(".left-pane-button");
+    buttons.forEach((btn) => {
+      btn.style.opacity = "1";
+    });
+
+    // Remove event listeners
+    if (this.boundMouseMove) {
+      document.removeEventListener("mousemove", this.boundMouseMove);
+      this.boundMouseMove = null;
+    }
+    if (this.boundMouseUp) {
+      document.removeEventListener("mouseup", this.boundMouseUp);
+      this.boundMouseUp = null;
+    }
+
+    // Reset state
+    this.isDragging = false;
+    this.dragData = null;
+
+    console.log("[DragNDrop] ✅ Cleanup complete");
   };
 
   // === Destroy ===
@@ -291,30 +265,21 @@ define([], function () {
     console.log("[DragNDrop] 🧨 destroy() called");
 
     try {
-      // Remove drop listeners
-      if (this.rightPane && this.rightPane.cardsContainer) {
-        const dropTarget = this.rightPane.cardsContainer;
-        if (this.boundDragOver) dropTarget.removeEventListener("dragover", this.boundDragOver);
-        if (this.boundDragLeave) dropTarget.removeEventListener("dragleave", this.boundDragLeave);
-        if (this.boundDrop) dropTarget.removeEventListener("drop", this.boundDrop);
+      // Clean up any active drag
+      if (this.isDragging) {
+        this.cleanup();
       }
 
-      // Clean buttons
-      if (this.leftPane && this.leftPane.domNode) {
-        const buttons = this.leftPane.domNode.querySelectorAll(".left-pane-button");
-        buttons.forEach((btn) => {
-          btn.draggable = false;
-          btn.style.opacity = "1";
-        });
-      }
-
+      // Reset everything
       this.leftPane = null;
       this.rightPane = null;
-      this.boundDragOver = null;
-      this.boundDragLeave = null;
-      this.boundDrop = null;
+      this.dropZone = null;
       this.isSetup = false;
-      this.dropZoneSetup = false;
+      this.isDragging = false;
+      this.dragData = null;
+      this.floatingElement = null;
+      this.boundMouseMove = null;
+      this.boundMouseUp = null;
 
       console.log("[DragNDrop] ✅ Destroyed");
     } catch (err) {
