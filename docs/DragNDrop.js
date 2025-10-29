@@ -87,15 +87,11 @@ define([], function () {
       buttons.forEach((button, idx) => {
         // Make draggable
         button.draggable = true;
+        button.style.cursor = "grab";
 
         // Dragstart
         button.addEventListener("dragstart", (e) => {
           console.log(`[DragNDrop] 🎯 Drag started: ${button.textContent.trim()}`);
-
-          // ADD THESE DEBUG LINES:
-          console.log("[DragNDrop] 🔍 Event target:", e.target);
-          console.log("[DragNDrop] 🔍 DataTransfer:", e.dataTransfer);
-          console.log("[DragNDrop] 🔍 Button computed style:", getComputedStyle(button));
 
           const dragData = {
             optionName: button.textContent.trim(),
@@ -103,17 +99,37 @@ define([], function () {
             timestamp: Date.now(),
           };
 
+          // CRITICAL: Set data FIRST
           e.dataTransfer.setData("text/plain", JSON.stringify(dragData));
           e.dataTransfer.effectAllowed = "copy";
+
+          // CRITICAL for Firefox: Set explicit drag image
+          const dragImg = document.createElement("div");
+          dragImg.textContent = button.textContent.trim();
+          dragImg.style.position = "absolute";
+          dragImg.style.top = "-1000px";
+          dragImg.style.left = "-1000px";
+          dragImg.style.padding = "8px 12px";
+          dragImg.style.backgroundColor = "#e1e1e1";
+          dragImg.style.border = "1px solid #ccc";
+          dragImg.style.borderRadius = "3px";
+          document.body.appendChild(dragImg);
+          e.dataTransfer.setDragImage(dragImg, 10, 10);
+          setTimeout(() => document.body.removeChild(dragImg), 0);
+
           button.style.opacity = "0.5";
+          button.style.cursor = "grabbing";
 
           console.log("[DragNDrop] 📦 Data:", dragData);
+          console.log("[DragNDrop] ✅ effectAllowed:", e.dataTransfer.effectAllowed);
+          console.log("[DragNDrop] ✅ types:", e.dataTransfer.types);
         });
 
         // Dragend
         button.addEventListener("dragend", () => {
           console.log(`[DragNDrop] 🏁 Drag ended`);
           button.style.opacity = "1";
+          button.style.cursor = "grab";
         });
       });
 
