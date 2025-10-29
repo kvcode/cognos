@@ -1,0 +1,12 @@
+const rightPane = document.querySelector('.right-pane-cards');
+console.log('Drop target:', rightPane);
+console.log('pointer-events:', getComputedStyle(rightPane).pointerEvents);
+console.log('position:', getComputedStyle(rightPane).position);
+console.log('z-index:', getComputedStyle(rightPane).zIndex);
+
+// Check all parents
+let parent = rightPane.parentElement;
+while (parent) {
+  console.log('Parent:', parent.className, 'pointer-events:', getComputedStyle(parent).pointerEvents);
+  parent = parent.parentElement;
+}
