@@ -1,19 +1,12 @@
-[DragNDrop] 🎯 Drag started: ZP8-Datum (Jahr) (FZ)
-DragNDrop.js?v=123456&v=1736447937:123 [DragNDrop] 📦 Data: {optionName: 'ZP8-Datum (Jahr) (FZ)', sourceIndex: 0, timestamp: 1761751436880}
-DragNDrop.js?v=123456&v=1736447937:124 [DragNDrop] ✅ effectAllowed: copy
-DragNDrop.js?v=123456&v=1736447937:125 [DragNDrop] ✅ types: ['text/plain']
-DragNDrop.js?v=123456&v=1736447937:94 [DragNDrop] 🎯 Drag started: Marke (2-stellig) (FZ)
-DragNDrop.js?v=123456&v=1736447937:123 [DragNDrop] 📦 Data: {optionName: 'Marke (2-stellig) (FZ)', sourceIndex: 1, timestamp: 1761751440887}
-DragNDrop.js?v=123456&v=1736447937:124 [DragNDrop] ✅ effectAllowed: copy
-DragNDrop.js?v=123456&v=1736447937:125 [DragNDrop] ✅ types: ['text/plain']
-DragNDrop.js?v=123456&v=1736447937:94 [DragNDrop] 🎯 Drag started: ISO-Land (Auslieferung) (3-stellig) (FZ)
-DragNDrop.js?v=123456&v=1736447937:123 [DragNDrop] 📦 Data: {optionName: 'ISO-Land (Auslieferung) (3-stellig) (FZ)', sourceIndex: 2, timestamp: 1761751443468}
-DragNDrop.js?v=123456&v=1736447937:124 [DragNDrop] ✅ effectAllowed: copy
-DragNDrop.js?v=123456&v=1736447937:125 [DragNDrop] ✅ types: ['text/plain']
-const btn = document.querySelector('.left-pane-button')
-console.log(btn);
-console.log('draggabe:', btn.draggable);
-console.log('parent styles:', getComputedStyle(btn.parentElement));
-VM2369:2 <button class=​"left-pane-button" draggable=​"true" style=​"cursor:​ grabbing;​ opacity:​ 0.5;​">​ZP8-Datum (Jahr) (FZ)​</button>​
-VM2369:3 draggabe: true
-VM2369:4 parent styles: CSSStyleDeclaration {0: 'accent-color', 1: 'align-content', 2: 'align-items', 3: 'align-self', 4: 'alignment-baseline', 5: 'anchor-name', 6: 'anchor-scope', 7: 'animation-composition', 8: 'animation-delay', 9: 'animation-direction', 10: 'animation-duration', 11: 'animation-fill-mode', 12: 'animation-iteration-count', 13: 'animation-name', 14: 'animation-play-state', 15: 'animation-range-end', 16: 'animation-range-start', 17: 'animation-timeline', 18: 'animation-timing-function', 19: 'app-region', 20: 'appearance', 21: 'backdrop-filter', 22: 'backface-visibility', 23: 'background-attachment', 24: 'background-blend-mode', 25: 'background-clip', 26: 'background-color', 27: 'background-image', 28: 'background-origin', 29: 'background-position', 30: 'background-repeat', 31: 'background-size', 32: 'baseline-shift', 33: 'baseline-source', 34: 'block-size', 35: 'border-block-end-color', 36: 'border-block-end-style', 37: 'border-block-end-width', 38: 'border-block-start-color', 39: 'border-block-start-style', 40: 'border-block-start-width', 41: 'border-bottom-color', 42: 'border-bottom-left-radius', 43: 'border-bottom-right-radius', 44: 'border-bottom-style', 45: 'border-bottom-width', 46: 'border-collapse', 47: 'border-end-end-radius', 48: 'border-end-start-radius', 49: 'border-image-outset', 50: 'border-image-repeat', 51: 'border-image-slice', 52: 'border-image-source', 53: 'border-image-width', 54: 'border-inline-end-color', 55: 'border-inline-end-style', 56: 'border-inline-end-width', 57: 'border-inline-start-color', 58: 'border-inline-start-style', 59: 'border-inline-start-width', 60: 'border-left-color', 61: 'border-left-style', 62: 'border-left-width', 63: 'border-right-color', 64: 'border-right-style', 65: 'border-right-width', 66: 'border-start-end-radius', 67: 'border-start-start-radius', 68: 'border-top-color', 69: 'border-top-left-radius', 70: 'border-top-right-radius', 71: 'border-top-style', 72: 'border-top-width', 73: 'bottom', 74: 'box-decoration-break', 75: 'box-shadow', 76: 'box-sizing', 77: 'break-after', 78: 'break-before', 79: 'break-inside', 80: 'buffered-rendering', 81: 'caption-side', 82: 'caret-animation', 83: 'caret-color', 84: 'clear', 85: 'clip', 86: 'clip-path', 87: 'clip-rule', 88: 'color', 89: 'color-interpolation', 90: 'color-interpolation-filters', 91: 'color-rendering', 92: 'column-count', 93: 'column-gap', 94: 'column-rule-color', 95: 'column-rule-style', 96: 'column-rule-width', 97: 'column-span', 98: 'column-width', 99: 'contain-intrinsic-block-size', …}
+console.log('RightPane main:', document.querySelector('.right-pane'));
+RightPane main: null debugger eval code:1:9
+undefined
+console.log('All panes:', document.querySelectorAll('[class*="pane"]'));
+All panes: 
+NodeList(20) [ div#glass-bypassBlockButton-mountpoint.appbar.toolpane, div#main.pane, div.appview.hidden.paneColumn, header#com.ibm.bi.glass.appbar.bx--header.appbar.toolpane.toolpaneTop, div#com.ibm.bi.glass.persistentBannerBar.toolpane.toolpaneTop, div.pane.paneContent, div#com.ibm.bi.glass.navbar.navbar.toolpane.toolpaneLeft.collapsed, div.pane.paneContent.contentViewPane, div.appview.hidden.paneColumn, header#com.ibm.bi.glass.appbar.bx--header.appbar.toolpane.toolpaneTop
+, … ]
+debugger eval code:1:9
+undefined
+console.log('Container:', document.querySelector('.custom-prompt-page-container'));
+Container: null debugger eval code:1:9
+undefined 
