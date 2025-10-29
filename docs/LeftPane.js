@@ -1,4 +1,4 @@
-define([], function() {
+define([], function () {
   "use strict";
 
   console.log("[LeftPane] === Module Loaded ===");
@@ -10,7 +10,7 @@ define([], function() {
     this.groupStates = {}; // Track collapsed/expanded states
   }
 
-  LeftPane.prototype.initialize = function(oControlHost, fnDoneInitializing) {
+  LeftPane.prototype.initialize = function (oControlHost, fnDoneInitializing) {
     console.log("[LeftPane] 🔧 initialize() called");
 
     try {
@@ -43,7 +43,7 @@ define([], function() {
     }
   };
 
-  LeftPane.prototype.draw = function(oControlHost) {
+  LeftPane.prototype.draw = function (oControlHost) {
     console.log("[LeftPane] 🖼 draw() called");
 
     try {
@@ -134,11 +134,13 @@ define([], function() {
                   button.prepend(spanIcon);
                 }
 
+                /*
                 // Click handler
-                button.addEventListener("click", () => {
+                button.addEventListener("drag", () => {
                   console.log(`[LeftPane] 🖱 Button clicked: ${btn.label}`);
                   // alert(`Clicked: ${btn.label}`);
                 });
+                */
 
                 buttonsContainer.appendChild(button);
               });
@@ -165,7 +167,7 @@ define([], function() {
     }
   };
 
-  LeftPane.prototype.destroy = function() {
+  LeftPane.prototype.destroy = function () {
     console.log("[LeftPane] 🧨 destroy() called");
 
     try {
