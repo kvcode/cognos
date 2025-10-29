@@ -1,128 +1,18 @@
-coreBundle.js?v=1467884875:182  [mobx] you are running a minified build, but 'process.env.NODE_ENV' was not set to 'production' in your bundler. This results in an unnecessarily large and slow bundle
-(anonymous) @ coreBundle.js?v=1467884875:182
-coreBundle.js?v=1467884875:40  WARNING: Missing translation for key: "deployment"
-s @ coreBundle.js?v=1467884875:40
-AutosuggestServiceCore.js:272 Error refreshing Autosuggest service context
-coreBundle.js?v=1467884875:40  WARNING: Missing translation for key: "userPaletteColor_carbonGrey10"
-s @ coreBundle.js?v=1467884875:40
-bundle.js?v=1467884875:7 rsperf: rsIFrameManager.F_LaunchRS ...
-rsstartupblock_12.js?v=1736447937:9 rsperf: processing scriptblock.js: 268.173095703125 ms
-halcchl_block.js?v=1736447937:1 RS Processing Time = 668ms
-bundle.js?v=1467884875:7 rsperf: onSelectItem->render: 706.951904296875 ms
-bundle.js?v=1467884875:7 _setDisplayForPlugins FOUND plugin: com.ibm.bi.glass.common.operations
-bundle.js?v=1467884875:7 rsperf: Launch RS->OnRSApplicationReadyForObservers: 701.60302734375 ms
-rsstartupblock_1.js?v=1736447937:7 launchParameters
-bundle.js?v=1467884875:7 rsperf: render->OnRSApplicationReadyForObservers: 17.27392578125 ms
-bundle.js?v=1467884875:7 rsContentView._handleFirstAppViewOnLoaded
-rsstartupblock_1.js?v=1736447937:7 rsperf: Time to get and process string request: 112.527099609375 ms
-rsstartupblock_1.js?v=1736447937:7 rsperf: Time to send and complete 1st level requests: 113.819091796875 ms
-rsstartupblock_1.js?v=1736447937:7 request to run report during startup
-rsstartupblock_3.js?v=1736447937:55 Shared conversation created:mainReport
-rsstartupblock_4.js?v=1736447937:5 rsperf: RunReportRequest: 97.968994140625 ms
-rsstartupblock_3.js?v=1736447937:55 Shared conversation release for reuse:mainReport
-rsstartupblock_1.js?v=1736447937:7 rsperf: Time to send and complete 2nd level requests: 807.8779296875 ms
-rsstartupblock_1.js?v=1736447937:7 rsperf: AppController startup requests: 921.9189453125 ms
-halcchl_block.js?v=1736447937:1 _shg: GetAvailableHeight returned null
-halcchl_block.js?v=1736447937:1 _shg: GetAvailableWidth returned null
-halcchl_block.js?v=1736447937:1 _shg: GetAvailableWidth returned null
-rsstartupblock_1.js?v=1736447937:7 rsperf: App InitUI: 58.080078125 ms
-rsstartupblock_1.js?v=1736447937:7 rsperf: AppController start -> do launch action: 990.89013671875 ms
-rsstartupblock_10.js?v=1736447937:23  Timer 'rsperf: viewer waiting for report to complete running' does not exist
-_szm._pp2 @ rsstartupblock_10.js?v=1736447937:23
-bundle.js?v=1467884875:7 _setDisplayForPlugins FOUND plugin: com.ibm.bi.glass.common.operations
-bundle.js?v=1467884875:7 _setDisplayForPlugins FOUND plugin: com.ibm.bi.glass.common.operations
-_7nn.js?v=1736447937:6 _7nn._833 Object
-preLoad.js?v=1736447937:5 [PreLoad] 🏗 Constructor called
-preLoad.js?v=1736447937:10 [PreLoad] 🔧 initialize() called
-preLoad.js?v=1736447937:59 [PreLoad] ✅ External CSS linked from: https://kvcode.github.io/cognos/LeftPane.css?v=123456
-preLoad.js?v=1736447937:22 [PreLoad] 🚀 Loading CustomPromptPage from: https://kvcode.github.io/cognos/CustomPromptPage.js?v=123456
-CustomPromptPage.js?v=123456&v=1736447937:4 [CustomPromptPage] === Module Loaded ===
-preLoad.js?v=1736447937:26 [PreLoad] ✅ CustomPromptPage loaded
-CustomPromptPage.js?v=123456&v=1736447937:8 [CustomPromptPage] 🏗 Constructor called
-CustomPromptPage.js?v=123456&v=1736447937:17 [CustomPromptPage] 🔧 initialize() called
-CustomPromptPage.js?v=123456&v=1736447937:23 [CustomPromptPage] 📦 DOM node created: <div class=​"custom-prompt-page-container">​…​</div>​flex
-CustomPromptPage.js?v=123456&v=1736447937:27 [CustomPromptPage] ⚙️ Raw configuration received: Object
-CustomPromptPage.js?v=123456&v=1736447937:31 [CustomPromptPage] 🧩 BaseScriptPaths detected: Object
-CustomPromptPage.js?v=123456&v=1736447937:32 [CustomPromptPage] 🧩 Fallback BaseScriptPath: /cognos4/samples/javascript/CustomPromptPage/
-CustomPromptPage.js?v=123456&v=1736447937:39 [CustomPromptPage] ✅ Computed module paths: Object
-CustomPromptPage.js?v=123456&v=1736447937:46 [CustomPromptPage] 🚀 Loading LeftPane from: https://kvcode.github.io/cognos/LeftPane.js?v=123456
-LeftPane.js?v=123456&v=1736447937:4 [LeftPane] === Module Loaded ===
-CustomPromptPage.js?v=123456&v=1736447937:48 [CustomPromptPage] ✅ LeftPane loaded from: https://kvcode.github.io/cognos/LeftPane.js?v=123456
-LeftPane.js?v=123456&v=1736447937:7 [LeftPane] 🏗 Constructor called
-CustomPromptPage.js?v=123456&v=1736447937:51 [CustomPromptPage] 🧱 LeftPane instance created
-LeftPane.js?v=123456&v=1736447937:14 [LeftPane] 🔧 initialize() called
-LeftPane.js?v=123456&v=1736447937:20 [LeftPane] 📦 DOM node created: <div class=​"left-pane-container">​…​</div>​
-LeftPane.js?v=123456&v=1736447937:24 [LeftPane] ⚙️ Full configuration object received: Object
-LeftPane.js?v=123456&v=1736447937:28 [LeftPane] ✅ buttonGroups loaded: Array(2)
-LeftPane.js?v=123456&v=1736447937:36 [LeftPane] 🧭 Initialized groupStates: Object
-CustomPromptPage.js?v=123456&v=1736447937:54 [CustomPromptPage] ✅ LeftPane initialized
-CustomPromptPage.js?v=123456&v=1736447937:57 [CustomPromptPage] 🚀 Loading RightPane from: https://kvcode.github.io/cognos/RightPane.js?v=123456
-LeftPane.js?v=123456&v=1736447937:39 [LeftPane] ✅ Initialization complete
-RightPane.js?v=123456&v=1736447937:4 [RightPane] === Module Loaded ===
-CustomPromptPage.js?v=123456&v=1736447937:59 [CustomPromptPage] ✅ RightPane loaded from: https://kvcode.github.io/cognos/RightPane.js?v=123456
-RightPane.js?v=123456&v=1736447937:7 [RightPane] 🏗 Constructor called
-CustomPromptPage.js?v=123456&v=1736447937:62 [CustomPromptPage] 🧱 RightPane instance created
-RightPane.js?v=123456&v=1736447937:15 [RightPane] 🔧 initialize() called
-RightPane.js?v=123456&v=1736447937:42 [RightPane] ⚙️ Configuration received: Object
-RightPane.js?v=123456&v=1736447937:46 [RightPane] 🧩 Autocomplete data loaded: Object
-RightPane.js?v=123456&v=1736447937:48 [RightPane] ✅ Initialization complete
-CustomPromptPage.js?v=123456&v=1736447937:65 [CustomPromptPage] ✅ RightPane initialized
-CustomPromptPage.js?v=123456&v=1736447937:68 [CustomPromptPage] 🚀 Loading DragDrop from: https://kvcode.github.io/cognos/DragNDrop.js?v=12345
-DragNDrop.js?v=12345&v=1736447937:4 [DragNDrop] === Module Loaded ===
-CustomPromptPage.js?v=123456&v=1736447937:70 [CustomPromptPage] ✅ DragDrop loaded from: https://kvcode.github.io/cognos/DragNDrop.js?v=12345
-DragNDrop.js?v=12345&v=1736447937:7 [DragNDrop] 🏗 Constructor called
-CustomPromptPage.js?v=123456&v=1736447937:73 [CustomPromptPage] 🧱 DragDrop instance created
-CustomPromptPage.js?v=123456&v=1736447937:78 [CustomPromptPage] 🔗 Panes assigned to DragDrop
-DragNDrop.js?v=12345&v=1736447937:17 [DragNDrop] 🌱 initialize() called
-DragNDrop.js?v=12345&v=1736447937:33 [DragNDrop] ✅ Both panes validated
-DragNDrop.js?v=12345&v=1736447937:52 [DragNDrop] 🎯 Setting up drag handlers - CALL #1761745552035
-DragNDrop.js?v=12345&v=1736447937:56 [DragNDrop] ⚠️ Already draggable buttons: 0
-DragNDrop.js?v=12345&v=1736447937:65 [DragNDrop] 🔍 Found 0 buttons
-DragNDrop.js?v=12345&v=1736447937:68  [DragNDrop] ⚠️ No buttons found
-DragNDrop.setupDragHandlers @ DragNDrop.js?v=12345&v=1736447937:68
-DragNDrop.js?v=12345&v=1736447937:108 [DragNDrop] 🎯 Setting up drop zone
-DragNDrop.js?v=12345&v=1736447937:112 [DragNDrop] 📍 Target: <div class=​"right-pane-cards" style=​"height:​ 30px;​ min-width:​ 120px;​ background-color:​ rgb(255, 253, 215)​;​ pointer-events:​ auto;​">​</div>​
-DragNDrop.js?v=12345&v=1736447937:166 [DragNDrop] ✅ Drop zone complete
-DragNDrop.js?v=12345&v=1736447937:39 [DragNDrop] ✅ Drag and Drop fully initialized
-CustomPromptPage.js?v=123456&v=1736447937:81 [CustomPromptPage] ✅ DragDrop initialized
-preLoad.js?v=1736447937:78 [PreLoad] 🖼 draw() called
-CustomPromptPage.js?v=123456&v=1736447937:106 [CustomPromptPage] 🖼 draw() called
-CustomPromptPage.js?v=123456&v=1736447937:115 [CustomPromptPage] 🧹 Cleared previous DOM content
-CustomPromptPage.js?v=123456&v=1736447937:124 [CustomPromptPage] 🧩 Drawing LeftPane...
-LeftPane.js?v=123456&v=1736447937:47 [LeftPane] 🖼 draw() called
-LeftPane.js?v=123456&v=1736447937:56 [LeftPane] 🧹 Cleared previous DOM content
-LeftPane.js?v=123456&v=1736447937:66 [LeftPane] 🔹 Rendering group: Fahrzeug (FZ)
-LeftPane.js?v=123456&v=1736447937:116 [LeftPane] 🔘 Rendering button [0] → ZP8-Datum (Jahr) (FZ)
-LeftPane.js?v=123456&v=1736447937:116 [LeftPane] 🔘 Rendering button [1] → Marke (2-stellig) (FZ)
-LeftPane.js?v=123456&v=1736447937:116 [LeftPane] 🔘 Rendering button [2] → ISO-Land (Auslieferung) (3-stellig) (FZ)
-LeftPane.js?v=123456&v=1736447937:66 [LeftPane] 🔹 Rendering group: Anträge Schäden (S)
-LeftPane.js?v=123456&v=1736447937:154 [LeftPane] ⏸ Group 'Anträge Schäden (S)' collapsed — skipping buttons
-LeftPane.js?v=123456&v=1736447937:164 [LeftPane] ✅ DOM node appended to Cognos container
-CustomPromptPage.js?v=123456&v=1736447937:130 [CustomPromptPage] 🧩 Drawing RightPane...
-RightPane.js?v=123456&v=1736447937:57 [RightPane] 🖼 draw() called
-RightPane.js?v=123456&v=1736447937:67 [RightPane] 🧹 Cleared previous cards
-RightPane.js?v=123456&v=1736447937:76 [RightPane] ✅ RightPane DOM appended to Cognos container
-CustomPromptPage.js?v=123456&v=1736447937:137 [CustomPromptPage] ✅ Layout rendered successfully
-CustomPromptPage.js?v=123456&v=1736447937:139 [CustomPromptPage] PromptPageReady Event dispatched from CustomPromptPage.js
-bundle.js?v=1467884875:7 rsperf: ViewBeforeDraw->ViewAfterDraw: 875.703857421875 ms
-bundle.js?v=1467884875:7 rsperf: total_RunReport: 2669.22509765625 ms
-rsstartupblock_12.js?v=1736447937:9 rsperf: processing scriptblock.js: 10.132080078125 ms
-halcchl_block.js?v=1736447937:1 RS Processing Time = 21ms
-rsstartupblock_1.js?v=1736447937:7 launchParameters
-rsstartupblock_1.js?v=1736447937:7 rsperf: Time to get and process string request: 45.4560546875 ms
-rsstartupblock_1.js?v=1736447937:7 rsperf: Time to send and complete 1st level requests: 46.1640625 ms
-rsstartupblock_1.js?v=1736447937:7 rsperf: Time to send and complete 2nd level requests: 85.14306640625 ms
-rsstartupblock_1.js?v=1736447937:7 rsperf: AppController startup requests: 131.39599609375 ms
-halcchl_block.js?v=1736447937:1 _shg: GetAvailableHeight returned null
-halcchl_block.js?v=1736447937:1 _shg: GetAvailableWidth returned null
-halcchl_block.js?v=1736447937:1 _shg: GetAvailableWidth returned null
-rsstartupblock_1.js?v=1736447937:7 rsperf: App InitUI: 42.52197265625 ms
-bundle.js?v=1467884875:7 rsperf: prelaunch RS: 224.4990234375 ms
-rsstartupblock_1.js?v=1736447937:7 rsperf: AppController start -> do launch action: 187.282958984375 ms
-halcchl_block.js?v=1736447937:1 showDialog:_0z9 _3zn [object Object]
-_7nn.js?v=1736447937:6 _7nn._833 Object
-[NEW] Explain Console errors by using Copilot in Edge: click
-         
-         to explain an error. 
-        Learn more
-        Don't show again
+[CustomPromptPage] ✅ Layout rendered successfully
+CustomPromptPage.js?v=12345&v=1736447937:141 [CustomPromptPage] 🔗 Setting up DragDrop handlers
+DragNDrop.js?v=123456&v=1736447937:52 [DragNDrop] 🖼 draw() called
+DragNDrop.js?v=123456&v=1736447937:65 [DragNDrop] 🎯 Setting up drag handlers
+DragNDrop.js?v=123456&v=1736447937:80 [DragNDrop] 🔍 Found 3 buttons
+DragNDrop.js?v=123456&v=1736447937:121 [DragNDrop] ✅ Drag handlers complete
+DragNDrop.js?v=123456&v=1736447937:57 [DragNDrop] ✅ draw() complete
+halcchl_block.js?v=1736447937:1 showDialog:_p5d _3zn null
+DragNDrop.js?v=123456&v=1736447937:93 [DragNDrop] 🎯 Drag started: ZP8-Datum (Jahr) (FZ)
+DragNDrop.js?v=123456&v=1736447937:96 [DragNDrop] 🔍 Event target: <button class=​"left-pane-button" draggable=​"true" style=​"display:​ flex;​ align-items:​ center;​ gap:​ 6px;​ opacity:​ 0.5;​">​…​</button>​flex
+DragNDrop.js?v=123456&v=1736447937:97 [DragNDrop] 🔍 DataTransfer: DataTransfer {dropEffect: 'none', effectAllowed: 'uninitialized', items: DataTransferItemList, types: Array(0), files: FileList}
+DragNDrop.js?v=123456&v=1736447937:98 [DragNDrop] 🔍 Button computed style: CSSStyleDeclaration {0: 'accent-color', 1: 'align-content', 2: 'align-items', 3: 'align-self', 4: 'alignment-baseline', 5: 'anchor-name', 6: 'anchor-scope', 7: 'animation-composition', 8: 'animation-delay', 9: 'animation-direction', 10: 'animation-duration', 11: 'animation-fill-mode', 12: 'animation-iteration-count', 13: 'animation-name', 14: 'animation-play-state', 15: 'animation-range-end', 16: 'animation-range-start', 17: 'animation-timeline', 18: 'animation-timing-function', 19: 'app-region', 20: 'appearance', 21: 'backdrop-filter', 22: 'backface-visibility', 23: 'background-attachment', 24: 'background-blend-mode', 25: 'background-clip', 26: 'background-color', 27: 'background-image', 28: 'background-origin', 29: 'background-position', 30: 'background-repeat', 31: 'background-size', 32: 'baseline-shift', 33: 'baseline-source', 34: 'block-size', 35: 'border-block-end-color', 36: 'border-block-end-style', 37: 'border-block-end-width', 38: 'border-block-start-color', 39: 'border-block-start-style', 40: 'border-block-start-width', 41: 'border-bottom-color', 42: 'border-bottom-left-radius', 43: 'border-bottom-right-radius', 44: 'border-bottom-style', 45: 'border-bottom-width', 46: 'border-collapse', 47: 'border-end-end-radius', 48: 'border-end-start-radius', 49: 'border-image-outset', 50: 'border-image-repeat', 51: 'border-image-slice', 52: 'border-image-source', 53: 'border-image-width', 54: 'border-inline-end-color', 55: 'border-inline-end-style', 56: 'border-inline-end-width', 57: 'border-inline-start-color', 58: 'border-inline-start-style', 59: 'border-inline-start-width', 60: 'border-left-color', 61: 'border-left-style', 62: 'border-left-width', 63: 'border-right-color', 64: 'border-right-style', 65: 'border-right-width', 66: 'border-start-end-radius', 67: 'border-start-start-radius', 68: 'border-top-color', 69: 'border-top-left-radius', 70: 'border-top-right-radius', 71: 'border-top-style', 72: 'border-top-width', 73: 'bottom', 74: 'box-decoration-break', 75: 'box-shadow', 76: 'box-sizing', 77: 'break-after', 78: 'break-before', 79: 'break-inside', 80: 'buffered-rendering', 81: 'caption-side', 82: 'caret-animation', 83: 'caret-color', 84: 'clear', 85: 'clip', 86: 'clip-path', 87: 'clip-rule', 88: 'color', 89: 'color-interpolation', 90: 'color-interpolation-filters', 91: 'color-rendering', 92: 'column-count', 93: 'column-gap', 94: 'column-rule-color', 95: 'column-rule-style', 96: 'column-rule-width', 97: 'column-span', 98: 'column-width', 99: 'contain-intrinsic-block-size', …}
+DragNDrop.js?v=123456&v=1736447937:110 [DragNDrop] 📦 Data: {optionName: 'ZP8-Datum (Jahr) (FZ)', sourceIndex: 0, timestamp: 1761747375345}
+DragNDrop.js?v=123456&v=1736447937:93 [DragNDrop] 🎯 Drag started: Marke (2-stellig) (FZ)
+DragNDrop.js?v=123456&v=1736447937:96 [DragNDrop] 🔍 Event target: <button class=​"left-pane-button" draggable=​"true" style=​"display:​ flex;​ align-items:​ center;​ gap:​ 6px;​">​…​</button>​flex
+DragNDrop.js?v=123456&v=1736447937:97 [DragNDrop] 🔍 DataTransfer: DataTransfer {dropEffect: 'none', effectAllowed: 'uninitialized', items: DataTransferItemList, types: Array(0), files: FileList}
+DragNDrop.js?v=123456&v=1736447937:98 [DragNDrop] 🔍 Button computed style: CSSStyleDeclaration {0: 'accent-color', 1: 'align-content', 2: 'align-items', 3: 'align-self', 4: 'alignment-baseline', 5: 'anchor-name', 6: 'anchor-scope', 7: 'animation-composition', 8: 'animation-delay', 9: 'animation-direction', 10: 'animation-duration', 11: 'animation-fill-mode', 12: 'animation-iteration-count', 13: 'animation-name', 14: 'animation-play-state', 15: 'animation-range-end', 16: 'animation-range-start', 17: 'animation-timeline', 18: 'animation-timing-function', 19: 'app-region', 20: 'appearance', 21: 'backdrop-filter', 22: 'backface-visibility', 23: 'background-attachment', 24: 'background-blend-mode', 25: 'background-clip', 26: 'background-color', 27: 'background-image', 28: 'background-origin', 29: 'background-position', 30: 'background-repeat', 31: 'background-size', 32: 'baseline-shift', 33: 'baseline-source', 34: 'block-size', 35: 'border-block-end-color', 36: 'border-block-end-style', 37: 'border-block-end-width', 38: 'border-block-start-color', 39: 'border-block-start-style', 40: 'border-block-start-width', 41: 'border-bottom-color', 42: 'border-bottom-left-radius', 43: 'border-bottom-right-radius', 44: 'border-bottom-style', 45: 'border-bottom-width', 46: 'border-collapse', 47: 'border-end-end-radius', 48: 'border-end-start-radius', 49: 'border-image-outset', 50: 'border-image-repeat', 51: 'border-image-slice', 52: 'border-image-source', 53: 'border-image-width', 54: 'border-inline-end-color', 55: 'border-inline-end-style', 56: 'border-inline-end-width', 57: 'border-inline-start-color', 58: 'border-inline-start-style', 59: 'border-inline-start-width', 60: 'border-left-color', 61: 'border-left-style', 62: 'border-left-width', 63: 'border-right-color', 64: 'border-right-style', 65: 'border-right-width', 66: 'border-start-end-radius', 67: 'border-start-start-radius', 68: 'border-top-color', 69: 'border-top-left-radius', 70: 'border-top-right-radius', 71: 'border-top-style', 72: 'border-top-width', 73: 'bottom', 74: 'box-decoration-break', 75: 'box-shadow', 76: 'box-sizing', 77: 'break-after', 78: 'break-before', 79: 'break-inside', 80: 'buffered-rendering', 81: 'caption-side', 82: 'caret-animation', 83: 'caret-color', 84: 'clear', 85: 'clip', 86: 'clip-path', 87: 'clip-rule', 88: 'color', 89: 'color-interpolation', 90: 'color-interpolation-filters', 91: 'color-rendering', 92: 'column-count', 93: 'column-gap', 94: 'column-rule-color', 95: 'column-rule-style', 96: 'column-rule-width', 97: 'column-span', 98: 'column-width', 99: 'contain-intrinsic-block-size', …}
+DragNDrop.js?v=123456&v=1736447937:110 [DragNDrop] 📦 Data: {optionName: 'Marke (2-stellig) (FZ)', sourceIndex: 1, timestamp: 1761747382723}
