@@ -49,7 +49,11 @@ define([], function () {
 
   // === Setup Drag Handlers ===
   DragNDrop.prototype.setupDragHandlers = function () {
-    console.log("[DragNDrop] 🎯 Setting up drag handlers");
+    console.log("[DragNDrop] 🎯 Setting up drag handlers - CALL #" + Date.now());
+
+    // Check if buttons already have listeners
+    const existingButtons = this.leftPane.domNode.querySelectorAll(".left-pane-button[draggable='true']");
+    console.log("[DragNDrop] ⚠️ Already draggable buttons:", existingButtons.length);
 
     try {
       if (!this.leftPane || !this.leftPane.domNode) {
