@@ -1,4 +1,4 @@
-define([], function() {
+define([], function () {
   "use strict";
 
   console.log("[RightPane] === Module Loaded ===");
@@ -11,7 +11,7 @@ define([], function() {
     this.cards = []; // store added cards
   }
 
-  RightPane.prototype.initialize = function(oControlHost, fnDoneInitializing) {
+  RightPane.prototype.initialize = function (oControlHost, fnDoneInitializing) {
     console.log("[RightPane] 🔧 initialize() called");
 
     try {
@@ -20,14 +20,21 @@ define([], function() {
       this.domNode.className = "right-pane";
 
       // Add background color for better visualization
-      this.domNode.style.backgroundColor = "#d3d3d3";  // light gray background
+      this.domNode.style.backgroundColor = "#d3d3d3"; // light gray background
       this.domNode.style.padding = "10px";
+      this.domNode.style.minHeight = "100px";
       this.domNode.style.height = "100%"; // Adjust height if necessary
       this.domNode.style.position = "relative"; // Ensure positioning for drop area
+      this.domNode.style.pointerEvents = "auto";
 
       // Container for cards
       this.cardsContainer = document.createElement("div");
       this.cardsContainer.className = "right-pane-cards";
+      this.cardsContainer.style.height = "30px";
+      this.cardsContainer.style.minWidth = "120px";
+      this.cardsContainer.style.backgroundColor = "#fffdd7ff";
+      this.cardsContainer.style.pointerEvents = "auto";
+
       this.domNode.appendChild(this.cardsContainer);
 
       // Read configuration
@@ -46,7 +53,7 @@ define([], function() {
     }
   };
 
-  RightPane.prototype.draw = function(oControlHost) {
+  RightPane.prototype.draw = function (oControlHost) {
     console.log("[RightPane] 🖼 draw() called");
 
     try {
@@ -60,7 +67,7 @@ define([], function() {
       console.log("[RightPane] 🧹 Cleared previous cards");
 
       // Re-add existing cards (if any)
-      this.cards.forEach(cardData => {
+      this.cards.forEach((cardData) => {
         this._renderCard(cardData);
       });
 
@@ -72,7 +79,7 @@ define([], function() {
     }
   };
 
-  RightPane.prototype.addCard = function(cardData) {
+  RightPane.prototype.addCard = function (cardData) {
     console.log("[RightPane] ➕ addCard() called with data:", cardData);
 
     try {
@@ -90,7 +97,7 @@ define([], function() {
     }
   };
 
-  RightPane.prototype._renderCard = function(cardData) {
+  RightPane.prototype._renderCard = function (cardData) {
     console.log("[RightPane] 🛠 _renderCard() called for:", cardData);
 
     try {
@@ -117,7 +124,7 @@ define([], function() {
 
         input.addEventListener("input", () => {
           const val = input.value.toLowerCase();
-          const match = suggestions.find(s => s.toLowerCase().startsWith(val));
+          const match = suggestions.find((s) => s.toLowerCase().startsWith(val));
           if (match) {
             input.value = match;
           }
@@ -157,7 +164,7 @@ define([], function() {
     }
   };
 
-  RightPane.prototype.destroy = function() {
+  RightPane.prototype.destroy = function () {
     console.log("[RightPane] 🧨 destroy() called");
 
     try {
