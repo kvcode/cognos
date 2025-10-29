@@ -44,11 +44,12 @@ define([], function () {
   };
 
   /**
-   * Inject CSS dynamically. Works with both local (relative) and external URLs.
+   * Inject CSS dynamically.
+   * Works with both local RequireJS paths and external URLs.
    */
   PreLoad.prototype.injectCSS = function (cssUrl) {
     try {
-      // If CSS is a remote URL (starts with http/https), inject <link>
+      // External CSS (absolute URL)
       if (/^https?:\/\//i.test(cssUrl)) {
         const link = document.createElement("link");
         link.rel = "stylesheet";
@@ -59,14 +60,14 @@ define([], function () {
         return;
       }
 
-      // Otherwise, try RequireJS text plugin for local CSS files
+      // Local CSS (RequireJS text plugin)
       require(["text!" + cssUrl], function (cssContent) {
         const style = document.createElement("style");
         style.textContent = cssContent;
         document.head.appendChild(style);
         console.log("[PreLoad] ✅ Local CSS injected from:", cssUrl);
       }, function (err) {
-        console.error("[PreLoad] ❌ Failed to load local CSS via require:", err);
+        console.error("[PreLoad] ❌ Failed to load local CSS via RequireJS:", err);
       });
     } catch (e) {
       console.error("[PreLoad] ❌ Failed to inject CSS:", e);
