@@ -1,24 +1,1245 @@
-[DragNDrop] 📍 Drop zone rect: DOMRectbottom: 0height: 0left: 0right: 0top: 0width: 0x: 0y: 0[[Prototype]]: DOMRect
-
-[DragNDrop] 📍 Drop zone styles: Objectdisplay: ""pointerEvents: ""position: ""zIndex: ""[[Prototype]]: Object
-
-
-
-
-[CustomPromptPage] 🚀 Loading DragDrop from: https://kvcode.github.io/cognos/DragNDrop.js?v=123456
+coreBundle.js?v=1467884875:182  [mobx] you are running a minified build, but 'process.env.NODE_ENV' was not set to 'production' in your bundler. This results in an unnecessarily large and slow bundle
+(anonymous) @ coreBundle.js?v=1467884875:182
+(anonymous) @ coreBundle.js?v=1467884875:182
+execCb @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+h @ require.js:5
+v @ require.js:5
+o @ require.js:5
+load @ coreBundle.js?v=1467884875:107
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+u @ require.js:5
+callPlugin @ require.js:5
+fetch @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+h @ require.js:5
+completeLoad @ require.js:5
+onScriptLoad @ require.js:5
+script
+req.createNode @ require.js:5
+req.load @ require.js:5
+load @ require.js:5
+load @ require.js:5
+fetch @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+enable @ require.js:5
+callPlugin @ require.js:5
+fetch @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+enable @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+(anonymous) @ require.js:5
+setTimeout
+req.nextTick @ require.js:5
+o @ require.js:5
+requirejs @ require.js:5
+(anonymous) @ Entry.min.js?v=1467884875:1
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+coreBundle.js?v=1467884875:40  WARNING: Missing translation for key: "deployment"
+s @ coreBundle.js?v=1467884875:40
+t.t @ coreBundle.js?v=1467884875:40
+value @ StringResources.ts:32
+6822 @ typeMetadata.js:85
+h @ ba-manage-client.min.js?v=1467884875:2
+8703 @ DataTableSelectAllCheckbox.js:37
+h @ ba-manage-client.min.js?v=1467884875:2
+(anonymous) @ CapabilitiesFilterFlyout.js:153
+(anonymous) @ PrinterPropertiesTab.js:106
+(anonymous) @ PrinterPropertiesTab.js:106
+execCb @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+h @ require.js:5
+completeLoad @ require.js:5
+onScriptLoad @ require.js:5
+script
+req.createNode @ require.js:5
+req.load @ require.js:5
+load @ require.js:5
+load @ require.js:5
+fetch @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+enable @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+h @ require.js:5
+completeLoad @ require.js:5
+onScriptLoad @ require.js:5
+script
+req.createNode @ require.js:5
+req.load @ require.js:5
+load @ require.js:5
+load @ require.js:5
+fetch @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+enable @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+h @ require.js:5
+completeLoad @ require.js:5
+onScriptLoad @ require.js:5
+script
+req.createNode @ require.js:5
+req.load @ require.js:5
+load @ require.js:5
+load @ require.js:5
+fetch @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+enable @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+(anonymous) @ require.js:5
+setTimeout
+req.nextTick @ require.js:5
+o @ require.js:5
+(anonymous) @ bundle.js?v=1467884875:1
+t._execute @ coreBundle.js?v=1467884875:100
+i._resolveFromExecutor @ coreBundle.js?v=1467884875:101
+i @ coreBundle.js?v=1467884875:101
+t.loadModule @ bundle.js?v=1467884875:1
+t.instantiate @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+t._execute @ coreBundle.js?v=1467884875:100
+i._resolveFromExecutor @ coreBundle.js?v=1467884875:101
+i @ coreBundle.js?v=1467884875:101
+i @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+t._execute @ coreBundle.js?v=1467884875:100
+i._resolveFromExecutor @ coreBundle.js?v=1467884875:101
+i @ coreBundle.js?v=1467884875:101
+i @ bundle.js?v=1467884875:1
+t.default @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+t._execute @ coreBundle.js?v=1467884875:100
+i._resolveFromExecutor @ coreBundle.js?v=1467884875:101
+i @ coreBundle.js?v=1467884875:101
+i @ bundle.js?v=1467884875:1
+t.getMenuItemsToDisplay @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+t._execute @ coreBundle.js?v=1467884875:100
+i._resolveFromExecutor @ coreBundle.js?v=1467884875:101
+i @ coreBundle.js?v=1467884875:101
+i @ bundle.js?v=1467884875:1
+updateMenuItemsList @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+t._execute @ coreBundle.js?v=1467884875:100
+i._resolveFromExecutor @ coreBundle.js?v=1467884875:101
+i @ coreBundle.js?v=1467884875:101
+i @ bundle.js?v=1467884875:1
+render @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+t._execute @ coreBundle.js?v=1467884875:100
+i._resolveFromExecutor @ coreBundle.js?v=1467884875:101
+i @ coreBundle.js?v=1467884875:101
+i @ bundle.js?v=1467884875:1
+callRender @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+t._execute @ coreBundle.js?v=1467884875:100
+i._resolveFromExecutor @ coreBundle.js?v=1467884875:101
+i @ coreBundle.js?v=1467884875:101
+i @ bundle.js?v=1467884875:1
+doRender @ bundle.js?v=1467884875:1
+updateElement @ bundle.js?v=1467884875:1
+componentDidUpdate @ bundle.js?v=1467884875:1
+gr @ coreBundle.js?v=1467884875:140
+Xr @ coreBundle.js?v=1467884875:141
+unstable_runWithPriority @ coreBundle.js?v=1467884875:129
+Rt @ coreBundle.js?v=1467884875:139
+Gr @ coreBundle.js?v=1467884875:141
+Ir @ coreBundle.js?v=1467884875:141
+(anonymous) @ coreBundle.js?v=1467884875:139
+unstable_runWithPriority @ coreBundle.js?v=1467884875:129
+Rt @ coreBundle.js?v=1467884875:139
+Vt @ coreBundle.js?v=1467884875:139
+Lt @ coreBundle.js?v=1467884875:139
+wl @ coreBundle.js?v=1467884875:142
+enqueueSetState @ coreBundle.js?v=1467884875:142
+n.setState @ coreBundle.js?v=1467884875:129
+(anonymous) @ bundle.js?v=1467884875:1
+r @ coreBundle.js?v=1467884875:102
+i._settlePromiseFromHandler @ coreBundle.js?v=1467884875:101
+i._settlePromise @ coreBundle.js?v=1467884875:101
+i._settlePromise0 @ coreBundle.js?v=1467884875:101
+i._settlePromises @ coreBundle.js?v=1467884875:101
+r._drainQueue @ coreBundle.js?v=1467884875:100
+r._drainQueues @ coreBundle.js?v=1467884875:100
+drainQueues @ coreBundle.js?v=1467884875:100
+Promise.then
+r @ coreBundle.js?v=1467884875:101
+r._queueTick @ coreBundle.js?v=1467884875:100
+a @ coreBundle.js?v=1467884875:100
+f.hasDevTools.r.settlePromises @ coreBundle.js?v=1467884875:100
+i._fulfill @ coreBundle.js?v=1467884875:101
+i._resolveCallback @ coreBundle.js?v=1467884875:101
+(anonymous) @ coreBundle.js?v=1467884875:101
+(anonymous) @ bundle.js?v=1467884875:1
+execCb @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+(anonymous) @ require.js:5
+setTimeout
+req.nextTick @ require.js:5
+o @ require.js:5
+(anonymous) @ bundle.js?v=1467884875:1
+t._execute @ coreBundle.js?v=1467884875:100
+i._resolveFromExecutor @ coreBundle.js?v=1467884875:101
+i @ coreBundle.js?v=1467884875:101
+t.loadModule @ bundle.js?v=1467884875:1
+t.instantiate @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+t._execute @ coreBundle.js?v=1467884875:100
+i._resolveFromExecutor @ coreBundle.js?v=1467884875:101
+i @ coreBundle.js?v=1467884875:101
+i @ bundle.js?v=1467884875:1
+c @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+t._execute @ coreBundle.js?v=1467884875:100
+i._resolveFromExecutor @ coreBundle.js?v=1467884875:101
+i @ coreBundle.js?v=1467884875:101
+i @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+t._execute @ coreBundle.js?v=1467884875:100
+i._resolveFromExecutor @ coreBundle.js?v=1467884875:101
+i @ coreBundle.js?v=1467884875:101
+i @ bundle.js?v=1467884875:1
+d @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+t._execute @ coreBundle.js?v=1467884875:100
+i._resolveFromExecutor @ coreBundle.js?v=1467884875:101
+i @ coreBundle.js?v=1467884875:101
+i @ bundle.js?v=1467884875:1
+t.default @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+t._execute @ coreBundle.js?v=1467884875:100
+i._resolveFromExecutor @ coreBundle.js?v=1467884875:101
+i @ coreBundle.js?v=1467884875:101
+i @ bundle.js?v=1467884875:1
+t.loadPerspectiveServices @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+o @ bundle.js?v=1467884875:1
+r @ coreBundle.js?v=1467884875:102
+i._settlePromiseFromHandler @ coreBundle.js?v=1467884875:101
+i._settlePromise @ coreBundle.js?v=1467884875:101
+i._settlePromise0 @ coreBundle.js?v=1467884875:101
+i._settlePromises @ coreBundle.js?v=1467884875:101
+r._drainQueue @ coreBundle.js?v=1467884875:100
+r._drainQueues @ coreBundle.js?v=1467884875:100
+drainQueues @ coreBundle.js?v=1467884875:100
+Promise.then
+r @ coreBundle.js?v=1467884875:101
+r._queueTick @ coreBundle.js?v=1467884875:100
+o @ coreBundle.js?v=1467884875:100
+f.hasDevTools.r.invoke @ coreBundle.js?v=1467884875:100
+i._then @ coreBundle.js?v=1467884875:101
+i.then @ coreBundle.js?v=1467884875:101
+initialize @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+(anonymous) @ Entry.min.js?v=1467884875:1
+execCb @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+e @ coreBundle.js?v=1467884875:116
+t @ coreBundle.js?v=1467884875:116
+n @ coreBundle.js?v=1467884875:116
+AutosuggestServiceCore.js:272 Error refreshing Autosuggest service context
+coreBundle.js?v=1467884875:40  WARNING: Missing translation for key: "userPaletteColor_carbonGrey10"
+s @ coreBundle.js?v=1467884875:40
+t.t @ coreBundle.js?v=1467884875:40
+e.get @ baseBundle.js?v=1467884875:10
+i._getUserPaletteColor @ consumeDashboardBundle.js?v=1467884875:15
+i.getPalette @ consumeDashboardBundle.js?v=1467884875:15
+t.<computed> @ api-utils.js?v=1467884875:2
+d.getPaletteColors @ upgradeBundle.js?v=1467884875:10
+(anonymous) @ upgradeBundle.js?v=1467884875:10
+r @ coreBundle.js?v=1467884875:102
+i._settlePromiseFromHandler @ coreBundle.js?v=1467884875:101
+i._settlePromise @ coreBundle.js?v=1467884875:101
+i._settlePromise0 @ coreBundle.js?v=1467884875:101
+i._settlePromises @ coreBundle.js?v=1467884875:101
+r._drainQueue @ coreBundle.js?v=1467884875:100
+r._drainQueues @ coreBundle.js?v=1467884875:100
+drainQueues @ coreBundle.js?v=1467884875:100
+Promise.then
+r @ coreBundle.js?v=1467884875:101
+r._queueTick @ coreBundle.js?v=1467884875:100
+a @ coreBundle.js?v=1467884875:100
+f.hasDevTools.r.settlePromises @ coreBundle.js?v=1467884875:100
+i._fulfill @ coreBundle.js?v=1467884875:101
+i._resolveCallback @ coreBundle.js?v=1467884875:101
+(anonymous) @ coreBundle.js?v=1467884875:101
+(anonymous) @ bundle.js?v=1467884875:1
+execCb @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+(anonymous) @ require.js:5
+setTimeout
+req.nextTick @ require.js:5
+o @ require.js:5
+(anonymous) @ bundle.js?v=1467884875:1
+t._execute @ coreBundle.js?v=1467884875:100
+i._resolveFromExecutor @ coreBundle.js?v=1467884875:101
+i @ coreBundle.js?v=1467884875:101
+t.loadModule @ bundle.js?v=1467884875:1
+A.loadThemeDefinition @ consumeDashboardBundle.js?v=1467884875:15
+A.getThemeDefinition @ consumeDashboardBundle.js?v=1467884875:15
+t.<computed> @ api-utils.js?v=1467884875:2
+d._loadThemeDefinition @ upgradeBundle.js?v=1467884875:10
+d.initializeColorsFeature @ upgradeBundle.js?v=1467884875:10
+d.initialize @ upgradeBundle.js?v=1467884875:10
+a._initializeFeature @ baseBundle.js?v=1467884875:10
+(anonymous) @ baseBundle.js?v=1467884875:10
+r @ coreBundle.js?v=1467884875:102
+i._settlePromiseFromHandler @ coreBundle.js?v=1467884875:101
+i._settlePromise @ coreBundle.js?v=1467884875:101
+i._settlePromiseCtx @ coreBundle.js?v=1467884875:101
+r._drainQueue @ coreBundle.js?v=1467884875:100
+r._drainQueues @ coreBundle.js?v=1467884875:100
+drainQueues @ coreBundle.js?v=1467884875:100
+Promise.then
+r @ coreBundle.js?v=1467884875:101
+r._queueTick @ coreBundle.js?v=1467884875:100
+a @ coreBundle.js?v=1467884875:100
+f.hasDevTools.r.settlePromises @ coreBundle.js?v=1467884875:100
+i._fulfill @ coreBundle.js?v=1467884875:101
+i._resolveCallback @ coreBundle.js?v=1467884875:101
+(anonymous) @ coreBundle.js?v=1467884875:101
+(anonymous) @ baseBundle.js?v=1467884875:10
+execCb @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+h @ require.js:5
+completeLoad @ require.js:5
+onScriptLoad @ require.js:5
+script
+req.createNode @ require.js:5
+req.load @ require.js:5
+load @ require.js:5
+load @ require.js:5
+fetch @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+enable @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+h @ require.js:5
+completeLoad @ require.js:5
+onScriptLoad @ require.js:5
+script
+req.createNode @ require.js:5
+req.load @ require.js:5
+load @ require.js:5
+load @ require.js:5
+fetch @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+enable @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+h @ require.js:5
+completeLoad @ require.js:5
+onScriptLoad @ require.js:5
+script
+req.createNode @ require.js:5
+req.load @ require.js:5
+load @ require.js:5
+load @ require.js:5
+fetch @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+enable @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+h @ require.js:5
+completeLoad @ require.js:5
+onScriptLoad @ require.js:5
+script
+req.createNode @ require.js:5
+req.load @ require.js:5
+load @ require.js:5
+load @ require.js:5
+fetch @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+enable @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+enable @ require.js:5
+enable @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+enable @ require.js:5
+enable @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+enable @ require.js:5
+enable @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+enable @ require.js:5
+enable @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+enable @ require.js:5
+enable @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+enable @ require.js:5
+enable @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+enable @ require.js:5
+enable @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+enable @ require.js:5
+enable @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+enable @ require.js:5
+enable @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+enable @ require.js:5
+enable @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+(anonymous) @ require.js:5
+setTimeout
+req.nextTick @ require.js:5
+o @ require.js:5
+requirejs @ require.js:5
+(anonymous) @ baseBundle.js?v=1467884875:10
+t._execute @ coreBundle.js?v=1467884875:100
+i._resolveFromExecutor @ coreBundle.js?v=1467884875:101
+i @ coreBundle.js?v=1467884875:101
+a._loadFeatureClasses @ baseBundle.js?v=1467884875:10
+a.loadFeaturesFromArray @ baseBundle.js?v=1467884875:10
+(anonymous) @ baseBundle.js?v=1467884875:10
+r @ coreBundle.js?v=1467884875:102
+i._settlePromiseFromHandler @ coreBundle.js?v=1467884875:101
+i._settlePromise @ coreBundle.js?v=1467884875:101
+i._settlePromise0 @ coreBundle.js?v=1467884875:101
+i._settlePromises @ coreBundle.js?v=1467884875:101
+r._drainQueue @ coreBundle.js?v=1467884875:100
+r._drainQueues @ coreBundle.js?v=1467884875:100
+drainQueues @ coreBundle.js?v=1467884875:100
+Promise.then
+r @ coreBundle.js?v=1467884875:101
+r._queueTick @ coreBundle.js?v=1467884875:100
+a @ coreBundle.js?v=1467884875:100
+f.hasDevTools.r.settlePromises @ coreBundle.js?v=1467884875:100
+i._fulfill @ coreBundle.js?v=1467884875:101
+i._resolveCallback @ coreBundle.js?v=1467884875:101
+(anonymous) @ coreBundle.js?v=1467884875:101
+(anonymous) @ baseBundle.js?v=1467884875:10
+execCb @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+(anonymous) @ require.js:5
+setTimeout
+req.nextTick @ require.js:5
+o @ require.js:5
+requirejs @ require.js:5
+(anonymous) @ baseBundle.js?v=1467884875:10
+t._execute @ coreBundle.js?v=1467884875:100
+i._resolveFromExecutor @ coreBundle.js?v=1467884875:101
+i @ coreBundle.js?v=1467884875:101
+a._loadFeatureClasses @ baseBundle.js?v=1467884875:10
+a.loadFeaturesFromArray @ baseBundle.js?v=1467884875:10
+m.createRuntimeServices @ baseBundle.js?v=1467884875:10
+(anonymous) @ baseBundle.js?v=1467884875:10
+r @ coreBundle.js?v=1467884875:102
+i._settlePromiseFromHandler @ coreBundle.js?v=1467884875:101
+i._settlePromise @ coreBundle.js?v=1467884875:101
+i._settlePromise0 @ coreBundle.js?v=1467884875:101
+i._settlePromises @ coreBundle.js?v=1467884875:101
+r._drainQueue @ coreBundle.js?v=1467884875:100
+r._drainQueues @ coreBundle.js?v=1467884875:100
+drainQueues @ coreBundle.js?v=1467884875:100
+Promise.then
+r @ coreBundle.js?v=1467884875:101
+r._queueTick @ coreBundle.js?v=1467884875:100
+a @ coreBundle.js?v=1467884875:100
+f.hasDevTools.r.settlePromises @ coreBundle.js?v=1467884875:100
+i._fulfill @ coreBundle.js?v=1467884875:101
+i._resolveCallback @ coreBundle.js?v=1467884875:101
+(anonymous) @ coreBundle.js?v=1467884875:101
+(anonymous) @ bundle.js?v=1467884875:1
+execCb @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+(anonymous) @ require.js:5
+setTimeout
+req.nextTick @ require.js:5
+o @ require.js:5
+(anonymous) @ bundle.js?v=1467884875:1
+t._execute @ coreBundle.js?v=1467884875:100
+i._resolveFromExecutor @ coreBundle.js?v=1467884875:101
+i @ coreBundle.js?v=1467884875:101
+t.loadModule @ bundle.js?v=1467884875:1
+(anonymous) @ baseBundle.js?v=1467884875:10
+r @ coreBundle.js?v=1467884875:102
+i._settlePromiseFromHandler @ coreBundle.js?v=1467884875:101
+i._settlePromise @ coreBundle.js?v=1467884875:101
+i._settlePromiseCtx @ coreBundle.js?v=1467884875:101
+r._drainQueue @ coreBundle.js?v=1467884875:100
+r._drainQueues @ coreBundle.js?v=1467884875:100
+drainQueues @ coreBundle.js?v=1467884875:100
+Promise.then
+r @ coreBundle.js?v=1467884875:101
+r._queueTick @ coreBundle.js?v=1467884875:100
+o @ coreBundle.js?v=1467884875:100
+f.hasDevTools.r.invoke @ coreBundle.js?v=1467884875:100
+i._then @ coreBundle.js?v=1467884875:101
+i.then @ coreBundle.js?v=1467884875:101
+(anonymous) @ bundle.js?v=1467884875:1
+execCb @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+(anonymous) @ require.js:5
+setTimeout
+req.nextTick @ require.js:5
+o @ require.js:5
+requirejs @ require.js:5
+(anonymous) @ bundle.js?v=1467884875:1
+t._execute @ coreBundle.js?v=1467884875:100
+i._resolveFromExecutor @ coreBundle.js?v=1467884875:101
+i @ coreBundle.js?v=1467884875:101
+_loadDeclaredService @ bundle.js?v=1467884875:1
+_get @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+t._execute @ coreBundle.js?v=1467884875:100
+i._resolveFromExecutor @ coreBundle.js?v=1467884875:101
+i @ coreBundle.js?v=1467884875:101
+getSvc @ bundle.js?v=1467884875:1
+getSvc @ bundle.js?v=1467884875:1
+getService @ baseBundle.js?v=1467884875:10
+e._upgradeSpec @ baseBundle.js?v=1467884875:10
+(anonymous) @ baseBundle.js?v=1467884875:10
+r @ coreBundle.js?v=1467884875:102
+i._settlePromiseFromHandler @ coreBundle.js?v=1467884875:101
+i._settlePromise @ coreBundle.js?v=1467884875:101
+i._settlePromiseCtx @ coreBundle.js?v=1467884875:101
+r._drainQueue @ coreBundle.js?v=1467884875:100
+r._drainQueues @ coreBundle.js?v=1467884875:100
+drainQueues @ coreBundle.js?v=1467884875:100
+Promise.then
+r @ coreBundle.js?v=1467884875:101
+r._queueTick @ coreBundle.js?v=1467884875:100
+a @ coreBundle.js?v=1467884875:100
+f.hasDevTools.r.settlePromises @ coreBundle.js?v=1467884875:100
+i._fulfill @ coreBundle.js?v=1467884875:101
+i._resolveCallback @ coreBundle.js?v=1467884875:101
+(anonymous) @ coreBundle.js?v=1467884875:101
+(anonymous) @ bundle.js?v=1467884875:1
+execCb @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+h @ require.js:5
+completeLoad @ require.js:5
+onScriptLoad @ require.js:5
+script
+req.createNode @ require.js:5
+req.load @ require.js:5
+load @ require.js:5
+load @ require.js:5
+fetch @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+enable @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+(anonymous) @ require.js:5
+setTimeout
+req.nextTick @ require.js:5
+o @ require.js:5
+(anonymous) @ bundle.js?v=1467884875:1
+t._execute @ coreBundle.js?v=1467884875:100
+i._resolveFromExecutor @ coreBundle.js?v=1467884875:101
+i @ coreBundle.js?v=1467884875:101
+t.loadModule @ bundle.js?v=1467884875:1
+(anonymous) @ baseBundle.js?v=1467884875:10
+r._loadBoardModelExtensions @ baseBundle.js?v=1467884875:10
+(anonymous) @ baseBundle.js?v=1467884875:10
+r @ coreBundle.js?v=1467884875:102
+i._settlePromiseFromHandler @ coreBundle.js?v=1467884875:101
+i._settlePromise @ coreBundle.js?v=1467884875:101
+i._settlePromiseCtx @ coreBundle.js?v=1467884875:101
+r._drainQueue @ coreBundle.js?v=1467884875:100
+r._drainQueues @ coreBundle.js?v=1467884875:100
+drainQueues @ coreBundle.js?v=1467884875:100
+Promise.then
+r @ coreBundle.js?v=1467884875:101
+r._queueTick @ coreBundle.js?v=1467884875:100
+a @ coreBundle.js?v=1467884875:100
+f.hasDevTools.r.settlePromises @ coreBundle.js?v=1467884875:100
+i._fulfill @ coreBundle.js?v=1467884875:101
+i._resolveCallback @ coreBundle.js?v=1467884875:101
+(anonymous) @ coreBundle.js?v=1467884875:101
+execCb @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ coreBundle.js?v=1467884875:107
+execCb @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+(anonymous) @ require.js:5
+setTimeout
+req.nextTick @ require.js:5
+o @ require.js:5
+(anonymous) @ coreBundle.js?v=1467884875:107
+execCb @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+(anonymous) @ require.js:5
+setTimeout
+req.nextTick @ require.js:5
+o @ require.js:5
+load @ coreBundle.js?v=1467884875:107
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+u @ require.js:5
+callPlugin @ require.js:5
+fetch @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+enable @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+enable @ require.js:5
+enable @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+enable @ require.js:5
+enable @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+h @ require.js:5
+completeLoad @ require.js:5
+onScriptLoad @ require.js:5
+script
+req.createNode @ require.js:5
+req.load @ require.js:5
+load @ require.js:5
+load @ require.js:5
+fetch @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+enable @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+(anonymous) @ require.js:5
+setTimeout
+req.nextTick @ require.js:5
+o @ require.js:5
+requirejs @ require.js:5
+(anonymous) @ baseBundle.js?v=1467884875:10
+t._execute @ coreBundle.js?v=1467884875:100
+i._resolveFromExecutor @ coreBundle.js?v=1467884875:101
+i @ coreBundle.js?v=1467884875:101
+_fnLoadWidgetModelClass @ baseBundle.js?v=1467884875:10
+_fnInitializeRegistryItem @ baseBundle.js?v=1467884875:10
+(anonymous) @ baseBundle.js?v=1467884875:10
+_fnInitializeRegistryItems @ baseBundle.js?v=1467884875:10
+(anonymous) @ baseBundle.js?v=1467884875:10
+r @ coreBundle.js?v=1467884875:102
+i._settlePromiseFromHandler @ coreBundle.js?v=1467884875:101
+i._settlePromise @ coreBundle.js?v=1467884875:101
+i._settlePromiseCtx @ coreBundle.js?v=1467884875:101
+r._drainQueue @ coreBundle.js?v=1467884875:100
+r._drainQueues @ coreBundle.js?v=1467884875:100
+drainQueues @ coreBundle.js?v=1467884875:100
+Promise.then
+r @ coreBundle.js?v=1467884875:101
+r._queueTick @ coreBundle.js?v=1467884875:100
+a @ coreBundle.js?v=1467884875:100
+f.hasDevTools.r.settlePromises @ coreBundle.js?v=1467884875:100
+i._fulfill @ coreBundle.js?v=1467884875:101
+i._resolveCallback @ coreBundle.js?v=1467884875:101
+(anonymous) @ coreBundle.js?v=1467884875:101
+(anonymous) @ bundle.js?v=1467884875:1
+execCb @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+(anonymous) @ require.js:5
+setTimeout
+req.nextTick @ require.js:5
+o @ require.js:5
+(anonymous) @ bundle.js?v=1467884875:1
+t._execute @ coreBundle.js?v=1467884875:100
+i._resolveFromExecutor @ coreBundle.js?v=1467884875:101
+i @ coreBundle.js?v=1467884875:101
+t.loadModule @ bundle.js?v=1467884875:1
+(anonymous) @ baseBundle.js?v=1467884875:10
+c.getRuntimeEnvironment @ baseBundle.js?v=1467884875:10
+(anonymous) @ DashboardRuntimeService.js:62
+r @ coreBundle.js?v=1467884875:102
+i._settlePromiseFromHandler @ coreBundle.js?v=1467884875:101
+i._settlePromise @ coreBundle.js?v=1467884875:101
+i._settlePromise0 @ coreBundle.js?v=1467884875:101
+i._settlePromises @ coreBundle.js?v=1467884875:101
+i._fulfill @ coreBundle.js?v=1467884875:101
+i._resolveCallback @ coreBundle.js?v=1467884875:101
+i._settlePromiseFromHandler @ coreBundle.js?v=1467884875:101
+i._settlePromise @ coreBundle.js?v=1467884875:101
+i._settlePromise0 @ coreBundle.js?v=1467884875:101
+i._settlePromises @ coreBundle.js?v=1467884875:101
+i._fulfill @ coreBundle.js?v=1467884875:101
+i._resolveCallback @ coreBundle.js?v=1467884875:101
+i._settlePromiseFromHandler @ coreBundle.js?v=1467884875:101
+i._settlePromise @ coreBundle.js?v=1467884875:101
+i._settlePromise0 @ coreBundle.js?v=1467884875:101
+i._settlePromises @ coreBundle.js?v=1467884875:101
+i._fulfill @ coreBundle.js?v=1467884875:101
+u._resolve @ coreBundle.js?v=1467884875:101
+u._promiseFulfilled @ coreBundle.js?v=1467884875:101
+i._settlePromise @ coreBundle.js?v=1467884875:101
+i._settlePromise0 @ coreBundle.js?v=1467884875:101
+i._settlePromises @ coreBundle.js?v=1467884875:101
+i._fulfill @ coreBundle.js?v=1467884875:101
+i._resolveCallback @ coreBundle.js?v=1467884875:101
+i._settlePromiseFromHandler @ coreBundle.js?v=1467884875:101
+i._settlePromise @ coreBundle.js?v=1467884875:101
+i._settlePromise0 @ coreBundle.js?v=1467884875:101
+i._settlePromises @ coreBundle.js?v=1467884875:101
+i._fulfill @ coreBundle.js?v=1467884875:101
+u._resolve @ coreBundle.js?v=1467884875:101
+u._promiseFulfilled @ coreBundle.js?v=1467884875:101
+i._settlePromise @ coreBundle.js?v=1467884875:101
+i._settlePromise0 @ coreBundle.js?v=1467884875:101
+i._settlePromises @ coreBundle.js?v=1467884875:101
+r._drainQueue @ coreBundle.js?v=1467884875:100
+r._drainQueues @ coreBundle.js?v=1467884875:100
+drainQueues @ coreBundle.js?v=1467884875:100
+Promise.then
+r @ coreBundle.js?v=1467884875:101
+r._queueTick @ coreBundle.js?v=1467884875:100
+o @ coreBundle.js?v=1467884875:100
+f.hasDevTools.r.invoke @ coreBundle.js?v=1467884875:100
+i._then @ coreBundle.js?v=1467884875:101
+i.then @ coreBundle.js?v=1467884875:101
+(anonymous) @ bundle.js?v=1467884875:1
+execCb @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+h @ require.js:5
+completeLoad @ require.js:5
+onScriptLoad @ require.js:5
+script
+req.createNode @ require.js:5
+req.load @ require.js:5
+load @ require.js:5
+load @ require.js:5
+fetch @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+enable @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+h @ require.js:5
+completeLoad @ require.js:5
+onScriptLoad @ require.js:5
+script
+req.createNode @ require.js:5
+req.load @ require.js:5
+load @ require.js:5
+load @ require.js:5
+fetch @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+enable @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+(anonymous) @ require.js:5
+setTimeout
+req.nextTick @ require.js:5
+o @ require.js:5
+requirejs @ require.js:5
+(anonymous) @ bundle.js?v=1467884875:1
+t._execute @ coreBundle.js?v=1467884875:100
+i._resolveFromExecutor @ coreBundle.js?v=1467884875:101
+i @ coreBundle.js?v=1467884875:101
+_loadDeclaredService @ bundle.js?v=1467884875:1
+_get @ bundle.js?v=1467884875:1
+(anonymous) @ bundle.js?v=1467884875:1
+t._execute @ coreBundle.js?v=1467884875:100
+i._resolveFromExecutor @ coreBundle.js?v=1467884875:101
+i @ coreBundle.js?v=1467884875:101
+getSvc @ bundle.js?v=1467884875:1
+getSvc @ bundle.js?v=1467884875:1
+getService @ baseBundle.js?v=1467884875:10
+(anonymous) @ baseBundle.js?v=1467884875:10
+o._initializeCustomizabledBootstrapFeatures @ baseBundle.js?v=1467884875:10
+o.getBootstrapFeatures @ baseBundle.js?v=1467884875:10
+i.initializeRuntime @ baseBundle.js?v=1467884875:10
+getRuntimeEnvironment @ DashboardRuntimeService.js:61
+(anonymous) @ SmartsService.js:46
+r @ coreBundle.js?v=1467884875:102
+i._settlePromiseFromHandler @ coreBundle.js?v=1467884875:101
+i._settlePromise @ coreBundle.js?v=1467884875:101
+i._settlePromise0 @ coreBundle.js?v=1467884875:101
+i._settlePromises @ coreBundle.js?v=1467884875:101
+r._drainQueue @ coreBundle.js?v=1467884875:100
+r._drainQueues @ coreBundle.js?v=1467884875:100
+drainQueues @ coreBundle.js?v=1467884875:100
+Promise.then
+r @ coreBundle.js?v=1467884875:101
+r._queueTick @ coreBundle.js?v=1467884875:100
+a @ coreBundle.js?v=1467884875:100
+f.hasDevTools.r.settlePromises @ coreBundle.js?v=1467884875:100
+i._fulfill @ coreBundle.js?v=1467884875:101
+i._resolveCallback @ coreBundle.js?v=1467884875:101
+(anonymous) @ coreBundle.js?v=1467884875:101
+(anonymous) @ bundle.js?v=1467884875:1
+f @ coreBundle.js?v=1467884875:31
+p @ coreBundle.js?v=1467884875:31
+setTimeout
+(anonymous) @ coreBundle.js?v=1467884875:31
+c @ coreBundle.js?v=1467884875:31
+fireWith @ coreBundle.js?v=1467884875:31
+fire @ coreBundle.js?v=1467884875:31
+c @ coreBundle.js?v=1467884875:31
+fireWith @ coreBundle.js?v=1467884875:31
+r @ coreBundle.js?v=1467884875:32
+(anonymous) @ coreBundle.js?v=1467884875:33
+XMLHttpRequest.send
+send @ coreBundle.js?v=1467884875:33
+ajax @ coreBundle.js?v=1467884875:32
+(anonymous) @ bundle.js?v=1467884875:1
+t._execute @ coreBundle.js?v=1467884875:100
+i._resolveFromExecutor @ coreBundle.js?v=1467884875:101
+i @ coreBundle.js?v=1467884875:101
+_sendRequest @ bundle.js?v=1467884875:1
+_issueRequest @ bundle.js?v=1467884875:1
+r @ coreBundle.js?v=1467884875:102
+i._settlePromiseFromHandler @ coreBundle.js?v=1467884875:101
+i._settlePromise @ coreBundle.js?v=1467884875:101
+i._settlePromise0 @ coreBundle.js?v=1467884875:101
+i._settlePromises @ coreBundle.js?v=1467884875:101
+r._drainQueue @ coreBundle.js?v=1467884875:100
+r._drainQueues @ coreBundle.js?v=1467884875:100
+drainQueues @ coreBundle.js?v=1467884875:100
+Promise.then
+r @ coreBundle.js?v=1467884875:101
+r._queueTick @ coreBundle.js?v=1467884875:100
+o @ coreBundle.js?v=1467884875:100
+f.hasDevTools.r.invoke @ coreBundle.js?v=1467884875:100
+i._then @ coreBundle.js?v=1467884875:101
+i.then @ coreBundle.js?v=1467884875:101
+(anonymous) @ bundle.js?v=1467884875:1
+execCb @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+each @ require.js:5
+emit @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ require.js:5
+(anonymous) @ coreBundle.js?v=1467884875:107
+execCb @ require.js:5
+check @ require.js:5
+enable @ require.js:5
+init @ require.js:5
+(anonymous) @ require.js:5
+bundle.js?v=1467884875:7 context.target.itemId: com.ibm.bi.glass.common.shareContextual
+bundle.js?v=1467884875:7 rsperf: rsIFrameManager.F_LaunchRS ...
+bundle.js?v=1467884875:7 rsperf: onSelectItem->render: 166.67919921875 ms
+bundle.js?v=1467884875:7 _setDisplayForPlugins FOUND plugin: com.ibm.bi.glass.common.operations
+bundle.js?v=1467884875:7 rsContentView._handleFirstAppViewOnLoaded
+rsstartupblock_12.js?v=1736447937:9 rsperf: processing scriptblock.js: 586.947998046875 ms
+halcchl_block.js?v=1736447937:1 RS Processing Time = 756ms
+bundle.js?v=1467884875:7 rsperf: Launch RS->OnRSApplicationReadyForObservers: 788.7939453125 ms
+rsstartupblock_1.js?v=1736447937:7 launchParameters
+bundle.js?v=1467884875:7 rsperf: render->OnRSApplicationReadyForObservers: 645.221923828125 ms
+rsstartupblock_1.js?v=1736447937:7 rsperf: Time to get and process string request: 106.447021484375 ms
+rsstartupblock_1.js?v=1736447937:7 rsperf: Time to send and complete 1st level requests: 107.953857421875 ms
+rsstartupblock_1.js?v=1736447937:7 request to run report during startup
+rsstartupblock_3.js?v=1736447937:55 Shared conversation created:mainReport
+rsstartupblock_4.js?v=1736447937:5 rsperf: RunReportRequest: 149.922119140625 ms
+rsstartupblock_3.js?v=1736447937:55 Shared conversation release for reuse:mainReport
+rsstartupblock_1.js?v=1736447937:7 rsperf: Time to send and complete 2nd level requests: 1030.612060546875 ms
+rsstartupblock_1.js?v=1736447937:7 rsperf: AppController startup requests: 1138.80810546875 ms
+halcchl_block.js?v=1736447937:1 _shg: GetAvailableHeight returned null
+halcchl_block.js?v=1736447937:1 _shg: GetAvailableWidth returned null
+halcchl_block.js?v=1736447937:1 _shg: GetAvailableWidth returned null
+rsstartupblock_1.js?v=1736447937:7 rsperf: App InitUI: 57.933837890625 ms
+rsstartupblock_1.js?v=1736447937:7 rsperf: AppController start -> do launch action: 1205.755126953125 ms
+rsstartupblock_10.js?v=1736447937:23  Timer 'rsperf: viewer waiting for report to complete running' does not exist
+_szm._pp2 @ rsstartupblock_10.js?v=1736447937:23
+_szm._bxj @ rsstartupblock_10.js?v=1736447937:23
+_szm._a3o @ rsstartupblock_10.js?v=1736447937:23
+_gdo._srj @ rsstartupblock_1.js?v=1736447937:11
+_gdo._y62 @ rsstartupblock_1.js?v=1736447937:11
+(anonymous) @ rsstartupblock_10.js?v=1736447937:55
+_78m @ rsstartupblock_10.js?v=1736447937:55
+_gdo._hf6 @ rsstartupblock_1.js?v=1736447937:11
+(anonymous) @ rsstartupblock_1.js?v=1736447937:11
+Promise.then
+_gdo._ml7 @ rsstartupblock_1.js?v=1736447937:11
+_m2l @ halcchl_block.js?v=1736447937:1
+setTimeout
+_uai._e4n @ rsstartupblock_5.js?v=1736447937:5
+_uai._pp6 @ rsstartupblock_5.js?v=1736447937:5
+_uai._1n @ rsstartupblock_5.js?v=1736447937:5
+(anonymous) @ rsstartupblock_1.js?v=1736447937:7
+Promise.then
+_9ed._7ub @ rsstartupblock_1.js?v=1736447937:7
+setTimeout
+(anonymous) @ rsstartupblock_1.js?v=1736447937:7
+Promise.then
+_9ed._az3 @ rsstartupblock_1.js?v=1736447937:7
+Promise.then
+_9ed._mon @ rsstartupblock_1.js?v=1736447937:7
+setTimeout
+_9ed._18i @ rsstartupblock_1.js?v=1736447937:7
+_hdo._q1n @ halcchl_block.js?v=1736447937:1
+bundle.js?v=1467884875:7 _setDisplayForPlugins FOUND plugin: com.ibm.bi.glass.common.operations
+bundle.js?v=1467884875:7 _setDisplayForPlugins FOUND plugin: com.ibm.bi.glass.common.operations
+_7nn.js?v=1736447937:6 _7nn._833 {_k2n: false, _f9a: true, _r6l: Map(12), _bci: Map(19), _5z5: Map(19)}
+preLoad.js?v=1736447937:5 [PreLoad] 🏗 Constructor called
+preLoad.js?v=1736447937:10 [PreLoad] 🔧 initialize() called
+preLoad.js?v=1736447937:59 [PreLoad] ✅ External CSS linked from: https://kvcode.github.io/cognos/LeftPane.css?v=12345
+preLoad.js?v=1736447937:22 [PreLoad] 🚀 Loading CustomPromptPage from: https://kvcode.github.io/cognos/CustomPromptPage.js?v=12345
+CustomPromptPage.js?v=12345&v=1736447937:4 [CustomPromptPage] === Module Loaded ===
+preLoad.js?v=1736447937:26 [PreLoad] ✅ CustomPromptPage loaded
+CustomPromptPage.js?v=12345&v=1736447937:8 [CustomPromptPage] 🏗 Constructor called
+CustomPromptPage.js?v=12345&v=1736447937:17 [CustomPromptPage] 🔧 initialize() called
+CustomPromptPage.js?v=12345&v=1736447937:23 [CustomPromptPage] 📦 DOM node created: <div class=​"custom-prompt-page-container">​</div>​
+CustomPromptPage.js?v=12345&v=1736447937:27 [CustomPromptPage] ⚙️ Raw configuration received: {BaseScriptPath: '/cognos4/samples/javascript/CustomPromptPage/', BaseScriptPaths: {…}, orientation: 'horizontal', align: 'center', backgroundColor: '#1C1C1C', …}
+CustomPromptPage.js?v=12345&v=1736447937:31 [CustomPromptPage] 🧩 BaseScriptPaths detected: {CustomPromptPage: 'https://kvcode.github.io/cognos/CustomPromptPage.js?v=12345', LeftPaneCSS: 'https://kvcode.github.io/cognos/LeftPane.css?v=12345', LeftPane: 'https://kvcode.github.io/cognos/LeftPane.js?v=12345', RightPane: 'https://kvcode.github.io/cognos/RightPane.js?v=12345', DragDrop: 'https://kvcode.github.io/cognos/DragNDrop.js?v=123456'}
+CustomPromptPage.js?v=12345&v=1736447937:32 [CustomPromptPage] 🧩 Fallback BaseScriptPath: /cognos4/samples/javascript/CustomPromptPage/
+CustomPromptPage.js?v=12345&v=1736447937:39 [CustomPromptPage] ✅ Computed module paths: {LeftPanePath: 'https://kvcode.github.io/cognos/LeftPane.js?v=12345', RightPanePath: 'https://kvcode.github.io/cognos/RightPane.js?v=12345', DragDropPath: 'https://kvcode.github.io/cognos/DragNDrop.js?v=123456'}
+CustomPromptPage.js?v=12345&v=1736447937:46 [CustomPromptPage] 🚀 Loading LeftPane from: https://kvcode.github.io/cognos/LeftPane.js?v=12345
+LeftPane.js?v=12345&v=1736447937:4 [LeftPane] === Module Loaded ===
+CustomPromptPage.js?v=12345&v=1736447937:48 [CustomPromptPage] ✅ LeftPane loaded from: https://kvcode.github.io/cognos/LeftPane.js?v=12345
+LeftPane.js?v=12345&v=1736447937:7 [LeftPane] 🏗 Constructor called
+CustomPromptPage.js?v=12345&v=1736447937:51 [CustomPromptPage] 🧱 LeftPane instance created
+LeftPane.js?v=12345&v=1736447937:14 [LeftPane] 🔧 initialize() called
+LeftPane.js?v=12345&v=1736447937:20 [LeftPane] 📦 DOM node created: <div class=​"left-pane-container">​</div>​
+LeftPane.js?v=12345&v=1736447937:24 [LeftPane] ⚙️ Full configuration object received: {BaseScriptPath: '/cognos4/samples/javascript/CustomPromptPage/', BaseScriptPaths: {…}, orientation: 'horizontal', align: 'center', backgroundColor: '#1C1C1C', …}
+LeftPane.js?v=12345&v=1736447937:28 [LeftPane] ✅ buttonGroups loaded: (2) [{…}, {…}]
+LeftPane.js?v=12345&v=1736447937:36 [LeftPane] 🧭 Initialized groupStates: {Fahrzeug (FZ): true, Anträge Schäden (S): false}
+CustomPromptPage.js?v=12345&v=1736447937:54 [CustomPromptPage] ✅ LeftPane initialized
+CustomPromptPage.js?v=12345&v=1736447937:57 [CustomPromptPage] 🚀 Loading RightPane from: https://kvcode.github.io/cognos/RightPane.js?v=12345
+LeftPane.js?v=12345&v=1736447937:39 [LeftPane] ✅ Initialization complete
+RightPane.js?v=12345&v=1736447937:4 [RightPane] === Module Loaded ===
+CustomPromptPage.js?v=12345&v=1736447937:59 [CustomPromptPage] ✅ RightPane loaded from: https://kvcode.github.io/cognos/RightPane.js?v=12345
+RightPane.js?v=12345&v=1736447937:7 [RightPane] 🏗 Constructor called
+CustomPromptPage.js?v=12345&v=1736447937:62 [CustomPromptPage] 🧱 RightPane instance created
+RightPane.js?v=12345&v=1736447937:15 [RightPane] 🔧 initialize() called
+RightPane.js?v=12345&v=1736447937:42 [RightPane] ⚙️ Configuration received: {BaseScriptPath: '/cognos4/samples/javascript/CustomPromptPage/', BaseScriptPaths: {…}, orientation: 'horizontal', align: 'center', backgroundColor: '#1C1C1C', …}
+RightPane.js?v=12345&v=1736447937:46 [RightPane] 🧩 Autocomplete data loaded: {}
+RightPane.js?v=12345&v=1736447937:48 [RightPane] ✅ Initialization complete
+CustomPromptPage.js?v=12345&v=1736447937:65 [CustomPromptPage] ✅ RightPane initialized
+CustomPromptPage.js?v=12345&v=1736447937:68 [CustomPromptPage] 🚀 Loading DragDrop from: https://kvcode.github.io/cognos/DragNDrop.js?v=123456
 DragNDrop.js?v=123456&v=1736447937:4 [DragNDrop] === Module Loaded ===
 CustomPromptPage.js?v=12345&v=1736447937:70 [CustomPromptPage] ✅ DragDrop loaded from: https://kvcode.github.io/cognos/DragNDrop.js?v=123456
 DragNDrop.js?v=123456&v=1736447937:7 [DragNDrop] 🏗 Constructor called
 CustomPromptPage.js?v=12345&v=1736447937:73 [CustomPromptPage] 🧱 DragDrop instance created
 CustomPromptPage.js?v=12345&v=1736447937:78 [CustomPromptPage] 🔗 Panes assigned to DragDrop
-DragNDrop.js?v=123456&v=1736447937:18 [DragNDrop] 🌱 initialize() called
-DragNDrop.js?v=123456&v=1736447937:34 [DragNDrop] ✅ Both panes validated
-DragNDrop.js?v=123456&v=1736447937:156 [DragNDrop] 🎯 Setting up drop zone
-DragNDrop.js?v=123456&v=1736447937:160 [DragNDrop] 📍 Target: <div class=​"right-pane-cards" style=​"height:​ 30px;​ min-width:​ 120px;​ background-color:​ rgb(255, 253, 215)​;​ pointer-events:​ auto;​">​</div>​
-DragNDrop.js?v=123456&v=1736447937:216 [DragNDrop] ✅ Drop zone complete
-DragNDrop.js?v=123456&v=1736447937:217 [DragNDrop] 📍 Drop zone rect: DOMRect
-DragNDrop.js?v=123456&v=1736447937:218 [DragNDrop] 📍 Drop zone styles: Object
-DragNDrop.js?v=123456&v=1736447937:39 [DragNDrop] ✅ Initialization complete (drag handlers will be set in draw())
+DragNDrop.js?v=123456&v=1736447937:19 [DragNDrop] 🌱 initialize() called
+DragNDrop.js?v=123456&v=1736447937:35 [DragNDrop] ✅ Both panes validated
+DragNDrop.js?v=123456&v=1736447937:40 [DragNDrop] ✅ Initialization complete (handlers will be set in draw())
 CustomPromptPage.js?v=12345&v=1736447937:81 [CustomPromptPage] ✅ DragDrop initialized
 preLoad.js?v=1736447937:78 [PreLoad] 🖼 draw() called
 CustomPromptPage.js?v=12345&v=1736447937:106 [CustomPromptPage] 🖼 draw() called
@@ -40,52 +1261,132 @@ RightPane.js?v=12345&v=1736447937:57 [RightPane] 🖼 draw() called
 RightPane.js?v=12345&v=1736447937:67 [RightPane] 🧹 Cleared previous cards
 CustomPromptPage.js?v=12345&v=1736447937:137 [CustomPromptPage] ✅ Layout rendered successfully
 CustomPromptPage.js?v=12345&v=1736447937:141 [CustomPromptPage] 🔗 Setting up DragDrop handlers
-DragNDrop.js?v=123456&v=1736447937:52 [DragNDrop] 🖼 draw() called
-DragNDrop.js?v=123456&v=1736447937:65 [DragNDrop] 🎯 Setting up drag handlers
-DragNDrop.js?v=123456&v=1736447937:80 [DragNDrop] 🔍 Found 5 buttons
-DragNDrop.js?v=123456&v=1736447937:148 [DragNDrop] ✅ Drag handlers complete
-DragNDrop.js?v=123456&v=1736447937:57 [DragNDrop] ✅ draw() complete
-bundle.js?v=1467884875:7 rsperf: ViewBeforeDraw->ViewAfterDraw: 718.5859375 ms
-bundle.js?v=1467884875:7 rsperf: total_RunReport: 1189.035888671875 ms
-rsstartupblock_12.js?v=1736447937:9 rsperf: processing scriptblock.js: 10.031005859375 ms
-halcchl_block.js?v=1736447937:1 RS Processing Time = 21ms
-rsstartupblock_1.js?v=1736447937:7 launchParameters
-rsstartupblock_1.js?v=1736447937:7 rsperf: Time to get and process string request: 18.64208984375 ms
-rsstartupblock_1.js?v=1736447937:7 rsperf: Time to send and complete 1st level requests: 19.2548828125 ms
+DragNDrop.js?v=123456&v=1736447937:53 [DragNDrop] 🖼 draw() called
+DragNDrop.js?v=123456&v=1736447937:160 [DragNDrop] 🎯 Setting up drop zone
+DragNDrop.js?v=123456&v=1736447937:170 [DragNDrop] 📍 Target: <div class=​"right-pane-cards" style=​"height:​ 30px;​ min-width:​ 120px;​ background-color:​ rgb(255, 253, 215)​;​ pointer-events:​ auto;​">​</div>​
+DragNDrop.js?v=123456&v=1736447937:226 [DragNDrop] ✅ Drop zone complete
+DragNDrop.js?v=123456&v=1736447937:227 [DragNDrop] 📍 Drop zone rect: DOMRect {x: 268, y: 95, width: 522, height: 100, top: 95, …}bottom: 195height: 100left: 268right: 790top: 95width: 522x: 268y: 95[[Prototype]]: DOMRect
+DragNDrop.js?v=123456&v=1736447937:228 [DragNDrop] 📍 Drop zone styles: {position: 'static', zIndex: 'auto', pointerEvents: 'auto', display: 'block'}display: "block"pointerEvents: "auto"position: "static"zIndex: "auto"[[Prototype]]: Objectconstructor: ƒ Object()hasOwnProperty: ƒ hasOwnProperty()isPrototypeOf: ƒ isPrototypeOf()propertyIsEnumerable: ƒ propertyIsEnumerable()toLocaleString: ƒ toLocaleString()toString: ƒ toString()valueOf: ƒ valueOf()__defineGetter__: ƒ __defineGetter__()__defineSetter__: ƒ __defineSetter__()__lookupGetter__: ƒ __lookupGetter__()__lookupSetter__: ƒ __lookupSetter__()__proto__: (...)get __proto__: ƒ __proto__()set __proto__: ƒ __proto__()
+DragNDrop.js?v=123456&v=1736447937:261 [DragNDrop] ✅ Drop zone setup complete!
+DragNDrop.js?v=123456&v=1736447937:69 [DragNDrop] 🎯 Setting up drag handlers
+DragNDrop.js?v=123456&v=1736447937:84 [DragNDrop] 🔍 Found 5 buttons
+DragNDrop.js?v=123456&v=1736447937:152 [DragNDrop] ✅ Drag handlers complete
+DragNDrop.js?v=123456&v=1736447937:61 [DragNDrop] ✅ draw() complete
+bundle.js?v=1467884875:7 rsperf: ViewBeforeDraw->ViewAfterDraw: 1130.181884765625 ms
+bundle.js?v=1467884875:7 rsperf: total_RunReport: 3229.2490234375 ms
 halcchl_block.js?v=1736447937:1 showDialog:_0z9 _3zn [object Object]
-rsstartupblock_1.js?v=1736447937:7 rsperf: Time to send and complete 2nd level requests: 74.949951171875 ms
-rsstartupblock_1.js?v=1736447937:7 rsperf: AppController startup requests: 94.35595703125 ms
+rsstartupblock_12.js?v=1736447937:9 rsperf: processing scriptblock.js: 183.579833984375 ms
+halcchl_block.js?v=1736447937:1 RS Processing Time = 377ms
+rsstartupblock_1.js?v=1736447937:7 launchParameters
+rsstartupblock_1.js?v=1736447937:7 rsperf: Time to get and process string request: 54.43798828125 ms
+rsstartupblock_1.js?v=1736447937:7 rsperf: Time to send and complete 1st level requests: 56.013916015625 ms
+rsstartupblock_1.js?v=1736447937:7 rsperf: Time to send and complete 2nd level requests: 497.907958984375 ms
+rsstartupblock_1.js?v=1736447937:7 rsperf: AppController startup requests: 554.2578125 ms
 halcchl_block.js?v=1736447937:1 _shg: GetAvailableHeight returned null
-2halcchl_block.js?v=1736447937:1 _shg: GetAvailableWidth returned null
-rsstartupblock_1.js?v=1736447937:7 rsperf: App InitUI: 42.96484375 ms
-bundle.js?v=1467884875:7 rsperf: prelaunch RS: 187.39404296875 ms
-rsstartupblock_1.js?v=1736447937:7 rsperf: AppController start -> do launch action: 151.25 ms
-_7nn.js?v=1736447937:6 _7nn._833 Object
-[NEW] Explain Console errors by using Copilot in Edge: click
-         
-         to explain an error. 
-        Learn more
-        Don't show again
-DragNDrop.js?v=123456&v=1736447937:94 [DragNDrop] 🎯 Drag started: ZP8-Datum (Jahr) (FZ)
-DragNDrop.js?v=123456&v=1736447937:95 [DragNDrop] 🔍 Button rect: DOMRect {x: 18, y: 133, width: 229.1999969482422, height: 33.60000228881836, top: 133, …}
-DragNDrop.js?v=123456&v=1736447937:96 [DragNDrop] 🔍 Button parent: <div class=​"left-pane-buttons-container" style=​"display:​ flex;​">​…​</div>​flex
-DragNDrop.js?v=123456&v=1736447937:97 [DragNDrop] 🔍 All parent z-indexes:
-DragNDrop.js?v=123456&v=1736447937:102   - left-pane-buttons-container: z-index=auto, pointer-events=auto, position=static
-DragNDrop.js?v=123456&v=1736447937:102   - left-pane-group: z-index=auto, pointer-events=auto, position=static
-DragNDrop.js?v=123456&v=1736447937:102   - left-pane-container: z-index=auto, pointer-events=auto, position=static
-DragNDrop.js?v=123456&v=1736447937:102   - custom-prompt-layout: z-index=auto, pointer-events=auto, position=static
-DragNDrop.js?v=123456&v=1736447937:102   - custom-prompt-page-container: z-index=auto, pointer-events=auto, position=static
-DragNDrop.js?v=123456&v=1736447937:102   - : z-index=auto, pointer-events=auto, position=static
-DragNDrop.js?v=123456&v=1736447937:102   - pb: z-index=auto, pointer-events=auto, position=static
-2DragNDrop.js?v=123456&v=1736447937:102   - : z-index=auto, pointer-events=auto, position=static
-DragNDrop.js?v=123456&v=1736447937:102   - pg: z-index=auto, pointer-events=auto, position=static
-DragNDrop.js?v=123456&v=1736447937:102   - clsViewerPage: z-index=auto, pointer-events=auto, position=relative
-2DragNDrop.js?v=123456&v=1736447937:102   - : z-index=auto, pointer-events=auto, position=static
-DragNDrop.js?v=123456&v=1736447937:102   - clsPane_Workarea_active: z-index=auto, pointer-events=auto, position=absolute
-DragNDrop.js?v=123456&v=1736447937:102   - : z-index=98, pointer-events=auto, position=absolute
-DragNDrop.js?v=123456&v=1736447937:122 [DragNDrop] ✅ Drag image set to button itself
-DragNDrop.js?v=123456&v=1736447937:130 [DragNDrop] 📦 Data: {optionName: 'ZP8-Datum (Jahr) (FZ)', sourceIndex: 0, timestamp: 1761756560056}
-DragNDrop.js?v=123456&v=1736447937:131 [DragNDrop] ✅ effectAllowed: copy
-DragNDrop.js?v=123456&v=1736447937:132 [DragNDrop] ✅ types: ['text/plain']
-DragNDrop.js?v=123456&v=1736447937:135 [DragNDrop] 🔍 defaultPrevented: false
-DragNDrop.js?v=123456&v=1736447937:136 [DragNDrop] 🔍 Event phase: 2
+halcchl_block.js?v=1736447937:1 _shg: GetAvailableWidth returned null
+halcchl_block.js?v=1736447937:1 _shg: GetAvailableWidth returned null
+rsstartupblock_1.js?v=1736447937:7 rsperf: App InitUI: 80.534912109375 ms
+bundle.js?v=1467884875:7 rsperf: prelaunch RS: 1062.360107421875 ms
+rsstartupblock_1.js?v=1736447937:7 rsperf: AppController start -> do launch action: 662.680908203125 ms
+_7nn.js?v=1736447937:6 _7nn._833 {_k2n: false, _f9a: true, _r6l: Map(12), _bci: Map(19), _5z5: Map(19)}
+DragNDrop.js?v=123456&v=1736447937:98 [DragNDrop] 🎯 Drag started: ZP8-Datum (Jahr) (FZ)
+DragNDrop.js?v=123456&v=1736447937:99 [DragNDrop] 🔍 Button rect: DOMRect {x: 18, y: 133, width: 229.1999969482422, height: 33.60000228881836, top: 133, …}
+DragNDrop.js?v=123456&v=1736447937:100 [DragNDrop] 🔍 Button parent: <div class=​"left-pane-buttons-container" style=​"display:​ flex;​">​…​</div>​flex
+DragNDrop.js?v=123456&v=1736447937:101 [DragNDrop] 🔍 All parent z-indexes:
+DragNDrop.js?v=123456&v=1736447937:106   - left-pane-buttons-container: z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - left-pane-group: z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - left-pane-container: z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - custom-prompt-layout: z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - custom-prompt-page-container: z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - : z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - pb: z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - : z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - : z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - pg: z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - clsViewerPage: z-index=auto, pointer-events=auto, position=relative
+DragNDrop.js?v=123456&v=1736447937:106   - : z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - : z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - clsPane_Workarea_active: z-index=auto, pointer-events=auto, position=absolute
+DragNDrop.js?v=123456&v=1736447937:106   - : z-index=98, pointer-events=auto, position=absolute
+DragNDrop.js?v=123456&v=1736447937:126 [DragNDrop] ✅ Drag image set to button itself
+DragNDrop.js?v=123456&v=1736447937:134 [DragNDrop] 📦 Data: {optionName: 'ZP8-Datum (Jahr) (FZ)', sourceIndex: 0, timestamp: 1761757512844}
+DragNDrop.js?v=123456&v=1736447937:135 [DragNDrop] ✅ effectAllowed: copy
+DragNDrop.js?v=123456&v=1736447937:136 [DragNDrop] ✅ types: ['text/plain']
+DragNDrop.js?v=123456&v=1736447937:139 [DragNDrop] 🔍 defaultPrevented: false
+DragNDrop.js?v=123456&v=1736447937:140 [DragNDrop] 🔍 Event phase: 2
+DragNDrop.js?v=123456&v=1736447937:98 [DragNDrop] 🎯 Drag started: Marke (2-stellig) (FZ)
+DragNDrop.js?v=123456&v=1736447937:99 [DragNDrop] 🔍 Button rect: DOMRect {x: 18, y: 171.60000610351562, width: 229.1999969482422, height: 33.60000228881836, top: 171.60000610351562, …}
+DragNDrop.js?v=123456&v=1736447937:100 [DragNDrop] 🔍 Button parent: <div class=​"left-pane-buttons-container" style=​"display:​ flex;​">​…​</div>​flex
+DragNDrop.js?v=123456&v=1736447937:101 [DragNDrop] 🔍 All parent z-indexes:
+DragNDrop.js?v=123456&v=1736447937:106   - left-pane-buttons-container: z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - left-pane-group: z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - left-pane-container: z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - custom-prompt-layout: z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - custom-prompt-page-container: z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - : z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - pb: z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - : z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - : z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - pg: z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - clsViewerPage: z-index=auto, pointer-events=auto, position=relative
+DragNDrop.js?v=123456&v=1736447937:106   - : z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - : z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - clsPane_Workarea_active: z-index=auto, pointer-events=auto, position=absolute
+DragNDrop.js?v=123456&v=1736447937:106   - : z-index=98, pointer-events=auto, position=absolute
+DragNDrop.js?v=123456&v=1736447937:126 [DragNDrop] ✅ Drag image set to button itself
+DragNDrop.js?v=123456&v=1736447937:134 [DragNDrop] 📦 Data: {optionName: 'Marke (2-stellig) (FZ)', sourceIndex: 1, timestamp: 1761757539310}
+DragNDrop.js?v=123456&v=1736447937:135 [DragNDrop] ✅ effectAllowed: copy
+DragNDrop.js?v=123456&v=1736447937:136 [DragNDrop] ✅ types: ['text/plain']
+DragNDrop.js?v=123456&v=1736447937:139 [DragNDrop] 🔍 defaultPrevented: false
+DragNDrop.js?v=123456&v=1736447937:140 [DragNDrop] 🔍 Event phase: 2
+DragNDrop.js?v=123456&v=1736447937:98 [DragNDrop] 🎯 Drag started: ISO-Land (Auslieferung) (3-stellig) (FZ)
+DragNDrop.js?v=123456&v=1736447937:99 [DragNDrop] 🔍 Button rect: DOMRect {x: 18, y: 210.1999969482422, width: 229.1999969482422, height: 49.60000228881836, top: 210.1999969482422, …}
+DragNDrop.js?v=123456&v=1736447937:100 [DragNDrop] 🔍 Button parent: <div class=​"left-pane-buttons-container" style=​"display:​ flex;​">​…​</div>​flex
+DragNDrop.js?v=123456&v=1736447937:101 [DragNDrop] 🔍 All parent z-indexes:
+DragNDrop.js?v=123456&v=1736447937:106   - left-pane-buttons-container: z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - left-pane-group: z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - left-pane-container: z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - custom-prompt-layout: z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - custom-prompt-page-container: z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - : z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - pb: z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - : z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - : z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - pg: z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - clsViewerPage: z-index=auto, pointer-events=auto, position=relative
+DragNDrop.js?v=123456&v=1736447937:106   - : z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - : z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - clsPane_Workarea_active: z-index=auto, pointer-events=auto, position=absolute
+DragNDrop.js?v=123456&v=1736447937:106   - : z-index=98, pointer-events=auto, position=absolute
+DragNDrop.js?v=123456&v=1736447937:126 [DragNDrop] ✅ Drag image set to button itself
+DragNDrop.js?v=123456&v=1736447937:134 [DragNDrop] 📦 Data: {optionName: 'ISO-Land (Auslieferung) (3-stellig) (FZ)', sourceIndex: 2, timestamp: 1761757560725}
+DragNDrop.js?v=123456&v=1736447937:135 [DragNDrop] ✅ effectAllowed: copy
+DragNDrop.js?v=123456&v=1736447937:136 [DragNDrop] ✅ types: ['text/plain']
+DragNDrop.js?v=123456&v=1736447937:139 [DragNDrop] 🔍 defaultPrevented: false
+DragNDrop.js?v=123456&v=1736447937:140 [DragNDrop] 🔍 Event phase: 2
+LeftPane.js?v=12345&v=1736447937:103 [LeftPane] 🔁 Toggled 'Anträge Schäden (S)' → expanded
+DragNDrop.js?v=123456&v=1736447937:98 [DragNDrop] 🎯 Drag started: KDNR (S)
+DragNDrop.js?v=123456&v=1736447937:99 [DragNDrop] 🔍 Button rect: DOMRect {x: 18, y: 317.8000183105469, width: 229.1999969482422, height: 33.60000228881836, top: 317.8000183105469, …}
+DragNDrop.js?v=123456&v=1736447937:100 [DragNDrop] 🔍 Button parent: <div class=​"left-pane-buttons-container" style=​"display:​ flex;​">​…​</div>​flex
+DragNDrop.js?v=123456&v=1736447937:101 [DragNDrop] 🔍 All parent z-indexes:
+DragNDrop.js?v=123456&v=1736447937:106   - left-pane-buttons-container: z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - left-pane-group: z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - left-pane-container: z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - custom-prompt-layout: z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - custom-prompt-page-container: z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - : z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - pb: z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - : z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - : z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - pg: z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - clsViewerPage: z-index=auto, pointer-events=auto, position=relative
+DragNDrop.js?v=123456&v=1736447937:106   - : z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - : z-index=auto, pointer-events=auto, position=static
+DragNDrop.js?v=123456&v=1736447937:106   - clsPane_Workarea_active: z-index=auto, pointer-events=auto, position=absolute
+DragNDrop.js?v=123456&v=1736447937:106   - : z-index=98, pointer-events=auto, position=absolute
+DragNDrop.js?v=123456&v=1736447937:126 [DragNDrop] ✅ Drag image set to button itself
+DragNDrop.js?v=123456&v=1736447937:134 [DragNDrop] 📦 Data: {optionName: 'KDNR (S)', sourceIndex: 3, timestamp: 1761757566853}
+DragNDrop.js?v=123456&v=1736447937:135 [DragNDrop] ✅ effectAllowed: copy
+DragNDrop.js?v=123456&v=1736447937:136 [DragNDrop] ✅ types: ['text/plain']
+DragNDrop.js?v=123456&v=1736447937:139 [DragNDrop] 🔍 defaultPrevented: false
+DragNDrop.js?v=123456&v=1736447937:140 [DragNDrop] 🔍 Event phase: 2
