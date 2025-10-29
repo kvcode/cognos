@@ -11,6 +11,7 @@ define([], function () {
     this.boundDragLeave = null;
     this.boundDrop = null;
     this.isSetup = false;
+    this.dropZoneSetup = false; // Track if drop zone is set up
   }
 
   // === Initialization ===
@@ -33,10 +34,10 @@ define([], function () {
 
       console.log("[DragNDrop] ✅ Both panes validated");
 
-      // Setup drop zone now (cardsContainer already exists)
-      this.setupDropZone();
+      // DON'T setup drop zone here - it has no size yet!
+      // Will be set up in draw() after DOM is rendered
 
-      console.log("[DragNDrop] ✅ Initialization complete (drag handlers will be set in draw())");
+      console.log("[DragNDrop] ✅ Initialization complete (handlers will be set in draw())");
 
       if (fnDoneInitializing) {
         fnDoneInitializing();
@@ -52,7 +53,10 @@ define([], function () {
     console.log("[DragNDrop] 🖼 draw() called");
 
     try {
-      // Now setup drag handlers - buttons exist after panes are drawn!
+      // Setup drop zone NOW - after DOM is rendered
+      this.setupDropZone();
+
+      // Setup drag handlers - buttons exist after panes are drawn!
       this.setupDragHandlers();
       console.log("[DragNDrop] ✅ draw() complete");
     } catch (err) {
@@ -155,6 +159,12 @@ define([], function () {
   DragNDrop.prototype.setupDropZone = function () {
     console.log("[DragNDrop] 🎯 Setting up drop zone");
 
+    // Prevent duplicate setup
+    if (this.dropZoneSetup) {
+      console.log("[DragNDrop] ⚠️ Drop zone already set up, skipping");
+      return;
+    }
+
     try {
       const dropTarget = this.rightPane.cardsContainer;
       console.log("[DragNDrop] 📍 Target:", dropTarget);
@@ -246,6 +256,9 @@ define([], function () {
         },
         { once: true }
       );
+
+      this.dropZoneSetup = true; // Mark as set up
+      console.log("[DragNDrop] ✅ Drop zone setup complete!");
     } catch (err) {
       console.error("[DragNDrop] ❌ setupDropZone error:", err);
     }
@@ -279,6 +292,7 @@ define([], function () {
       this.boundDragLeave = null;
       this.boundDrop = null;
       this.isSetup = false;
+      this.dropZoneSetup = false;
 
       console.log("[DragNDrop] ✅ Destroyed");
     } catch (err) {
