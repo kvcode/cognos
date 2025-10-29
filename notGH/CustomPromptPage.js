@@ -212,6 +212,7 @@ define(["text!./LeftPane.css"], function (css) {
       oControlHost.container.appendChild(this.domNode);
       console.log("[CustomPromptPage] ✅ Layout rendered successfully");
       console.log("[CustomPromptPage] 🔍 Final DOM structure:", this.domNode);
+      document.dispatchEvent(new Event("PromptPageReady"));
     } catch (err) {
       console.error("[CustomPromptPage] ❌ Error during draw():", err);
       console.error("[CustomPromptPage] 🔍 Stack trace:", err.stack);
