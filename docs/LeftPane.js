@@ -100,8 +100,12 @@ define([], function () {
           // Toggle group collapse
           header.addEventListener("click", () => {
             this.groupStates[label] = !this.groupStates[label];
-            console.log(`[LeftPane] 🔁 Toggled '${label}' → ${this.groupStates[label] ? "expanded" : "collapsed"}`);
-            this.draw(oControlHost); // Redraw to refresh display
+            console.log(`[LeftPane] 🔁 Toggled '${label}'`);
+
+            // Just toggle visibility instead of redrawing
+            const isExpanded = this.groupStates[label];
+            buttonsContainer.style.display = isExpanded ? "flex" : "none";
+            arrowSpan.textContent = isExpanded ? "▲" : "▼";
           });
 
           groupContainer.appendChild(header);
