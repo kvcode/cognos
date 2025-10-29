@@ -53,6 +53,18 @@
   overflow-y: auto;
   position: relative;
   min-width: 300px;
+  min-height: 30px;
+  width: 100%;
+  height: 100%;
+}
+
+.right-pane-cards {
+  min-width: 200px;
+  min-height: 20px;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background-color: antiquewhite;
 }
 
 .right-pane .prompt-card {
