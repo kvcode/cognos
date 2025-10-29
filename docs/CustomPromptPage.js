@@ -135,7 +135,7 @@ define([], function () {
       this.domNode.appendChild(layout);
       oControlHost.container.appendChild(this.domNode);
       console.log("[CustomPromptPage] ✅ Layout rendered successfully");
-      document.addEventListener("PromptPageRead", () => {
+      document.addEventListener("PromptPageReady", () => {
         console.log("[CustomPromptPage] PromptPageReady Event dispatched from CustomPromptPage.js");
       });
       document.dispatchEvent(new Event("PromptPageReady"));
