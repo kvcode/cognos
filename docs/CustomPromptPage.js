@@ -135,10 +135,18 @@ define([], function () {
       this.domNode.appendChild(layout);
       oControlHost.container.appendChild(this.domNode);
       console.log("[CustomPromptPage] ✅ Layout rendered successfully");
-      document.addEventListener("PromptPageReady", () => {
-        console.log("[CustomPromptPage] PromptPageReady Event dispatched from CustomPromptPage.js");
-      });
-      document.dispatchEvent(new Event("PromptPageReady"));
+
+      // NEW: Now that panes are drawn, setup DragDrop handlers
+      if (this.dragDrop && typeof this.dragDrop.draw === "function") {
+        console.log("[CustomPromptPage] 🔗 Setting up DragDrop handlers");
+        this.dragDrop.draw();
+      }
+
+      // OLD EVENT-BASED APPROACH (kept commented for reference/testing)
+      // document.addEventListener("PromptPageReady", () => {
+      //   console.log("[CustomPromptPage] PromptPageReady Event dispatched from CustomPromptPage.js");
+      // });
+      // document.dispatchEvent(new Event("PromptPageReady"));
     } catch (err) {
       console.error("[CustomPromptPage] ❌ Error during draw():", err);
     }
