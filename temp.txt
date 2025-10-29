@@ -1,123 +1,128 @@
-[PreLoad] 🏗 Constructor called preLoad.js:5:13
-[PreLoad] 🔧 initialize() called preLoad.js:10:13
-[PreLoad] ✅ External CSS linked from: https://kvcode.github.io/cognos/LeftPane.css?v=123456 preLoad.js:59:17
-[PreLoad] 🚀 Loading CustomPromptPage from: https://kvcode.github.io/cognos/CustomPromptPage.js?v=123456 preLoad.js:22:13
-[CustomPromptPage] === Module Loaded === CustomPromptPage.js:4:11
-[PreLoad] ✅ CustomPromptPage loaded preLoad.js:26:15
-[CustomPromptPage] 🏗 Constructor called CustomPromptPage.js:8:13
-[CustomPromptPage] 🔧 initialize() called CustomPromptPage.js:17:13
-[CustomPromptPage] 📦 DOM node created: 
-<div class="custom-prompt-page-container">
-CustomPromptPage.js:23:15
-[CustomPromptPage] ⚙️ Raw configuration received: 
-Object { BaseScriptPath: "/cognos4/samples/javascript/CustomPromptPage/", BaseScriptPaths: {…}, orientation: "horizontal", align: "center", backgroundColor: "#1C1C1C", fill: "#F0F0F0", selectionFill: "#88c1ed", selectionBorderColor: "#88c1ed", selectionBackgroundColor: "#1C1C1C", selectFirstGroupExpanded: true, … }
-CustomPromptPage.js:27:15
-[CustomPromptPage] 🧩 BaseScriptPaths detected: 
-Object { CustomPromptPage: "https://kvcode.github.io/cognos/CustomPromptPage.js?v=123456", LeftPaneCSS: "https://kvcode.github.io/cognos/LeftPane.css?v=123456", LeftPane: "https://kvcode.github.io/cognos/LeftPane.js?v=123456", RightPane: "https://kvcode.github.io/cognos/RightPane.js?v=123456", DragDrop: "https://kvcode.github.io/cognos/DragNDrop.js?v=12345" }
-CustomPromptPage.js:31:15
-[CustomPromptPage] 🧩 Fallback BaseScriptPath: /cognos4/samples/javascript/CustomPromptPage/ CustomPromptPage.js:32:15
-[CustomPromptPage] ✅ Computed module paths: 
-Object { LeftPanePath: "https://kvcode.github.io/cognos/LeftPane.js?v=123456", RightPanePath: "https://kvcode.github.io/cognos/RightPane.js?v=123456", DragDropPath: "https://kvcode.github.io/cognos/DragNDrop.js?v=12345" }
-CustomPromptPage.js:39:15
-[CustomPromptPage] 🚀 Loading LeftPane from: https://kvcode.github.io/cognos/LeftPane.js?v=123456 CustomPromptPage.js:46:15
-[LeftPane] === Module Loaded === LeftPane.js:4:11
-[CustomPromptPage] ✅ LeftPane loaded from: https://kvcode.github.io/cognos/LeftPane.js?v=123456 CustomPromptPage.js:48:17
-[LeftPane] 🏗 Constructor called LeftPane.js:7:13
-[CustomPromptPage] 🧱 LeftPane instance created CustomPromptPage.js:51:17
-[LeftPane] 🔧 initialize() called LeftPane.js:14:13
-[LeftPane] 📦 DOM node created: 
-<div class="left-pane-container">
-LeftPane.js:20:15
-[LeftPane] ⚙️ Full configuration object received: 
-Object { BaseScriptPath: "/cognos4/samples/javascript/CustomPromptPage/", BaseScriptPaths: {…}, orientation: "horizontal", align: "center", backgroundColor: "#1C1C1C", fill: "#F0F0F0", selectionFill: "#88c1ed", selectionBorderColor: "#88c1ed", selectionBackgroundColor: "#1C1C1C", selectFirstGroupExpanded: true, … }
-LeftPane.js:24:15
-[LeftPane] ✅ buttonGroups loaded: 
-Array [ {…}, {…} ]
-LeftPane.js:28:15
-[LeftPane] 🧭 Initialized groupStates: 
-Object { "Fahrzeug (FZ)": true, "Anträge Schäden (S)": false }
-LeftPane.js:36:15
-[CustomPromptPage] ✅ LeftPane initialized CustomPromptPage.js:54:19
-[CustomPromptPage] 🚀 Loading RightPane from: https://kvcode.github.io/cognos/RightPane.js?v=123456 CustomPromptPage.js:57:19
-[LeftPane] ✅ Initialization complete LeftPane.js:39:15
-[RightPane] === Module Loaded === RightPane.js:4:11
-[CustomPromptPage] ✅ RightPane loaded from: https://kvcode.github.io/cognos/RightPane.js?v=123456 CustomPromptPage.js:59:21
-[RightPane] 🏗 Constructor called RightPane.js:7:13
-[CustomPromptPage] 🧱 RightPane instance created CustomPromptPage.js:62:21
-[RightPane] 🔧 initialize() called
-[RightPane] ⚙️ Configuration received: 
-Object { BaseScriptPath: "/cognos4/samples/javascript/CustomPromptPage/", BaseScriptPaths: {…}, orientation: "horizontal", align: "center", backgroundColor: "#1C1C1C", fill: "#F0F0F0", selectionFill: "#88c1ed", selectionBorderColor: "#88c1ed", selectionBackgroundColor: "#1C1C1C", selectFirstGroupExpanded: true, … }
-RightPane.js:42:15
-[RightPane] 🧩 Autocomplete data loaded: 
-Object {  }
-RightPane.js:46:15
-[RightPane] ✅ Initialization complete RightPane.js:48:15
-[CustomPromptPage] ✅ RightPane initialized CustomPromptPage.js:65:23
-[CustomPromptPage] 🚀 Loading DragDrop from: https://kvcode.github.io/cognos/DragNDrop.js?v=12345 CustomPromptPage.js:68:23
-[DragNDrop] === Module Loaded === DragNDrop.js:4:11
-[CustomPromptPage] ✅ DragDrop loaded from: https://kvcode.github.io/cognos/DragNDrop.js?v=12345 CustomPromptPage.js:70:25
-[DragNDrop] 🏗 Constructor called DragNDrop.js:7:13
-[CustomPromptPage] 🧱 DragDrop instance created CustomPromptPage.js:73:25
-[CustomPromptPage] 🔗 Panes assigned to DragDrop CustomPromptPage.js:78:25
-[DragNDrop] 🌱 initialize() called DragNDrop.js:19:13
-[DragNDrop] 🧳 LeftPane: 
-Object { domNode: div.left-pane-container, config: (2) […], groupStates: {…} }
-DragNDrop.js:23:15
-[DragNDrop] 🧳 RightPane: 
-Object { domNode: div.right-pane, cardsContainer: div.right-pane-cards, autocompleteData: {}, cards: [] }
-DragNDrop.js:24:15
-[DragNDrop] 🔗 LeftPane and RightPane are available DragNDrop.js:45:15
-[DragNDrop] ✅ RightPane cardsContainer found: 
-<div class="right-pane-cards" style="height: 30px; min-width:…; pointer-events: auto;">
-DragNDrop.js:55:15
-[DragNDrop] 🎯 Set up started for drag handlers on LeftPane buttons DragNDrop.js:77:13
-[DragNDrop] 🎯 Set up drop zone on RightPane started waiting for event DragNDrop.js:144:13
-[DragNDrop] ✅ Drag and Drop functionality enabled DragNDrop.js:61:15
-[CustomPromptPage] ✅ DragDrop initialized CustomPromptPage.js:81:27
-[PreLoad] 🖼 draw() called preLoad.js:78:13
-[CustomPromptPage] 🖼 draw() called CustomPromptPage.js:106:13
-[CustomPromptPage] 🧹 Cleared previous DOM content CustomPromptPage.js:115:15
-[CustomPromptPage] 🧩 Drawing LeftPane... CustomPromptPage.js:124:17
-[LeftPane] 🖼 draw() called LeftPane.js:47:13
-[LeftPane] 🧹 Cleared previous DOM content LeftPane.js:56:15
-[LeftPane] 🔹 Rendering group: Fahrzeug (FZ) LeftPane.js:66:19
-[LeftPane] 🔘 Rendering button [0] → ZP8-Datum (Jahr) (FZ) LeftPane.js:116:25
-[LeftPane] 🔘 Rendering button [1] → Marke (2-stellig) (FZ) LeftPane.js:116:25
-[LeftPane] 🔘 Rendering button [2] → ISO-Land (Auslieferung) (3-stellig) (FZ) LeftPane.js:116:25
-[LeftPane] 🔹 Rendering group: Anträge Schäden (S) LeftPane.js:66:19
-[LeftPane] ⏸ Group 'Anträge Schäden (S)' collapsed — skipping buttons LeftPane.js:154:21
-[LeftPane] ✅ DOM node appended to Cognos container LeftPane.js:164:15
-[CustomPromptPage] 🧩 Drawing RightPane... CustomPromptPage.js:130:17
-[RightPane] 🖼 draw() called RightPane.js:57:13
-[RightPane] 🧹 Cleared previous cards RightPane.js:67:15
-[RightPane] ✅ RightPane DOM appended to Cognos container RightPane.js:76:15
-[CustomPromptPage] ✅ Layout rendered successfully CustomPromptPage.js:137:15
-[DragNDrop] 🚀 PromptPageReady event received, setting up handlers DragNDrop.js:81:15
-[DragNDrop] 🔍 Found buttons: 3 DragNDrop.js:91:17
-[DragNDrop] 🔧 Setting up drag for button [0]: ZP8-Datum (Jahr) (FZ) DragNDrop.js:99:19
-[DragNDrop] ✅ Button [0] is now draggable DragNDrop.js:131:19
-[DragNDrop] 🔧 Setting up drag for button [1]: Marke (2-stellig) (FZ) DragNDrop.js:99:19
-[DragNDrop] ✅ Button [1] is now draggable DragNDrop.js:131:19
-[DragNDrop] 🔧 Setting up drag for button [2]: ISO-Land (Auslieferung) (3-stellig) (FZ) DragNDrop.js:99:19
-[DragNDrop] ✅ Button [2] is now draggable DragNDrop.js:131:19
-[DragNDrop] ✅ All buttons setup complete DragNDrop.js:134:17
-[DragNDrop] 🚀 PromptPageReady event received, setting up RightPane drop zone handlers DragNDrop.js:148:15
-[DragNDrop] 🔍 Drop target: 
-<div class="right-pane-cards" style="height: 30px; min-width:…; pointer-events: auto;">
-DragNDrop.js:149:15
-[DragNDrop] 📏 dropTarget size: 388 x 30 position: relative DragNDrop.js:206:17
-[DragNDrop] ✅ Drop zone setup complete DragNDrop.js:220:17
-[CustomPromptPage] PromptPageReady Event dispatched from CustomPromptPage.js CustomPromptPage.js:139:17
-[DragNDrop] ✅ fnDoneInitializing callback called
-
-[DragNDrop] 🎯 Drag started: ZP8-Datum (Jahr) (FZ) DragNDrop.js:107:21
-[DragNDrop] 📦 Drag data set: 
-Object { optionName: "ZP8-Datum (Jahr) (FZ)", sourceIndex: 0, timestamp: 1761743795527 }
-DragNDrop.js:121:21
-[DragNDrop] 🎯 Drag started: Marke (2-stellig) (FZ) DragNDrop.js:107:21
-[DragNDrop] 📦 Drag data set: 
-Object { optionName: "Marke (2-stellig) (FZ)", sourceIndex: 1, timestamp: 1761743800774 }
-DragNDrop.js:121:21
-[DragNDrop] 🎯 Drag started: ISO-Land (Auslieferung) (3-stellig) (FZ) DragNDrop.js:107:21
-[DragNDrop] 📦 Drag data set: 
-Object { optionName: "ISO-Land (Auslieferung) (3-stellig) (FZ)", sourceIndex: 2, timestamp: 1761743804084 }
+coreBundle.js?v=1467884875:182  [mobx] you are running a minified build, but 'process.env.NODE_ENV' was not set to 'production' in your bundler. This results in an unnecessarily large and slow bundle
+(anonymous) @ coreBundle.js?v=1467884875:182
+coreBundle.js?v=1467884875:40  WARNING: Missing translation for key: "deployment"
+s @ coreBundle.js?v=1467884875:40
+AutosuggestServiceCore.js:272 Error refreshing Autosuggest service context
+coreBundle.js?v=1467884875:40  WARNING: Missing translation for key: "userPaletteColor_carbonGrey10"
+s @ coreBundle.js?v=1467884875:40
+bundle.js?v=1467884875:7 rsperf: rsIFrameManager.F_LaunchRS ...
+rsstartupblock_12.js?v=1736447937:9 rsperf: processing scriptblock.js: 268.173095703125 ms
+halcchl_block.js?v=1736447937:1 RS Processing Time = 668ms
+bundle.js?v=1467884875:7 rsperf: onSelectItem->render: 706.951904296875 ms
+bundle.js?v=1467884875:7 _setDisplayForPlugins FOUND plugin: com.ibm.bi.glass.common.operations
+bundle.js?v=1467884875:7 rsperf: Launch RS->OnRSApplicationReadyForObservers: 701.60302734375 ms
+rsstartupblock_1.js?v=1736447937:7 launchParameters
+bundle.js?v=1467884875:7 rsperf: render->OnRSApplicationReadyForObservers: 17.27392578125 ms
+bundle.js?v=1467884875:7 rsContentView._handleFirstAppViewOnLoaded
+rsstartupblock_1.js?v=1736447937:7 rsperf: Time to get and process string request: 112.527099609375 ms
+rsstartupblock_1.js?v=1736447937:7 rsperf: Time to send and complete 1st level requests: 113.819091796875 ms
+rsstartupblock_1.js?v=1736447937:7 request to run report during startup
+rsstartupblock_3.js?v=1736447937:55 Shared conversation created:mainReport
+rsstartupblock_4.js?v=1736447937:5 rsperf: RunReportRequest: 97.968994140625 ms
+rsstartupblock_3.js?v=1736447937:55 Shared conversation release for reuse:mainReport
+rsstartupblock_1.js?v=1736447937:7 rsperf: Time to send and complete 2nd level requests: 807.8779296875 ms
+rsstartupblock_1.js?v=1736447937:7 rsperf: AppController startup requests: 921.9189453125 ms
+halcchl_block.js?v=1736447937:1 _shg: GetAvailableHeight returned null
+halcchl_block.js?v=1736447937:1 _shg: GetAvailableWidth returned null
+halcchl_block.js?v=1736447937:1 _shg: GetAvailableWidth returned null
+rsstartupblock_1.js?v=1736447937:7 rsperf: App InitUI: 58.080078125 ms
+rsstartupblock_1.js?v=1736447937:7 rsperf: AppController start -> do launch action: 990.89013671875 ms
+rsstartupblock_10.js?v=1736447937:23  Timer 'rsperf: viewer waiting for report to complete running' does not exist
+_szm._pp2 @ rsstartupblock_10.js?v=1736447937:23
+bundle.js?v=1467884875:7 _setDisplayForPlugins FOUND plugin: com.ibm.bi.glass.common.operations
+bundle.js?v=1467884875:7 _setDisplayForPlugins FOUND plugin: com.ibm.bi.glass.common.operations
+_7nn.js?v=1736447937:6 _7nn._833 Object
+preLoad.js?v=1736447937:5 [PreLoad] 🏗 Constructor called
+preLoad.js?v=1736447937:10 [PreLoad] 🔧 initialize() called
+preLoad.js?v=1736447937:59 [PreLoad] ✅ External CSS linked from: https://kvcode.github.io/cognos/LeftPane.css?v=123456
+preLoad.js?v=1736447937:22 [PreLoad] 🚀 Loading CustomPromptPage from: https://kvcode.github.io/cognos/CustomPromptPage.js?v=123456
+CustomPromptPage.js?v=123456&v=1736447937:4 [CustomPromptPage] === Module Loaded ===
+preLoad.js?v=1736447937:26 [PreLoad] ✅ CustomPromptPage loaded
+CustomPromptPage.js?v=123456&v=1736447937:8 [CustomPromptPage] 🏗 Constructor called
+CustomPromptPage.js?v=123456&v=1736447937:17 [CustomPromptPage] 🔧 initialize() called
+CustomPromptPage.js?v=123456&v=1736447937:23 [CustomPromptPage] 📦 DOM node created: <div class=​"custom-prompt-page-container">​…​</div>​flex
+CustomPromptPage.js?v=123456&v=1736447937:27 [CustomPromptPage] ⚙️ Raw configuration received: Object
+CustomPromptPage.js?v=123456&v=1736447937:31 [CustomPromptPage] 🧩 BaseScriptPaths detected: Object
+CustomPromptPage.js?v=123456&v=1736447937:32 [CustomPromptPage] 🧩 Fallback BaseScriptPath: /cognos4/samples/javascript/CustomPromptPage/
+CustomPromptPage.js?v=123456&v=1736447937:39 [CustomPromptPage] ✅ Computed module paths: Object
+CustomPromptPage.js?v=123456&v=1736447937:46 [CustomPromptPage] 🚀 Loading LeftPane from: https://kvcode.github.io/cognos/LeftPane.js?v=123456
+LeftPane.js?v=123456&v=1736447937:4 [LeftPane] === Module Loaded ===
+CustomPromptPage.js?v=123456&v=1736447937:48 [CustomPromptPage] ✅ LeftPane loaded from: https://kvcode.github.io/cognos/LeftPane.js?v=123456
+LeftPane.js?v=123456&v=1736447937:7 [LeftPane] 🏗 Constructor called
+CustomPromptPage.js?v=123456&v=1736447937:51 [CustomPromptPage] 🧱 LeftPane instance created
+LeftPane.js?v=123456&v=1736447937:14 [LeftPane] 🔧 initialize() called
+LeftPane.js?v=123456&v=1736447937:20 [LeftPane] 📦 DOM node created: <div class=​"left-pane-container">​…​</div>​
+LeftPane.js?v=123456&v=1736447937:24 [LeftPane] ⚙️ Full configuration object received: Object
+LeftPane.js?v=123456&v=1736447937:28 [LeftPane] ✅ buttonGroups loaded: Array(2)
+LeftPane.js?v=123456&v=1736447937:36 [LeftPane] 🧭 Initialized groupStates: Object
+CustomPromptPage.js?v=123456&v=1736447937:54 [CustomPromptPage] ✅ LeftPane initialized
+CustomPromptPage.js?v=123456&v=1736447937:57 [CustomPromptPage] 🚀 Loading RightPane from: https://kvcode.github.io/cognos/RightPane.js?v=123456
+LeftPane.js?v=123456&v=1736447937:39 [LeftPane] ✅ Initialization complete
+RightPane.js?v=123456&v=1736447937:4 [RightPane] === Module Loaded ===
+CustomPromptPage.js?v=123456&v=1736447937:59 [CustomPromptPage] ✅ RightPane loaded from: https://kvcode.github.io/cognos/RightPane.js?v=123456
+RightPane.js?v=123456&v=1736447937:7 [RightPane] 🏗 Constructor called
+CustomPromptPage.js?v=123456&v=1736447937:62 [CustomPromptPage] 🧱 RightPane instance created
+RightPane.js?v=123456&v=1736447937:15 [RightPane] 🔧 initialize() called
+RightPane.js?v=123456&v=1736447937:42 [RightPane] ⚙️ Configuration received: Object
+RightPane.js?v=123456&v=1736447937:46 [RightPane] 🧩 Autocomplete data loaded: Object
+RightPane.js?v=123456&v=1736447937:48 [RightPane] ✅ Initialization complete
+CustomPromptPage.js?v=123456&v=1736447937:65 [CustomPromptPage] ✅ RightPane initialized
+CustomPromptPage.js?v=123456&v=1736447937:68 [CustomPromptPage] 🚀 Loading DragDrop from: https://kvcode.github.io/cognos/DragNDrop.js?v=12345
+DragNDrop.js?v=12345&v=1736447937:4 [DragNDrop] === Module Loaded ===
+CustomPromptPage.js?v=123456&v=1736447937:70 [CustomPromptPage] ✅ DragDrop loaded from: https://kvcode.github.io/cognos/DragNDrop.js?v=12345
+DragNDrop.js?v=12345&v=1736447937:7 [DragNDrop] 🏗 Constructor called
+CustomPromptPage.js?v=123456&v=1736447937:73 [CustomPromptPage] 🧱 DragDrop instance created
+CustomPromptPage.js?v=123456&v=1736447937:78 [CustomPromptPage] 🔗 Panes assigned to DragDrop
+DragNDrop.js?v=12345&v=1736447937:17 [DragNDrop] 🌱 initialize() called
+DragNDrop.js?v=12345&v=1736447937:33 [DragNDrop] ✅ Both panes validated
+DragNDrop.js?v=12345&v=1736447937:52 [DragNDrop] 🎯 Setting up drag handlers - CALL #1761745552035
+DragNDrop.js?v=12345&v=1736447937:56 [DragNDrop] ⚠️ Already draggable buttons: 0
+DragNDrop.js?v=12345&v=1736447937:65 [DragNDrop] 🔍 Found 0 buttons
+DragNDrop.js?v=12345&v=1736447937:68  [DragNDrop] ⚠️ No buttons found
+DragNDrop.setupDragHandlers @ DragNDrop.js?v=12345&v=1736447937:68
+DragNDrop.js?v=12345&v=1736447937:108 [DragNDrop] 🎯 Setting up drop zone
+DragNDrop.js?v=12345&v=1736447937:112 [DragNDrop] 📍 Target: <div class=​"right-pane-cards" style=​"height:​ 30px;​ min-width:​ 120px;​ background-color:​ rgb(255, 253, 215)​;​ pointer-events:​ auto;​">​</div>​
+DragNDrop.js?v=12345&v=1736447937:166 [DragNDrop] ✅ Drop zone complete
+DragNDrop.js?v=12345&v=1736447937:39 [DragNDrop] ✅ Drag and Drop fully initialized
+CustomPromptPage.js?v=123456&v=1736447937:81 [CustomPromptPage] ✅ DragDrop initialized
+preLoad.js?v=1736447937:78 [PreLoad] 🖼 draw() called
+CustomPromptPage.js?v=123456&v=1736447937:106 [CustomPromptPage] 🖼 draw() called
+CustomPromptPage.js?v=123456&v=1736447937:115 [CustomPromptPage] 🧹 Cleared previous DOM content
+CustomPromptPage.js?v=123456&v=1736447937:124 [CustomPromptPage] 🧩 Drawing LeftPane...
+LeftPane.js?v=123456&v=1736447937:47 [LeftPane] 🖼 draw() called
+LeftPane.js?v=123456&v=1736447937:56 [LeftPane] 🧹 Cleared previous DOM content
+LeftPane.js?v=123456&v=1736447937:66 [LeftPane] 🔹 Rendering group: Fahrzeug (FZ)
+LeftPane.js?v=123456&v=1736447937:116 [LeftPane] 🔘 Rendering button [0] → ZP8-Datum (Jahr) (FZ)
+LeftPane.js?v=123456&v=1736447937:116 [LeftPane] 🔘 Rendering button [1] → Marke (2-stellig) (FZ)
+LeftPane.js?v=123456&v=1736447937:116 [LeftPane] 🔘 Rendering button [2] → ISO-Land (Auslieferung) (3-stellig) (FZ)
+LeftPane.js?v=123456&v=1736447937:66 [LeftPane] 🔹 Rendering group: Anträge Schäden (S)
+LeftPane.js?v=123456&v=1736447937:154 [LeftPane] ⏸ Group 'Anträge Schäden (S)' collapsed — skipping buttons
+LeftPane.js?v=123456&v=1736447937:164 [LeftPane] ✅ DOM node appended to Cognos container
+CustomPromptPage.js?v=123456&v=1736447937:130 [CustomPromptPage] 🧩 Drawing RightPane...
+RightPane.js?v=123456&v=1736447937:57 [RightPane] 🖼 draw() called
+RightPane.js?v=123456&v=1736447937:67 [RightPane] 🧹 Cleared previous cards
+RightPane.js?v=123456&v=1736447937:76 [RightPane] ✅ RightPane DOM appended to Cognos container
+CustomPromptPage.js?v=123456&v=1736447937:137 [CustomPromptPage] ✅ Layout rendered successfully
+CustomPromptPage.js?v=123456&v=1736447937:139 [CustomPromptPage] PromptPageReady Event dispatched from CustomPromptPage.js
+bundle.js?v=1467884875:7 rsperf: ViewBeforeDraw->ViewAfterDraw: 875.703857421875 ms
+bundle.js?v=1467884875:7 rsperf: total_RunReport: 2669.22509765625 ms
+rsstartupblock_12.js?v=1736447937:9 rsperf: processing scriptblock.js: 10.132080078125 ms
+halcchl_block.js?v=1736447937:1 RS Processing Time = 21ms
+rsstartupblock_1.js?v=1736447937:7 launchParameters
+rsstartupblock_1.js?v=1736447937:7 rsperf: Time to get and process string request: 45.4560546875 ms
+rsstartupblock_1.js?v=1736447937:7 rsperf: Time to send and complete 1st level requests: 46.1640625 ms
+rsstartupblock_1.js?v=1736447937:7 rsperf: Time to send and complete 2nd level requests: 85.14306640625 ms
+rsstartupblock_1.js?v=1736447937:7 rsperf: AppController startup requests: 131.39599609375 ms
+halcchl_block.js?v=1736447937:1 _shg: GetAvailableHeight returned null
+halcchl_block.js?v=1736447937:1 _shg: GetAvailableWidth returned null
+halcchl_block.js?v=1736447937:1 _shg: GetAvailableWidth returned null
+rsstartupblock_1.js?v=1736447937:7 rsperf: App InitUI: 42.52197265625 ms
+bundle.js?v=1467884875:7 rsperf: prelaunch RS: 224.4990234375 ms
+rsstartupblock_1.js?v=1736447937:7 rsperf: AppController start -> do launch action: 187.282958984375 ms
+halcchl_block.js?v=1736447937:1 showDialog:_0z9 _3zn [object Object]
+_7nn.js?v=1736447937:6 _7nn._833 Object
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
