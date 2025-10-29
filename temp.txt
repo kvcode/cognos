@@ -1,3 +1,48 @@
+[LeftPane] ⚙️ Full configuration object received: 
+Object
+BaseScriptPath
+: 
+"/cognos4/samples/javascript/CustomPromptPage/"
+BaseScriptPaths
+: 
+{CustomPromptPage: 'https://kvcode.github.io/cognos/CustomPromptPage.js?v=12345', LeftPaneCSS: 'https://kvcode.github.io/cognos/LeftPane.css?v=12345', LeftPane: 'https://kvcode.github.io/cognos/LeftPane.js?v=12345', RightPane: 'https://kvcode.github.io/cognos/RightPane.js?v=12345', DragDrop: 'https://kvcode.github.io/cognos/DragNDrop.js?v=123456'}
+align
+: 
+"center"
+backgroundColor
+: 
+"#1C1C1C"
+buttonGroups
+: 
+(2) [{…}, {…}]
+fill
+: 
+"#F0F0F0"
+orientation
+: 
+"horizontal"
+selectFirstGroupExpanded
+: 
+true
+selectionBackgroundColor
+: 
+"#1C1C1C"
+selectionBorderColor
+: 
+"#88c1ed"
+selectionFill
+: 
+"#88c1ed"
+[[Prototype]]
+: 
+Object
+
+
+
+<div class="left-pane-buttons-container" style="display: flex;"><button class="left-pane-button" draggable="true" style="cursor: grabbing; opacity: 0.5;">ZP8-Datum (Jahr) (FZ)</button><button class="left-pane-button" draggable="true" style="cursor: grab;">Marke (2-stellig) (FZ)</button><button class="left-pane-button" draggable="true" style="cursor: grab;">ISO-Land (Auslieferung) (3-stellig) (FZ)</button></div>
+
+
+
 [CustomPromptPage] 🚀 Loading DragDrop from: https://kvcode.github.io/cognos/DragNDrop.js?v=123456
 DragNDrop.js?v=123456&v=1736447937:4 [DragNDrop] === Module Loaded ===
 CustomPromptPage.js?v=12345&v=1736447937:70 [CustomPromptPage] ✅ DragDrop loaded from: https://kvcode.github.io/cognos/DragNDrop.js?v=123456
