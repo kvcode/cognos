@@ -1,0 +1,22 @@
+[PreLoad] 🏗 Constructor called
+preLoad.js?v=1736447937:9 [PreLoad] 🔧 initialize() called
+preLoad.js?v=1736447937:20 [PreLoad] 🚀 Loading CustomPromptPage from: /cognos4/samples/javascript/CustomPromptPage/CustomPromptPage.js
+preLoad.js?v=1736447937:45 [PreLoad] ✅ CSS injected from: /cognos4/samples/javascript/CustomPromptPage/LeftPane.css
+CustomPromptPage.js?v=1736447937:6 [CustomPromptPage] === Module Loaded ===
+CustomPromptPage.js?v=1736447937:13 [CustomPromptPage] ✅ CSS injected successfully
+preLoad.js?v=1736447937:23 [PreLoad] ✅ CustomPromptPage loaded
+CustomPromptPage.js?v=1736447937:20 [CustomPromptPage] 🏗 Constructor called
+preLoad.js?v=1736447937:30  [PreLoad] ❌ Error initializing CustomPromptPage: TypeError: Cannot set property control of #<_v41> which has only a getter
+    at preLoad.js?v=1736447937:27:30
+    at Object.execCb (require.js:5:12947)
+    at b.check (require.js:5:6684)
+    at b.<anonymous> (require.js:5:9105)
+    at require.js:5:848
+    at require.js:5:9566
+    at each (require.js:5:289)
+    at b.emit (require.js:5:9534)
+    at b.check (require.js:5:7243)
+    at b.enable (require.js:5:9432)
+(anonymous) @ preLoad.js?v=1736447937:30
+preLoad.js?v=1736447937:55 [PreLoad] 🖼 draw() called
+preLoad.js?v=1736447937:60  [PreLoad] ⚠️ draw() skipped — control not ready
