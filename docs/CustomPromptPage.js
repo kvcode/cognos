@@ -56,7 +56,7 @@ define([], function () {
             console.log("[CustomPromptPage] ✅ LeftPane initialized successfully");
             this.leftPaneReady = true;
 
-            // Load RightPane after LeftPane
+            // ✨ NEW: Load RightPane after LeftPane
             this.tryLoadOtherModules(oControlHost, fnDoneInitializing, {
               RightPanePath,
               DragDropPath,
@@ -87,15 +87,18 @@ define([], function () {
           this.dragDrop = new DragDrop();
           console.log("[CustomPromptPage] 🧱 DragDrop instance created:", this.dragDrop);
 
-          // Connect panes to DragDrop
+          // ✨ Connect panes to DragDrop
           this.dragDrop.leftPane = this.leftPane;
           this.dragDrop.rightPane = this.rightPane;
 
           this.dragDrop.initialize(oControlHost, () => {
             console.log("[CustomPromptPage] ✅ DragDrop initialized successfully");
 
-            // NOTE: dragDrop.draw() will be called in draw() method
-            // after buttons are rendered to DOM
+            // Draw DragDrop (sets up handlers)
+            if (typeof this.dragDrop.draw === "function") {
+              this.dragDrop.draw();
+              console.log("[CustomPromptPage] ✅ DragDrop.draw() called");
+            }
 
             // Call final callback
             if (fnDoneInitializing) {
@@ -187,19 +190,12 @@ define([], function () {
       this.domNode.appendChild(layout);
       oControlHost.container.appendChild(this.domNode);
       console.log("[CustomPromptPage] ✅ Layout rendered successfully");
-
-      // Setup DragDrop AFTER panes are drawn (buttons now exist in DOM)
-      if (this.dragDrop && typeof this.dragDrop.draw === "function") {
-        console.log("[CustomPromptPage] 🎯 Setting up DragDrop handlers...");
-        this.dragDrop.draw();
-        console.log("[CustomPromptPage] ✅ DragDrop.draw() complete");
-      }
     } catch (err) {
       console.error("[CustomPromptPage] ❌ Error during draw():", err);
     }
   };
 
-  // Get Parameters (Cognos will call this)
+  // ✨ NEW: Get Parameters (Cognos will call this)
   CustomPromptPage.prototype.getParameters = function () {
     console.log("[CustomPromptPage] 📋 getParameters() called by Cognos");
 
