@@ -6,9 +6,9 @@ define([], function () {
   function RightPane() {
     console.log("[RightPane] 🏗 Constructor called");
     this.domNode = null;
-    this.cardsContainer = null; // container for prompt cards
+    this.cardsContainer = null;
     this.autocompleteData = {};
-    this.cards = []; // store added cards
+    this.cards = []; // Now stores card OBJECTS, not just data
   }
 
   RightPane.prototype.initialize = function (oControlHost, fnDoneInitializing) {
@@ -20,11 +20,11 @@ define([], function () {
       this.domNode.className = "right-pane";
 
       // Add background color for better visualization
-      this.domNode.style.backgroundColor = "#d3d3d3"; // light gray background
+      this.domNode.style.backgroundColor = "#d3d3d3";
       this.domNode.style.padding = "10px";
       this.domNode.style.minHeight = "100px";
-      this.domNode.style.height = "100%"; // Adjust height if necessary
-      this.domNode.style.position = "relative"; // Ensure positioning for drop area
+      this.domNode.style.height = "100%";
+      this.domNode.style.position = "relative";
       this.domNode.style.pointerEvents = "auto";
 
       // Container for cards
@@ -66,9 +66,9 @@ define([], function () {
       this.cardsContainer.innerHTML = "";
       console.log("[RightPane] 🧹 Cleared previous cards");
 
-      // Re-add existing cards (if any)
-      this.cards.forEach((cardData) => {
-        this._renderCard(cardData);
+      // Re-render existing card objects
+      this.cards.forEach((cardObject) => {
+        this._renderCard(cardObject);
       });
     } catch (err) {
       console.error("[RightPane] ❌ draw() failed:", err);
@@ -79,12 +79,16 @@ define([], function () {
     console.log("[RightPane] ➕ addCard() called with data:", cardData);
 
     try {
-      // Store cardData
-      this.cards.push(cardData);
+      // Create card object with config and methods
+      const cardObject = this._createCardObject(cardData);
+
+      // Store card object (not just data)
+      this.cards.push(cardObject);
+      console.log("[RightPane] 💾 Card object stored:", cardObject);
 
       // Render card immediately if container exists
       if (this.cardsContainer) {
-        this._renderCard(cardData);
+        this._renderCard(cardObject);
       } else {
         console.warn("[RightPane] ⚠️ cardsContainer not initialized, card will render on draw()");
       }
@@ -93,17 +97,52 @@ define([], function () {
     }
   };
 
-  RightPane.prototype._renderCard = function (cardData) {
-    console.log("[RightPane] 🛠 _renderCard() called for:", cardData);
+  // ✨ NEW: Create card object with config and methods
+  RightPane.prototype._createCardObject = function (cardData) {
+    console.log("[RightPane] 🏗 Creating card object for:", cardData);
+
+    const cardObject = {
+      config: cardData, // Store full button config
+      domElement: null, // Will be set during render
+      inputElement: null, // Will be set during render
+
+      // Method to get parameters from this card
+      getParameters: function () {
+        const value = this.inputElement ? this.inputElement.value.trim() : "";
+
+        // Only return parameter if we have both a value and a paramName
+        if (!value || !this.config.paramName) {
+          return [];
+        }
+
+        console.log(`[RightPane] 📤 Card parameter: ${this.config.paramName} = ${value}`);
+
+        return [
+          {
+            parameter: this.config.paramName, // e.g., "P_Brand"
+            values: [{ use: value }], // e.g., [{"use": "Audi"}]
+          },
+        ];
+      },
+    };
+
+    return cardObject;
+  };
+
+  RightPane.prototype._renderCard = function (cardObject) {
+    console.log("[RightPane] 🛠 _renderCard() called for:", cardObject.config);
 
     try {
+      const cardData = cardObject.config;
+
+      // Create card DOM
       const card = document.createElement("div");
       card.className = "right-pane-card";
 
-      // Card header
+      // Card header - backwards compatible!
       const header = document.createElement("div");
       header.className = "right-pane-card-header";
-      header.textContent = cardData.optionName || "Unnamed Prompt";
+      header.textContent = cardData.label || cardData.optionName || "Unnamed Prompt";
       card.appendChild(header);
 
       // Input field with autocomplete
@@ -113,10 +152,15 @@ define([], function () {
       input.placeholder = "Enter value...";
       card.appendChild(input);
 
-      // Autocomplete logic
-      if (this.autocompleteData[cardData.optionName]) {
-        console.log(`[RightPane] 🔍 Setting autocomplete for ${cardData.optionName}`);
-        const suggestions = this.autocompleteData[cardData.optionName];
+      // ✨ NEW: Store references on card object
+      cardObject.domElement = card;
+      cardObject.inputElement = input;
+
+      // Autocomplete logic (check both label and optionName)
+      const cardKey = cardData.label || cardData.optionName;
+      if (this.autocompleteData[cardKey]) {
+        console.log(`[RightPane] 🔍 Setting autocomplete for ${cardKey}`);
+        const suggestions = this.autocompleteData[cardKey];
 
         input.addEventListener("input", () => {
           const val = input.value.toLowerCase();
@@ -127,7 +171,7 @@ define([], function () {
         });
       }
 
-      // Drag/drop target setup
+      // Drag/drop target setup (keep existing functionality)
       card.addEventListener("dragover", (e) => {
         e.preventDefault();
         e.dataTransfer.dropEffect = "copy";
@@ -147,16 +191,45 @@ define([], function () {
           console.log("[RightPane] 📥 Drop received:", data);
 
           // Populate input with dropped value
-          input.value = data.optionName || "";
+          input.value = data.optionName || data.label || "";
         } catch (err) {
           console.error("[RightPane] ❌ Error parsing drop data:", err);
         }
       });
 
       this.cardsContainer.appendChild(card);
-      console.log("[RightPane] ✅ Card rendered:", cardData.optionName);
+      console.log("[RightPane] ✅ Card rendered:", cardData.label || cardData.optionName);
     } catch (err) {
       console.error("[RightPane] ❌ _renderCard() failed:", err);
+    }
+  };
+
+  // ✨ NEW: Collect parameters from all cards
+  RightPane.prototype.getParameters = function () {
+    console.log("[RightPane] 📋 getParameters() called");
+
+    try {
+      const allParams = [];
+
+      // Loop through all card objects and collect their parameters
+      this.cards.forEach((cardObject, idx) => {
+        console.log(`[RightPane] 🔍 Checking card ${idx}:`, cardObject.config.label || cardObject.config.optionName);
+
+        const cardParams = cardObject.getParameters();
+
+        if (cardParams && cardParams.length > 0) {
+          allParams.push(...cardParams);
+          console.log(`[RightPane] ✅ Card ${idx} returned parameters:`, cardParams);
+        } else {
+          console.log(`[RightPane] ⚠️ Card ${idx} has no parameters (empty or no paramName)`);
+        }
+      });
+
+      console.log("[RightPane] 📤 Final collected parameters:", allParams);
+      return allParams;
+    } catch (err) {
+      console.error("[RightPane] ❌ getParameters() failed:", err);
+      return [];
     }
   };
 
