@@ -99,12 +99,20 @@ define([], function () {
           e.preventDefault(); // Prevent text selection
           console.log(`[DragNDrop] 🖱 Mouse down on: ${button.textContent.trim()}`);
 
-          // Store drag data
-          this.dragData = {
-            optionName: button.textContent.trim(),
-            sourceIndex: idx,
-            timestamp: Date.now(),
-          };
+          // ✨ NEW: Try to get stored config, fallback to text-only
+          if (button._buttonConfig) {
+            // Full config available from LeftPane
+            this.dragData = button._buttonConfig;
+            console.log(`[DragNDrop] 💾 Using full button config:`, this.dragData);
+          } else {
+            // Fallback: old behavior (backwards compatible)
+            this.dragData = {
+              optionName: button.textContent.trim(),
+              sourceIndex: idx,
+              timestamp: Date.now(),
+            };
+            console.log(`[DragNDrop] ⚠️ No config found, using text only`);
+          }
 
           // Create floating element
           this.createFloatingElement(button.textContent.trim(), e.clientX, e.clientY);
