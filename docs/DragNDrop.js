@@ -120,10 +120,31 @@ define([], function () {
           e.dataTransfer.setData("text/plain", JSON.stringify(dragData));
           e.dataTransfer.effectAllowed = "copy";
 
-          // Try native drag image first (simpler, more compatible)
+          // Create custom drag image (button itself might not work)
           try {
-            e.dataTransfer.setDragImage(button, button.offsetWidth / 2, button.offsetHeight / 2);
-            console.log("[DragNDrop] ✅ Drag image set to button itself");
+            const dragGhost = document.createElement("div");
+            dragGhost.textContent = button.textContent.trim();
+            dragGhost.style.position = "absolute";
+            dragGhost.style.top = "-1000px";
+            dragGhost.style.left = "-1000px";
+            dragGhost.style.padding = "8px 12px";
+            dragGhost.style.background = "#e1e1e1";
+            dragGhost.style.border = "1px solid #ccc";
+            dragGhost.style.borderRadius = "3px";
+            dragGhost.style.opacity = "0.8";
+            dragGhost.style.pointerEvents = "none"; // CRITICAL!
+            document.body.appendChild(dragGhost);
+
+            e.dataTransfer.setDragImage(dragGhost, 10, 10);
+
+            // Clean up after a moment
+            setTimeout(() => {
+              if (dragGhost.parentNode) {
+                document.body.removeChild(dragGhost);
+              }
+            }, 100);
+
+            console.log("[DragNDrop] ✅ Custom drag ghost created");
           } catch (err) {
             console.warn("[DragNDrop] ⚠️ setDragImage failed:", err);
           }
@@ -141,8 +162,9 @@ define([], function () {
         });
 
         // Dragend
-        button.addEventListener("dragend", () => {
-          console.log(`[DragNDrop] 🏁 Drag ended`);
+        button.addEventListener("dragend", (e) => {
+          console.log(`[DragNDrop] 🏁 DRAGEND fired!`);
+          console.log("[DragNDrop] 🔍 dropEffect:", e.dataTransfer.dropEffect);
           button.style.opacity = "1";
           button.style.cursor = "grab";
         });
