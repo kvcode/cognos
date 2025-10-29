@@ -10,3 +10,14 @@ while (parent) {
   console.log('Parent:', parent.className, 'pointer-events:', getComputedStyle(parent).pointerEvents);
   parent = parent.parentElement;
 }
+
+
+// Check if RightPane exists at all
+console.log('RightPane main:', document.querySelector('.right-pane'));
+
+// Check all divs to see what's there
+console.log('All panes:', document.querySelectorAll('[class*="pane"]'));
+
+// Check the full container
+console.log('Container:', document.querySelector('.custom-prompt-page-container'));
+```
