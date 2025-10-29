@@ -100,43 +100,44 @@ define([], function () {
           // Toggle group collapse
           header.addEventListener("click", () => {
             this.groupStates[label] = !this.groupStates[label];
-            console.log(`[LeftPane] 🔁 Toggled '${label}'`);
+            console.log(`[LeftPane] 🔁 Toggled '${label}' → ${this.groupStates[label] ? "expanded" : "collapsed"}`);
 
-            // Just toggle visibility instead of redrawing
-            const isExpanded = this.groupStates[label];
-            buttonsContainer.style.display = isExpanded ? "flex" : "none";
-            arrowSpan.textContent = isExpanded ? "▲" : "▼";
+            // Just toggle visibility - NO redraw!
+            const newState = this.groupStates[label];
+            buttonsContainer.style.display = newState ? "flex" : "none";
+            arrowSpan.textContent = newState ? "▲" : "▼";
           });
 
           groupContainer.appendChild(header);
 
-          // === Buttons ===
+          // === Buttons Container ===
           const buttonsContainer = document.createElement("div");
           buttonsContainer.className = "left-pane-buttons-container";
 
-          if (isExpanded) {
-            if (Array.isArray(group.buttons) && group.buttons.length > 0) {
-              group.buttons.forEach((btn, bIdx) => {
-                console.log(`[LeftPane] 🔘 Rendering button [${bIdx}] → ${btn.label}`);
+          // ALWAYS create buttons regardless of expanded state
+          if (Array.isArray(group.buttons) && group.buttons.length > 0) {
+            group.buttons.forEach((btn, bIdx) => {
+              console.log(`[LeftPane] 🔘 Rendering button [${bIdx}] → ${btn.label}`);
 
-                const button = document.createElement("button");
-                button.className = "left-pane-button";
-                button.textContent = btn.label || `Button ${bIdx}`;
+              const button = document.createElement("button");
+              button.className = "left-pane-button";
+              button.textContent = btn.label || `Button ${bIdx}`;
 
-                // NO ICONS on buttons - just clean text
-                // Icons are only for group headers
+              // NO ICONS on buttons - just clean text
+              // Icons are only for group headers
 
-                buttonsContainer.appendChild(button);
-              });
-            } else {
-              const noBtnMsg = document.createElement("p");
-              noBtnMsg.textContent = "No buttons in this group.";
-              buttonsContainer.appendChild(noBtnMsg);
-              console.log(`[LeftPane] ⚠️ No buttons in group '${label}'`);
-            }
+              buttonsContainer.appendChild(button);
+            });
           } else {
-            console.log(`[LeftPane] ⏸ Group '${label}' collapsed — skipping buttons`);
+            const noBtnMsg = document.createElement("p");
+            noBtnMsg.textContent = "No buttons in this group.";
+            buttonsContainer.appendChild(noBtnMsg);
+            console.log(`[LeftPane] ⚠️ No buttons in group '${label}'`);
           }
+
+          // Set initial visibility based on expanded state
+          buttonsContainer.style.display = isExpanded ? "flex" : "none";
+          console.log(`[LeftPane] 👁 Group '${label}' initial state: ${isExpanded ? "visible" : "hidden"}`);
 
           groupContainer.appendChild(buttonsContainer);
           this.domNode.appendChild(groupContainer);
