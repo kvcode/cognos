@@ -1,7 +1,117 @@
+[LeftPane] 📦 DOM node created: 
+<div class="left-pane-container">
+LeftPane.js:20:15
+[LeftPane] ⚙️ Full configuration object received: 
+Object { BaseScriptPath: "/cognos4/samples/javascript/CustomPromptPage/", BaseScriptPaths: {…}, orientation: "horizontal", align: "center", backgroundColor: "#1C1C1C", fill: "#F0F0F0", selectionFill: "#88c1ed", selectionBorderColor: "#88c1ed", selectionBackgroundColor: "#1C1C1C", selectFirstGroupExpanded: true, … }
+LeftPane.js:24:15
+[LeftPane] ✅ buttonGroups loaded: 
+Array [ {…}, {…} ]
+LeftPane.js:28:15
+[LeftPane] 🧭 Initialized groupStates: 
+Object { "Fahrzeug (FZ)": true, "Anträge Schäden (S)": false }
+LeftPane.js:36:15
+[CustomPromptPage] ✅ LeftPane initialized CustomPromptPage.js:54:19
+[CustomPromptPage] 🚀 Loading RightPane from: https://kvcode.github.io/cognos/RightPane.js?v=12345 CustomPromptPage.js:57:19
+[LeftPane] ✅ Initialization complete LeftPane.js:39:15
+[RightPane] === Module Loaded === RightPane.js:4:11
+[CustomPromptPage] ✅ RightPane loaded from: https://kvcode.github.io/cognos/RightPane.js?v=12345 CustomPromptPage.js:59:21
+[RightPane] 🏗 Constructor called RightPane.js:7:13
+[CustomPromptPage] 🧱 RightPane instance created CustomPromptPage.js:62:21
+[RightPane] 🔧 initialize() called RightPane.js:15:13
+[RightPane] ⚙️ Configuration received: 
+Object { BaseScriptPath: "/cognos4/samples/javascript/CustomPromptPage/", BaseScriptPaths: {…}, orientation: "horizontal", align: "center", backgroundColor: "#1C1C1C", fill: "#F0F0F0", selectionFill: "#88c1ed", selectionBorderColor: "#88c1ed", selectionBackgroundColor: "#1C1C1C", selectFirstGroupExpanded: true, … }
+RightPane.js:42:15
+[RightPane] 🧩 Autocomplete data loaded: 
+Object {  }
+RightPane.js:46:15
+[RightPane] ✅ Initialization complete RightPane.js:48:15
+[CustomPromptPage] ✅ RightPane initialized CustomPromptPage.js:65:23
+[CustomPromptPage] 🚀 Loading DragDrop from: https://kvcode.github.io/cognos/DragNDrop.js?v=123456 CustomPromptPage.js:68:23
+[DragNDrop] === Module Loaded === DragNDrop.js:4:11
+[CustomPromptPage] ✅ DragDrop loaded from: https://kvcode.github.io/cognos/DragNDrop.js?v=123456 CustomPromptPage.js:70:25
+[DragNDrop] 🏗 Constructor called DragNDrop.js:7:13
+[CustomPromptPage] 🧱 DragDrop instance created CustomPromptPage.js:73:25
+[CustomPromptPage] 🔗 Panes assigned to DragDrop CustomPromptPage.js:78:25
+[DragNDrop] 🌱 initialize() called DragNDrop.js:18:13
+[DragNDrop] ✅ Both panes validated DragNDrop.js:34:15
+[DragNDrop] 🎯 Setting up drop zone DragNDrop.js:140:13
+[DragNDrop] 📍 Target: 
+<div class="right-pane-cards" style="height: 30px; min-width:…; pointer-events: auto;">
+DragNDrop.js:144:15
+[DragNDrop] ✅ Drop zone complete
+
+[DragNDrop] ✅ Initialization complete (drag handlers will be set in draw()) DragNDrop.js:39:15
+[CustomPromptPage] ✅ DragDrop initialized CustomPromptPage.js:81:27
+[PreLoad] 🖼 draw() called preLoad.js:78:13
+[CustomPromptPage] 🖼 draw() called CustomPromptPage.js:106:13
+[CustomPromptPage] 🧹 Cleared previous DOM content CustomPromptPage.js:115:15
+[CustomPromptPage] 🧩 Drawing LeftPane... CustomPromptPage.js:124:17
+[LeftPane] 🖼 draw() called LeftPane.js:47:13
+[LeftPane] 🧹 Cleared previous DOM content LeftPane.js:56:15
+[LeftPane] 🔹 Rendering group: Fahrzeug (FZ) LeftPane.js:66:19
+[LeftPane] 🔘 Rendering button [0] → ZP8-Datum (Jahr) (FZ) LeftPane.js:120:23
+[LeftPane] 🔘 Rendering button [1] → Marke (2-stellig) (FZ) LeftPane.js:120:23
+[LeftPane] 🔘 Rendering button [2] → ISO-Land (Auslieferung) (3-stellig) (FZ) LeftPane.js:120:23
+[LeftPane] 👁 Group 'Fahrzeug (FZ)' initial state: visible LeftPane.js:140:19
+[LeftPane] 🔹 Rendering group: Anträge Schäden (S) LeftPane.js:66:19
+[LeftPane] 🔘 Rendering button [0] → KDNR (S) LeftPane.js:120:23
+[LeftPane] 🔘 Rendering button [1] → Antrags-Nr. (S) LeftPane.js:120:23
+[LeftPane] 👁 Group 'Anträge Schäden (S)' initial state: hidden LeftPane.js:140:19
+[CustomPromptPage] 🧩 Drawing RightPane... CustomPromptPage.js:130:17
+[RightPane] 🖼 draw() called RightPane.js:57:13
+[RightPane] 🧹 Cleared previous cards RightPane.js:67:15
+[CustomPromptPage] ✅ Layout rendered successfully CustomPromptPage.js:137:15
+[CustomPromptPage] 🔗 Setting up DragDrop handlers CustomPromptPage.js:141:17
+[DragNDrop] 🖼 draw() called DragNDrop.js:52:13
+[DragNDrop] 🎯 Setting up drag handlers DragNDrop.js:65:13
+[DragNDrop] 🔍 Found 5 buttons DragNDrop.js:80:15
+[DragNDrop] ✅ Drag handlers complete DragNDrop.js:132:15
+[DragNDrop] ✅ draw() complete DragNDrop.js:57:15
+rsperf: ViewBeforeDraw->ViewAfterDraw: 658ms - timer ended bundle.js:7:55262
+rsperf: total_RunReport: 7513ms - timer ended bundle.js:7:55319
+Layout was forced before the page was fully loaded. If stylesheets are not yet loaded this may cause a flash of unstyled content. rsapp.htm
+rsperf: processing scriptblock.js: 30ms - timer ended rsstartupblock_12.js:9:9
+RS Processing Time = 143ms halcchl_block.js:1:23032
+launchParameters rsstartupblock_1.js:7:7347
+rsperf: Time to get and process string request: 551ms - timer ended rsstartupblock_1.js:7:4491
+rsperf: Time to send and complete 1st level requests: 552ms - timer ended rsstartupblock_1.js:7:1149
+This page uses the non standard property “zoom”. Consider using calc() in the relevant property values, or using “transform” along with “transform-origin: 0 0”. halcchl_block.js:1:46323
+showDialog:_0z9 _3zn [object Object] halcchl_block.js:1:30073
+rsperf: Time to send and complete 2nd level requests: 554ms - timer ended rsstartupblock_1.js:7:2039
+rsperf: AppController startup requests: 1107ms - timer ended rsstartupblock_1.js:7:2111
+_shg: GetAvailableHeight returned null halcchl_block.js:1:30073
+_shg: GetAvailableWidth returned null 2 halcchl_block.js:1:30073
+rsperf: App InitUI: 52ms - timer ended rsstartupblock_1.js:7:2252
+rsperf: prelaunch RS: 1344ms - timer ended bundle.js:7:30574
+rsperf: AppController start -> do launch action: 1188ms - timer ended rsstartupblock_1.js:7:10391
+_7nn._833 
+Object { _k2n: false, _f9a: true, _r6l: Map(12), _bci: Map(19), _5z5: Map(19) }
+_7nn.js:6:470
 [DragNDrop] 🎯 Drag started: ZP8-Datum (Jahr) (FZ) DragNDrop.js:94:19
 [DragNDrop] ✅ Drag image set to button itself DragNDrop.js:110:21
 [DragNDrop] 📦 Data: 
-Object { optionName: "ZP8-Datum (Jahr) (FZ)", sourceIndex: 0, timestamp: 1761755199792 }
+Object { optionName: "ZP8-Datum (Jahr) (FZ)", sourceIndex: 0, timestamp: 1761755974649 }
+DragNDrop.js:118:19
+[DragNDrop] ✅ effectAllowed: copy DragNDrop.js:119:19
+[DragNDrop] ✅ types: 
+Array [ "text/plain" ]
+DragNDrop.js:120:19
+[LeftPane] 🔁 Toggled 'Anträge Schäden (S)' → expanded LeftPane.js:103:21
+[LeftPane] 🔁 Toggled 'Anträge Schäden (S)' → collapsed LeftPane.js:103:21
+[LeftPane] 🔁 Toggled 'Anträge Schäden (S)' → expanded LeftPane.js:103:21
+[DragNDrop] 🎯 Drag started: KDNR (S) DragNDrop.js:94:19
+[DragNDrop] ✅ Drag image set to button itself DragNDrop.js:110:21
+[DragNDrop] 📦 Data: 
+Object { optionName: "KDNR (S)", sourceIndex: 3, timestamp: 1761755985813 }
+DragNDrop.js:118:19
+[DragNDrop] ✅ effectAllowed: copy DragNDrop.js:119:19
+[DragNDrop] ✅ types: 
+Array [ "text/plain" ]
+DragNDrop.js:120:19
+[DragNDrop] 🎯 Drag started: Antrags-Nr. (S) DragNDrop.js:94:19
+[DragNDrop] ✅ Drag image set to button itself DragNDrop.js:110:21
+[DragNDrop] 📦 Data: 
+Object { optionName: "Antrags-Nr. (S)", sourceIndex: 4, timestamp: 1761755989991 }
 DragNDrop.js:118:19
 [DragNDrop] ✅ effectAllowed: copy DragNDrop.js:119:19
 [DragNDrop] ✅ types: 
@@ -10,7 +120,7 @@ DragNDrop.js:120:19
 [DragNDrop] 🎯 Drag started: ISO-Land (Auslieferung) (3-stellig) (FZ) DragNDrop.js:94:19
 [DragNDrop] ✅ Drag image set to button itself DragNDrop.js:110:21
 [DragNDrop] 📦 Data: 
-Object { optionName: "ISO-Land (Auslieferung) (3-stellig) (FZ)", sourceIndex: 2, timestamp: 1761755220376 }
+Object { optionName: "ISO-Land (Auslieferung) (3-stellig) (FZ)", sourceIndex: 2, timestamp: 1761755994083 }
 DragNDrop.js:118:19
 [DragNDrop] ✅ effectAllowed: copy DragNDrop.js:119:19
 [DragNDrop] ✅ types: 
@@ -19,19 +129,8 @@ DragNDrop.js:120:19
 [DragNDrop] 🎯 Drag started: Marke (2-stellig) (FZ) DragNDrop.js:94:19
 [DragNDrop] ✅ Drag image set to button itself DragNDrop.js:110:21
 [DragNDrop] 📦 Data: 
-Object { optionName: "Marke (2-stellig) (FZ)", sourceIndex: 1, timestamp: 1761755227811 }
+Object { optionName: "Marke (2-stellig) (FZ)", sourceIndex: 1, timestamp: 1761756005530 }
 DragNDrop.js:118:19
 [DragNDrop] ✅ effectAllowed: copy DragNDrop.js:119:19
 [DragNDrop] ✅ types: 
 Array [ "text/plain" ]
-DragNDrop.js:120:19
-[LeftPane] 🔁 Toggled 'Anträge Schäden (S)' → expanded LeftPane.js:103:21
-[LeftPane] 🖼 draw() called LeftPane.js:47:13
-[LeftPane] 🧹 Cleared previous DOM content LeftPane.js:56:15
-[LeftPane] 🔹 Rendering group: Fahrzeug (FZ) LeftPane.js:66:19
-[LeftPane] 🔘 Rendering button [0] → ZP8-Datum (Jahr) (FZ) LeftPane.js:116:25
-[LeftPane] 🔘 Rendering button [1] → Marke (2-stellig) (FZ) LeftPane.js:116:25
-[LeftPane] 🔘 Rendering button [2] → ISO-Land (Auslieferung) (3-stellig) (FZ) LeftPane.js:116:25
-[LeftPane] 🔹 Rendering group: Anträge Schäden (S) LeftPane.js:66:19
-[LeftPane] 🔘 Rendering button [0] → KDNR (S) LeftPane.js:116:25
-[LeftPane] 🔘 Rendering button [1] → Antrags-Nr. (S) LeftPane.js:116:25
