@@ -99,23 +99,18 @@ define([], function () {
             timestamp: Date.now(),
           };
 
-          // CRITICAL: Set data FIRST
+          // Set data
           e.dataTransfer.setData("text/plain", JSON.stringify(dragData));
           e.dataTransfer.effectAllowed = "copy";
 
-          // CRITICAL for Firefox: Set explicit drag image
-          const dragImg = document.createElement("div");
-          dragImg.textContent = button.textContent.trim();
-          dragImg.style.position = "absolute";
-          dragImg.style.top = "-1000px";
-          dragImg.style.left = "-1000px";
-          dragImg.style.padding = "8px 12px";
-          dragImg.style.backgroundColor = "#e1e1e1";
-          dragImg.style.border = "1px solid #ccc";
-          dragImg.style.borderRadius = "3px";
-          document.body.appendChild(dragImg);
-          e.dataTransfer.setDragImage(dragImg, 10, 10);
-          setTimeout(() => document.body.removeChild(dragImg), 0);
+          // Try native drag image first (simpler, more compatible)
+          try {
+            // Use the button itself as drag image
+            e.dataTransfer.setDragImage(button, button.offsetWidth / 2, button.offsetHeight / 2);
+            console.log("[DragNDrop] ✅ Drag image set to button itself");
+          } catch (err) {
+            console.warn("[DragNDrop] ⚠️ setDragImage failed:", err);
+          }
 
           button.style.opacity = "0.5";
           button.style.cursor = "grabbing";
