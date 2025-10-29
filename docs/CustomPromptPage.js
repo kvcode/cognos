@@ -135,6 +135,7 @@ define([], function () {
       this.domNode.appendChild(layout);
       oControlHost.container.appendChild(this.domNode);
       console.log("[CustomPromptPage] ✅ Layout rendered successfully");
+      document.dispatchEvent(new Event("PromptPageReady"));
     } catch (err) {
       console.error("[CustomPromptPage] ❌ Error during draw():", err);
     }
