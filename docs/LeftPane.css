@@ -84,3 +84,19 @@
   outline: 2px dashed #007bff;
   background-color: #f0f8ff;
 }
+
+/* === Floating Drag Element === */
+.drag-floating {
+  position: fixed;
+  pointer-events: none; /* CRITICAL - doesn't block drop zone */
+  z-index: 9999;
+  padding: 8px 12px;
+  background: #e1e1e1;
+  border: 1px solid #999;
+  border-radius: 3px;
+  opacity: 0.8;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+  cursor: grabbing;
+  user-select: none;
+  white-space: nowrap;
+}
