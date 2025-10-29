@@ -46,7 +46,29 @@ debugger eval code:1:9
 LeftPane container: null debugger eval code:2:9
 undefined 
 
-
+[PreLoad] ✅ External CSS linked from: https://kvcode.github.io/cognos/LeftPane.css?v=12345 preLoad.js:59:17
+[PreLoad] 🚀 Loading CustomPromptPage from: https://kvcode.github.io/cognos/CustomPromptPage.js?v=12345 preLoad.js:22:13
+[CustomPromptPage] === Module Loaded === CustomPromptPage.js:4:11
+[PreLoad] ✅ CustomPromptPage loaded preLoad.js:26:15
+[CustomPromptPage] 🏗 Constructor called CustomPromptPage.js:8:13
+[CustomPromptPage] 🔧 initialize() called CustomPromptPage.js:17:13
+[CustomPromptPage] 📦 DOM node created: 
+<div class="custom-prompt-page-container">
+CustomPromptPage.js:23:15
+[CustomPromptPage] ⚙️ Raw configuration received: 
+Object { BaseScriptPath: "/cognos4/samples/javascript/CustomPromptPage/", BaseScriptPaths: {…}, orientation: "horizontal", align: "center", backgroundColor: "#1C1C1C", fill: "#F0F0F0", selectionFill: "#88c1ed", selectionBorderColor: "#88c1ed", selectionBackgroundColor: "#1C1C1C", selectFirstGroupExpanded: true, … }
+CustomPromptPage.js:27:15
+[CustomPromptPage] 🧩 BaseScriptPaths detected: 
+Object { CustomPromptPage: "https://kvcode.github.io/cognos/CustomPromptPage.js?v=12345", LeftPaneCSS: "https://kvcode.github.io/cognos/LeftPane.css?v=12345", LeftPane: "https://kvcode.github.io/cognos/LeftPane.js?v=12345", RightPane: "https://kvcode.github.io/cognos/RightPane.js?v=12345", DragDrop: "https://kvcode.github.io/cognos/DragNDrop.js?v=123456" }
+CustomPromptPage.js:31:15
+[CustomPromptPage] 🧩 Fallback BaseScriptPath: /cognos4/samples/javascript/CustomPromptPage/ CustomPromptPage.js:32:15
+[CustomPromptPage] ✅ Computed module paths: 
+Object { LeftPanePath: "https://kvcode.github.io/cognos/LeftPane.js?v=12345", RightPanePath: "https://kvcode.github.io/cognos/RightPane.js?v=12345", DragDropPath: "https://kvcode.github.io/cognos/DragNDrop.js?v=123456" }
+CustomPromptPage.js:39:15
+[CustomPromptPage] 🚀 Loading LeftPane from: https://kvcode.github.io/cognos/LeftPane.js?v=12345 CustomPromptPage.js:46:15
+[LeftPane] === Module Loaded === LeftPane.js:4:11
+[CustomPromptPage] ✅ LeftPane loaded from: https://kvcode.github.io/cognos/LeftPane.js?v=12345 CustomPromptPage.js:48:17
+[LeftPane] 🏗 Constructor called LeftPane.js:7:13
 [CustomPromptPage] 🧱 LeftPane instance created CustomPromptPage.js:51:17
 [LeftPane] 🔧 initialize() called LeftPane.js:14:13
 [LeftPane] 📦 DOM node created: 
@@ -116,5 +138,3 @@ DragNDrop.js:144:15
 [DragNDrop] 🔍 Found 3 buttons DragNDrop.js:80:15
 [DragNDrop] ✅ Drag handlers complete DragNDrop.js:132:15
 [DragNDrop] ✅ draw() complete DragNDrop.js:57:15
-
-​
