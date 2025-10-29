@@ -10,6 +10,7 @@ define([], function () {
     this.boundDragOver = null;
     this.boundDragLeave = null;
     this.boundDrop = null;
+    this.isSetup = false;
   }
 
   // === Initialization ===
@@ -32,11 +33,10 @@ define([], function () {
 
       console.log("[DragNDrop] ✅ Both panes validated");
 
-      // Setup drag and drop immediately - no event waiting needed!
-      this.setupDragHandlers();
+      // Setup drop zone now (cardsContainer already exists)
       this.setupDropZone();
 
-      console.log("[DragNDrop] ✅ Drag and Drop fully initialized");
+      console.log("[DragNDrop] ✅ Initialization complete (drag handlers will be set in draw())");
 
       if (fnDoneInitializing) {
         fnDoneInitializing();
@@ -47,17 +47,32 @@ define([], function () {
     }
   };
 
+  // === Draw ===
+  DragNDrop.prototype.draw = function () {
+    console.log("[DragNDrop] 🖼 draw() called");
+
+    try {
+      // Now setup drag handlers - buttons exist after panes are drawn!
+      this.setupDragHandlers();
+      console.log("[DragNDrop] ✅ draw() complete");
+    } catch (err) {
+      console.error("[DragNDrop] ❌ Error during draw():", err);
+    }
+  };
+
   // === Setup Drag Handlers ===
   DragNDrop.prototype.setupDragHandlers = function () {
-    console.log("[DragNDrop] 🎯 Setting up drag handlers - CALL #" + Date.now());
-
-    // Check if buttons already have listeners
-    const existingButtons = this.leftPane.domNode.querySelectorAll(".left-pane-button[draggable='true']");
-    console.log("[DragNDrop] ⚠️ Already draggable buttons:", existingButtons.length);
+    console.log("[DragNDrop] 🎯 Setting up drag handlers");
 
     try {
       if (!this.leftPane || !this.leftPane.domNode) {
         console.error("[DragNDrop] ❌ LeftPane domNode not available");
+        return;
+      }
+
+      // Check if already setup to prevent duplicates
+      if (this.isSetup) {
+        console.warn("[DragNDrop] ⚠️ Already setup, skipping");
         return;
       }
 
@@ -97,6 +112,7 @@ define([], function () {
         });
       });
 
+      this.isSetup = true;
       console.log("[DragNDrop] ✅ Drag handlers complete");
     } catch (err) {
       console.error("[DragNDrop] ❌ setupDragHandlers error:", err);
@@ -196,6 +212,7 @@ define([], function () {
       this.boundDragOver = null;
       this.boundDragLeave = null;
       this.boundDrop = null;
+      this.isSetup = false;
 
       console.log("[DragNDrop] ✅ Destroyed");
     } catch (err) {
