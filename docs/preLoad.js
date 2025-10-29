@@ -13,20 +13,26 @@ define([], function () {
     const basePaths = config.BaseScriptPaths || {};
     const fallbackBase = config.BaseScriptPath || "/cognos4/samples/javascript/CustomPromptPageGH/";
 
-    // Inject CSS
+    // === Inject CSS ===
     const cssPath = basePaths.LeftPaneCSS || fallbackBase + "LeftPane.css";
     this.injectCSS(cssPath);
 
+    // === Load CustomPromptPage.js ===
     const customPromptPath = basePaths.CustomPromptPage || fallbackBase + "CustomPromptPage.js";
     console.log(`[PreLoad] 🚀 Loading CustomPromptPage from: ${customPromptPath}`);
 
-    var self = this;
+    const self = this;
     require([customPromptPath], function (CustomPromptPage) {
       console.log("[PreLoad] ✅ CustomPromptPage loaded");
 
       try {
         self.control = new CustomPromptPage();
-        self.control.initialize(oControlHost, fnDoneInitializing);
+        if (typeof self.control.initialize === "function") {
+          self.control.initialize(oControlHost, fnDoneInitializing);
+        } else {
+          console.warn("[PreLoad] ⚠️ CustomPromptPage has no initialize() method");
+          fnDoneInitializing();
+        }
       } catch (err) {
         console.error("[PreLoad] ❌ Error initializing CustomPromptPage:", err);
         fnDoneInitializing();
@@ -37,19 +43,34 @@ define([], function () {
     });
   };
 
+  /**
+   * Inject CSS dynamically. Works with both local (relative) and external URLs.
+   */
   PreLoad.prototype.injectCSS = function (cssUrl) {
-    require(["text!" + cssUrl], function (cssContent) {
-      try {
+    try {
+      // If CSS is a remote URL (starts with http/https), inject <link>
+      if (/^https?:\/\//i.test(cssUrl)) {
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = cssUrl;
+        link.type = "text/css";
+        document.head.appendChild(link);
+        console.log("[PreLoad] ✅ External CSS linked from:", cssUrl);
+        return;
+      }
+
+      // Otherwise, try RequireJS text plugin for local CSS files
+      require(["text!" + cssUrl], function (cssContent) {
         const style = document.createElement("style");
         style.textContent = cssContent;
         document.head.appendChild(style);
-        console.log("[PreLoad] ✅ CSS injected from:", cssUrl);
-      } catch (e) {
-        console.error("[PreLoad] ❌ Failed to inject CSS:", e);
-      }
-    }, function (err) {
-      console.error("[PreLoad] ❌ Failed to load CSS file:", err);
-    });
+        console.log("[PreLoad] ✅ Local CSS injected from:", cssUrl);
+      }, function (err) {
+        console.error("[PreLoad] ❌ Failed to load local CSS via require:", err);
+      });
+    } catch (e) {
+      console.error("[PreLoad] ❌ Failed to inject CSS:", e);
+    }
   };
 
   PreLoad.prototype.draw = function (oControlHost) {
