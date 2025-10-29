@@ -3,6 +3,7 @@ define([], function () {
 
   function PreLoad() {
     console.log("[PreLoad] 🏗 Constructor called");
+    this.control = null;
   }
 
   PreLoad.prototype.initialize = function (oControlHost, fnDoneInitializing) {
@@ -19,13 +20,13 @@ define([], function () {
     const customPromptPath = basePaths.CustomPromptPage || fallbackBase + "CustomPromptPage.js";
     console.log(`[PreLoad] 🚀 Loading CustomPromptPage from: ${customPromptPath}`);
 
+    var self = this;
     require([customPromptPath], function (CustomPromptPage) {
       console.log("[PreLoad] ✅ CustomPromptPage loaded");
 
       try {
-        const control = new CustomPromptPage();
-        oControlHost.control = control;
-        control.initialize(oControlHost, fnDoneInitializing);
+        self.control = new CustomPromptPage();
+        self.control.initialize(oControlHost, fnDoneInitializing);
       } catch (err) {
         console.error("[PreLoad] ❌ Error initializing CustomPromptPage:", err);
         fnDoneInitializing();
@@ -54,8 +55,8 @@ define([], function () {
   PreLoad.prototype.draw = function (oControlHost) {
     console.log("[PreLoad] 🖼 draw() called");
 
-    if (oControlHost.control && typeof oControlHost.control.draw === "function") {
-      oControlHost.control.draw(oControlHost);
+    if (this.control && typeof this.control.draw === "function") {
+      this.control.draw(oControlHost);
     } else {
       console.warn("[PreLoad] ⚠️ draw() skipped — control not ready");
     }
@@ -64,8 +65,8 @@ define([], function () {
   PreLoad.prototype.destroy = function (oControlHost) {
     console.log("[PreLoad] 🧨 destroy() called");
 
-    if (oControlHost.control && typeof oControlHost.control.destroy === "function") {
-      oControlHost.control.destroy();
+    if (this.control && typeof this.control.destroy === "function") {
+      this.control.destroy();
     }
   };
 
