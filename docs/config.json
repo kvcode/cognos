@@ -1,74 +1,69 @@
 {
-  "BaseScriptPath": "/cognos4/samples/javascript/CustomPromptPage/",
-  "BaseScriptPaths": {
-    "CustomPromptPage": "https://kvcode.github.io/cognos/CustomPromptPage.js?v=123456",
-    "LeftPaneCSS": "https://kvcode.github.io/cognos/LeftPane.css",
-    "LeftPane": "https://kvcode.github.io/cognos/LeftPane.js?v=123456",
-    "RightPane": "https://kvcode.github.io/cognos/RightPane.js?v=123456",
-    "DragDrop": "https://kvcode.github.io/cognos/DragNDrop.js?v=12345"
-  },
-  "orientation": "horizontal",
-  "align": "center",
-  "backgroundColor": "#1C1C1C",
-  "fill": "#F0F0F0",
-  "selectionFill": "#88c1ed",
-  "selectionBorderColor": "#88c1ed",
-  "selectionBackgroundColor": "#1C1C1C",
-  "selectFirstGroupExpanded": true,
-  "buttonGroups": [
-    {
-      "groupLabel": "Fahrzeug (FZ)",
-      "groupIcon": "<svg viewBox='0 0 24 24' width='16' height='16'><path fill='#88c1ed' d='M3 12l18-6-6 18z'/></svg>",
-      "defaultExpanded": true,
-      "buttons": [
-        {
-          "label": "ZP8-Datum (Jahr) (FZ)",
-          "promptName": "ZP8_Jahr",
-          "queryName": "qp_ZP8_Jahr",
-          "dataItem": "ZP8_Year",
-          "paramName": "P_ZP8_Jahr",
-          "icon": "<svg viewBox='0 0 24 24' width='14' height='14'><circle cx='12' cy='12' r='10' fill='#88c1ed'/></svg>"
-        },
-        {
-          "label": "Marke (2-stellig) (FZ)",
-          "promptName": "Brand",
-          "queryName": "qp_Brand",
-          "dataItem": "Brand_Code",
-          "paramName": "P_Brand",
-          "icon": "<svg viewBox='0 0 24 24' width='14' height='14'><rect x='4' y='4' width='16' height='16' fill='#88c1ed'/></svg>"
-        },
-        {
-          "label": "ISO-Land (Auslieferung) (3-stellig) (FZ)",
-          "promptName": "Country",
-          "queryName": "qp_Country",
-          "dataItem": "Country_ISO",
-          "paramName": "P_Country",
-          "icon": "<svg viewBox='0 0 24 24' width='14' height='14'><path fill='#88c1ed' d='M12 2l10 20H2z'/></svg>"
-        }
-      ]
+    "BaseScriptPath": "/cognos4/samples/javascript/CustomPromptPage/",
+    "BaseScriptPaths": {
+        "CustomPromptPage": "https://kvcode.github.io/cognos/CustomPromptPage.js?v=123456",
+        "LeftPaneCSS": "https://kvcode.github.io/cognos/LeftPane.css",
+        "LeftPane": "https://kvcode.github.io/cognos/LeftPane.js?v=123456",
+        "RightPane": "https://kvcode.github.io/cognos/RightPane.js?v=123456",
+        "DragDrop": "https://kvcode.github.io/cognos/DragNDrop.js?v=12345"
     },
-    {
-      "groupLabel": "Anträge Schäden (S)",
-      "groupIcon": "<svg viewBox='0 0 24 24' width='16' height='16'><path fill='#88c1ed' d='M4 4h16v16H4z'/></svg>",
-      "defaultExpanded": false,
-      "buttons": [
+    "orientation": "horizontal",
+    "align": "center",
+    "backgroundColor": "#1C1C1C",
+    "fill": "#F0F0F0",
+    "selectionFill": "#88c1ed",
+    "selectionBorderColor": "#88c1ed",
+    "selectionBackgroundColor": "#1C1C1C",
+    "selectFirstGroupExpanded": true,
+    "buttonGroups": [
         {
-          "label": "KDNR (S)",
-          "promptName": "CustomerID",
-          "queryName": "qp_KDNR",
-          "dataItem": "Customer_Number",
-          "paramName": "P_CustomerID",
-          "icon": "<svg viewBox='0 0 24 24' width='14' height='14'><path fill='#88c1ed' d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10'/></svg>"
+            "groupLabel": "Fahrzeug (FZ)",
+            "groupIcon": "<svg viewBox='0 0 24 24' width='16' height='16'><path fill='#88c1ed' d='M3 12l18-6-6 18z'/></svg>",
+            "defaultExpanded": true,
+            "buttons": [
+                {
+                    "label": "ZP8-Datum (Jahr) (FZ)",
+                    "promptName": "ZP8_Jahr",
+                    "queryName": "qp_ZP8_Jahr",
+                    "dataItem": "ZP8_Year",
+                    "icon": "<svg viewBox='0 0 24 24' width='14' height='14'><circle cx='12' cy='12' r='10' fill='#88c1ed'/></svg>"
+                },
+                {
+                    "label": "Marke (2-stellig) (FZ)",
+                    "promptName": "Brand",
+                    "queryName": "qp_Brand",
+                    "dataItem": "Brand_Code",
+                    "icon": "<svg viewBox='0 0 24 24' width='14' height='14'><rect x='4' y='4' width='16' height='16' fill='#88c1ed'/></svg>"
+                },
+                {
+                    "label": "ISO-Land (Auslieferung) (3-stellig) (FZ)",
+                    "promptName": "Country",
+                    "queryName": "qp_Country",
+                    "dataItem": "Country_ISO",
+                    "icon": "<svg viewBox='0 0 24 24' width='14' height='14'><path fill='#88c1ed' d='M12 2l10 20H2z'/></svg>"
+                }
+            ]
         },
         {
-          "label": "Antrags-Nr. (S)",
-          "promptName": "ApplicationNumber",
-          "queryName": "qp_Application",
-          "dataItem": "Application_No",
-          "paramName": "P_ApplicationNumber",
-          "icon": "<svg viewBox='0 0 24 24' width='14' height='14'><path fill='#88c1ed' d='M6 4h12v16H6z'/></svg>"
+            "groupLabel": "Anträge Schäden (S)",
+            "groupIcon": "<svg viewBox='0 0 24 24' width='16' height='16'><path fill='#88c1ed' d='M4 4h16v16H4z'/></svg>",
+            "defaultExpanded": false,
+            "buttons": [
+                {
+                    "label": "KDNR (S)",
+                    "promptName": "CustomerID",
+                    "queryName": "qp_KDNR",
+                    "dataItem": "Customer_Number",
+                    "icon": "<svg viewBox='0 0 24 24' width='14' height='14'><path fill='#88c1ed' d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10'/></svg>"
+                },
+                {
+                    "label": "Antrags-Nr. (S)",
+                    "promptName": "ApplicationNumber",
+                    "queryName": "qp_Application",
+                    "dataItem": "Application_No",
+                    "icon": "<svg viewBox='0 0 24 24' width='14' height='14'><path fill='#88c1ed' d='M6 4h12v16H6z'/></svg>"
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }
