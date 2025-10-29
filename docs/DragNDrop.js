@@ -92,6 +92,19 @@ define([], function () {
         // Dragstart
         button.addEventListener("dragstart", (e) => {
           console.log(`[DragNDrop] 🎯 Drag started: ${button.textContent.trim()}`);
+          console.log("[DragNDrop] 🔍 Button rect:", button.getBoundingClientRect());
+          console.log("[DragNDrop] 🔍 Button parent:", button.parentElement);
+          console.log("[DragNDrop] 🔍 All parent z-indexes:");
+
+          let parent = button.parentElement;
+          while (parent) {
+            const styles = getComputedStyle(parent);
+            console.log(
+              `  - ${parent.className}: z-index=${styles.zIndex}, pointer-events=${styles.pointerEvents}, position=${styles.position}`
+            );
+            parent = parent.parentElement;
+            if (!parent || parent === document.body) break;
+          }
 
           const dragData = {
             optionName: button.textContent.trim(),
@@ -105,7 +118,6 @@ define([], function () {
 
           // Try native drag image first (simpler, more compatible)
           try {
-            // Use the button itself as drag image
             e.dataTransfer.setDragImage(button, button.offsetWidth / 2, button.offsetHeight / 2);
             console.log("[DragNDrop] ✅ Drag image set to button itself");
           } catch (err) {
@@ -118,6 +130,10 @@ define([], function () {
           console.log("[DragNDrop] 📦 Data:", dragData);
           console.log("[DragNDrop] ✅ effectAllowed:", e.dataTransfer.effectAllowed);
           console.log("[DragNDrop] ✅ types:", e.dataTransfer.types);
+
+          // Check if any default was prevented
+          console.log("[DragNDrop] 🔍 defaultPrevented:", e.defaultPrevented);
+          console.log("[DragNDrop] 🔍 Event phase:", e.eventPhase);
         });
 
         // Dragend
@@ -149,7 +165,9 @@ define([], function () {
         e.stopPropagation();
         e.dataTransfer.dropEffect = "copy";
         dropTarget.classList.add("drop-hover");
-        console.log("[DragNDrop] 🔄 DRAGOVER");
+        console.log("[DragNDrop] 🔄 DRAGOVER - event fired!");
+        console.log("[DragNDrop] 🔍 Mouse position:", e.clientX, e.clientY);
+        console.log("[DragNDrop] 🔍 Target:", e.target);
       };
 
       // Dragleave
@@ -196,6 +214,38 @@ define([], function () {
       dropTarget.addEventListener("drop", this.boundDrop);
 
       console.log("[DragNDrop] ✅ Drop zone complete");
+      console.log("[DragNDrop] 📍 Drop zone rect:", dropTarget.getBoundingClientRect());
+      console.log("[DragNDrop] 📍 Drop zone styles:", {
+        position: getComputedStyle(dropTarget).position,
+        zIndex: getComputedStyle(dropTarget).zIndex,
+        pointerEvents: getComputedStyle(dropTarget).pointerEvents,
+        display: getComputedStyle(dropTarget).display,
+      });
+
+      // Add GLOBAL drag listeners to document to see if ANY drag events fire
+      document.addEventListener(
+        "drag",
+        () => {
+          console.log("[DragNDrop] 🌍 GLOBAL: drag event on document");
+        },
+        { once: true }
+      ); // only log once to avoid spam
+
+      document.addEventListener(
+        "dragover",
+        (e) => {
+          console.log("[DragNDrop] 🌍 GLOBAL: dragover on", e.target);
+        },
+        { once: true }
+      );
+
+      document.addEventListener(
+        "dragenter",
+        (e) => {
+          console.log("[DragNDrop] 🌍 GLOBAL: dragenter on", e.target);
+        },
+        { once: true }
+      );
     } catch (err) {
       console.error("[DragNDrop] ❌ setupDropZone error:", err);
     }
