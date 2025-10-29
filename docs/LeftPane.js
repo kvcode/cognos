@@ -123,10 +123,6 @@ define([], function () {
               button.className = "left-pane-button";
               button.textContent = btn.label || `Button ${bIdx}`;
 
-              // ✨ NEW: Store full button config on the element
-              button._buttonConfig = btn;
-              console.log(`[LeftPane] 💾 Stored config on button:`, btn);
-
               // NO ICONS on buttons - just clean text
               // Icons are only for group headers
 
