@@ -92,6 +92,11 @@ define([], function () {
         button.addEventListener("dragstart", (e) => {
           console.log(`[DragNDrop] 🎯 Drag started: ${button.textContent.trim()}`);
 
+          // ADD THESE DEBUG LINES:
+          console.log("[DragNDrop] 🔍 Event target:", e.target);
+          console.log("[DragNDrop] 🔍 DataTransfer:", e.dataTransfer);
+          console.log("[DragNDrop] 🔍 Button computed style:", getComputedStyle(button));
+
           const dragData = {
             optionName: button.textContent.trim(),
             sourceIndex: idx,

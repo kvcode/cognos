@@ -134,14 +134,6 @@ define([], function () {
                   button.prepend(spanIcon);
                 }
 
-                /*
-                // Click handler
-                button.addEventListener("drag", () => {
-                  console.log(`[LeftPane] 🖱 Button clicked: ${btn.label}`);
-                  // alert(`Clicked: ${btn.label}`);
-                });
-                */
-
                 buttonsContainer.appendChild(button);
               });
             } else {
