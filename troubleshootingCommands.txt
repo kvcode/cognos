@@ -21,3 +21,7 @@ console.log('All panes:', document.querySelectorAll('[class*="pane"]'));
 // Check the full container
 console.log('Container:', document.querySelector('.custom-prompt-page-container'));
 ```
+
+console.log('LeftPane buttons:', document.querySelectorAll('.left-pane-button'));
+console.log('LeftPane container:', document.querySelector('.left-pane-container'));
+```
