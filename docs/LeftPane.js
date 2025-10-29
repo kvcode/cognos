@@ -138,10 +138,6 @@ define([], function () {
           this.domNode.appendChild(groupContainer);
         });
       }
-
-      // Append to Cognos container
-      oControlHost.container.appendChild(this.domNode);
-      console.log("[LeftPane] ✅ DOM node appended to Cognos container");
     } catch (err) {
       console.error("[LeftPane] ❌ Error during draw():", err);
     }

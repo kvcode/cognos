@@ -70,10 +70,6 @@ define([], function () {
       this.cards.forEach((cardData) => {
         this._renderCard(cardData);
       });
-
-      // Append DOM to Cognos container
-      oControlHost.container.appendChild(this.domNode);
-      console.log("[RightPane] ✅ RightPane DOM appended to Cognos container");
     } catch (err) {
       console.error("[RightPane] ❌ draw() failed:", err);
     }
