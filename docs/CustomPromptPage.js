@@ -16,6 +16,40 @@ define([], function () {
   CustomPromptPage.prototype.initialize = function (oControlHost, fnDoneInitializing) {
     console.log("[CustomPromptPage] 🔧 initialize() called");
 
+    // 🔒 CRITICAL: Bind methods to preserve context
+    this.getParameters = this.getParameters.bind(this);
+    console.log("[CustomPromptPage] 🔗 getParameters() bound to 'this'");
+
+    // 🔍 Check BEFORE registration
+    console.log("[CustomPromptPage] 🔍 Checking oControlHost.control BEFORE registration:");
+    console.log("[CustomPromptPage] 🔍   oControlHost.control =", oControlHost.control);
+    console.log("[CustomPromptPage] 🔍   typeof oControlHost.control =", typeof oControlHost.control);
+
+    if (oControlHost.control && typeof oControlHost.control.getParameters === "function") {
+      console.log("[CustomPromptPage] 🔍   oControlHost.control.getParameters EXISTS (before overwrite)");
+    } else {
+      console.log("[CustomPromptPage] 🔍   oControlHost.control.getParameters DOES NOT EXIST (before overwrite)");
+    }
+
+    // 🚨 Self-register with Cognos (ONLY ONCE!)
+    oControlHost.control = this;
+    console.log("[CustomPromptPage] ✅ Self-registered to oControlHost.control");
+
+    // 🔍 Verify AFTER registration
+    console.log("[CustomPromptPage] 🔍 Verifying registration AFTER:");
+    console.log("[CustomPromptPage] 🔍   oControlHost.control =", oControlHost.control);
+    console.log("[CustomPromptPage] 🔍   typeof oControlHost.control =", typeof oControlHost.control);
+    console.log(
+      "[CustomPromptPage] 🔍   typeof oControlHost.control.getParameters =",
+      typeof oControlHost.control.getParameters
+    );
+
+    if (typeof oControlHost.control.getParameters === "function") {
+      console.log("[CustomPromptPage] ✅✅✅ getParameters() IS ACCESSIBLE via oControlHost.control");
+    } else {
+      console.error("[CustomPromptPage] ❌❌❌ getParameters() NOT ACCESSIBLE via oControlHost.control!");
+    }
+
     try {
       // Create main container
       this.domNode = document.createElement("div");
@@ -79,6 +113,15 @@ define([], function () {
 
                 this.dragDrop.initialize(oControlHost, () => {
                   console.log("[CustomPromptPage] ✅ DragDrop initialized");
+
+                  // 🔍 Final verification after everything is loaded
+                  console.log("[CustomPromptPage] 🔍 FINAL VERIFICATION after all modules loaded:");
+                  console.log("[CustomPromptPage] 🔍   oControlHost.control =", oControlHost.control);
+                  console.log(
+                    "[CustomPromptPage] 🔍   typeof oControlHost.control.getParameters =",
+                    typeof oControlHost.control.getParameters
+                  );
+
                   fnDoneInitializing();
                 });
               }, (err) => {
@@ -141,6 +184,14 @@ define([], function () {
         console.log("[CustomPromptPage] 🔗 Setting up DragDrop handlers");
         this.dragDrop.draw();
       }
+
+      // 🔍 Verification after draw
+      console.log("[CustomPromptPage] 🔍 VERIFICATION after draw() complete:");
+      console.log("[CustomPromptPage] 🔍   oControlHost.control =", oControlHost.control);
+      console.log(
+        "[CustomPromptPage] 🔍   typeof oControlHost.control.getParameters =",
+        typeof oControlHost.control.getParameters
+      );
     } catch (err) {
       console.error("[CustomPromptPage] ❌ Error during draw():", err);
     }
@@ -152,6 +203,8 @@ define([], function () {
     console.log("[CustomPromptPage] 🚨🚨🚨 COGNOS CALLED getParameters()!!! 🚨🚨🚨");
     console.log("[CustomPromptPage] 🚨 Timestamp:", new Date().toISOString());
     console.log("[CustomPromptPage] 🚨 Stack trace:", new Error().stack);
+    console.log("[CustomPromptPage] 🚨 this =", this);
+    console.log("[CustomPromptPage] 🚨 this.rightPane =", this.rightPane);
 
     console.log("[CustomPromptPage] 📋 getParameters() called by Cognos");
 
