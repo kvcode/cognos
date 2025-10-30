@@ -20,84 +20,6 @@ define([], function () {
     this.getParameters = this.getParameters.bind(this);
     console.log("[CustomPromptPage] 🔗 getParameters() bound to 'this'");
 
-    // === 🎯 CRITICAL FIX: Monkey-patch PreLoad.prototype.getParameters ===
-    console.log("[CustomPromptPage] 🔧 Patching PreLoad.prototype to add getParameters()");
-
-    // Get reference to PreLoad constructor through the control host
-    if (oControlHost && oControlHost.control && oControlHost.control.constructor) {
-      const PreLoadConstructor = oControlHost.control.constructor;
-
-      // Add getParameters method to PreLoad prototype
-      if (!PreLoadConstructor.prototype.getParameters) {
-        PreLoadConstructor.prototype.getParameters = function () {
-          console.log("[PreLoad] 🚨 getParameters() called by Cognos!");
-          console.log("[PreLoad] 🔍 this.control exists:", !!this.control);
-
-          if (this.control && typeof this.control.getParameters === "function") {
-            console.log("[PreLoad] ✅ Delegating to CustomPromptPage.getParameters()");
-            return this.control.getParameters();
-          } else {
-            console.warn("[PreLoad] ⚠️ control.getParameters not available, returning []");
-            return [];
-          }
-        };
-        console.log("[CustomPromptPage] ✅ PreLoad.prototype.getParameters added successfully!");
-      } else {
-        console.log("[CustomPromptPage] ℹ️ PreLoad.prototype.getParameters already exists");
-      }
-    } else {
-      console.error("[CustomPromptPage] ❌ Cannot access PreLoad constructor for patching");
-    }
-
-    // 🔍 Check BEFORE modification (old monkey patch - keeping for debugging)
-    console.log("[CustomPromptPage] 🔍 Checking oControlHost.control BEFORE modification:");
-    console.log("[CustomPromptPage] 🔍   oControlHost.control =", oControlHost.control);
-    console.log("[CustomPromptPage] 🔍   typeof oControlHost.control =", typeof oControlHost.control);
-    console.log("[CustomPromptPage] 🔍   oControlHost.control is read-only, will add method instead");
-
-    if (oControlHost.control && typeof oControlHost.control.getParameters === "function") {
-      console.log("[CustomPromptPage] 🔍   oControlHost.control.getParameters EXISTS (before modification)");
-    } else {
-      console.log("[CustomPromptPage] 🔍   oControlHost.control.getParameters DOES NOT EXIST (before modification)");
-    }
-
-    // 🚨 MONKEY PATCH: Add our method to existing control object (old attempt - may not be needed now)
-    try {
-      oControlHost.control.getParameters = this.getParameters;
-      console.log("[CustomPromptPage] ✅ Monkey-patched getParameters() onto oControlHost.control");
-    } catch (patchErr) {
-      console.error("[CustomPromptPage] ❌ Failed to add getParameters():", patchErr);
-      console.log("[CustomPromptPage] 🔍 Attempting alternative: define property");
-
-      try {
-        Object.defineProperty(oControlHost.control, "getParameters", {
-          value: this.getParameters,
-          writable: false,
-          enumerable: true,
-          configurable: true,
-        });
-        console.log("[CustomPromptPage] ✅ Added getParameters() via defineProperty");
-      } catch (defineErr) {
-        console.error("[CustomPromptPage] ❌ defineProperty also failed:", defineErr);
-        console.error("[CustomPromptPage] ❌❌❌ CANNOT REGISTER getParameters() - Cognos control is sealed!");
-      }
-    }
-
-    // 🔍 Verify AFTER modification
-    console.log("[CustomPromptPage] 🔍 Verifying AFTER modification:");
-    console.log("[CustomPromptPage] 🔍   oControlHost.control =", oControlHost.control);
-    console.log("[CustomPromptPage] 🔍   typeof oControlHost.control =", typeof oControlHost.control);
-    console.log(
-      "[CustomPromptPage] 🔍   typeof oControlHost.control.getParameters =",
-      typeof oControlHost.control.getParameters
-    );
-
-    if (typeof oControlHost.control.getParameters === "function") {
-      console.log("[CustomPromptPage] ✅✅✅ getParameters() IS ACCESSIBLE via oControlHost.control");
-    } else {
-      console.error("[CustomPromptPage] ❌❌❌ getParameters() NOT ACCESSIBLE via oControlHost.control!");
-    }
-
     try {
       // Create main container
       this.domNode = document.createElement("div");
@@ -161,14 +83,7 @@ define([], function () {
 
                 this.dragDrop.initialize(oControlHost, () => {
                   console.log("[CustomPromptPage] ✅ DragDrop initialized");
-
-                  // 🔍 Final verification after everything is loaded
-                  console.log("[CustomPromptPage] 🔍 FINAL VERIFICATION after all modules loaded:");
-                  console.log("[CustomPromptPage] 🔍   oControlHost.control =", oControlHost.control);
-                  console.log(
-                    "[CustomPromptPage] 🔍   typeof oControlHost.control.getParameters =",
-                    typeof oControlHost.control.getParameters
-                  );
+                  console.log("[CustomPromptPage] ✅ All modules loaded successfully");
 
                   fnDoneInitializing();
                 });
