@@ -1,0 +1,102 @@
+/* === Container === */
+.custom-prompt-page-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+
+/* === Left Pane === */
+.left-pane-container {
+  width: 250px;
+  background-color: #f7f7f7;
+  border-right: 1px solid #ccc;
+  padding: 10px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.left-pane-group {
+  margin-bottom: 20px;
+}
+
+.left-pane-group-header {
+  font-weight: bold;
+  margin-bottom: 8px;
+  padding: 5px;
+  background-color: #e0e0e0;
+  border-radius: 3px;
+}
+
+/* === CRITICAL: Vertical button layout === */
+.left-pane-buttons-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.left-pane-button {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  text-align: left;
+  cursor: grab;
+  background-color: #e1e1e1;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.left-pane-button:active {
+  cursor: grabbing;
+}
+
+.left-pane-button[draggable="true"] {
+  cursor: grab;
+}
+
+/* === Right Pane === */
+.right-pane {
+  flex: 1;
+  padding: 10px;
+  background-color: #fff;
+  overflow-y: auto;
+  position: relative;
+  min-width: 300px;
+}
+
+.right-pane-cards {
+  min-height: 100px;
+}
+
+.right-pane-card {
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #e6f0ff;
+  border: 1px solid #99c0ff;
+  border-radius: 4px;
+}
+
+.right-pane.drop-hover,
+.right-pane-cards.drop-hover {
+  outline: 2px dashed #007bff;
+  background-color: #f0f8ff;
+}
+
+/* === Floating Drag Element === */
+.drag-floating {
+  position: fixed;
+  pointer-events: none; /* CRITICAL - doesn't block drop zone */
+  z-index: 9999;
+  padding: 8px 12px;
+  background: #e1e1e1;
+  border: 1px solid #999;
+  border-radius: 3px;
+  opacity: 0.8;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+  cursor: grabbing;
+  user-select: none;
+  white-space: nowrap;
+}
