@@ -282,12 +282,22 @@ define([], function () {
       card.style.marginBottom = "10px";
       card.style.borderRadius = "4px";
 
+      // ✨ WIDTH CONSTRAINTS
+      card.style.minWidth = "480px";
+      card.style.maxWidth = "720px";
+      card.style.width = "auto"; // Grows with content
+      card.style.boxSizing = "border-box";
+      console.log("[RightPane] 📏 [V2] Card width: min=480px, max=720px, auto-grow");
+
       // Card header
       const header = document.createElement("div");
       header.className = "right-pane-card-header";
       header.textContent = config.label || config.optionName || "Unnamed Prompt";
       header.style.fontWeight = "bold";
       header.style.marginBottom = "5px";
+      header.style.wordWrap = "break-word"; // Allow long labels to wrap
+      header.style.overflow = "hidden";
+      header.style.textOverflow = "ellipsis";
       card.appendChild(header);
 
       // V2 badge
@@ -318,6 +328,7 @@ define([], function () {
       input.style.padding = "5px";
       input.style.boxSizing = "border-box";
       input.style.border = "1px solid #28a745";
+      input.style.minWidth = "0"; // Allow shrinking if needed
       card.appendChild(input);
 
       // ✨ Store references on card object
@@ -328,6 +339,7 @@ define([], function () {
       // Input change logging (for debugging)
       input.addEventListener("input", () => {
         console.log(`[RightPane] ⌨️ [V2] User typed in "${config.label}":`, input.value);
+        console.log(`[RightPane] 📏 [V2] Current card width: ${card.offsetWidth}px`);
       });
 
       this.cardsContainer.appendChild(card);
