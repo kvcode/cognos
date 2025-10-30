@@ -1,27 +1,86 @@
-// Check if getParameters exists on PreLoad prototype
-// This will tell us if the updated file is loaded
-window.testPreLoadMethod = function() {
-  console.log("Testing if PreLoad.getParameters exists...");
-  
-  // Try to find ANY custom control instance
-  var containers = document.querySelectorAll('[data-custom-control], [class*="custom"]');
-  console.log("Found containers:", containers.length);
-  
-  return "Check console for results";
-};
+test3
+// Search through Cognos global objects
+console.log("=== Searching for PreLoad instance ===");
 
-window.testPreLoadMethod();
+// Check common Cognos namespaces
+if (window.cognos) {
+  console.log("✅ cognos object exists");
+  console.log("cognos keys:", Object.keys(window.cognos));
+}
 
-
-// View the actual PreLoad source code in memory
-console.log("Checking PreLoad source...");
-
-// This will show us if getParameters is defined
-try {
-  // Look for RequireJS modules
-  if (window.require && window.require.defined) {
-    console.log("RequireJS modules loaded:", Object.keys(window.require.s.contexts._.defined));
+// Check if there's a Report object
+if (window.cognos && window.cognos.Report) {
+  console.log("✅ cognos.Report exists");
+  try {
+    var report = cognos.Report.getReport("_THIS_");
+    console.log("Report instance:", report);
+    
+    // Check if report has controls
+    if (report.prompt) {
+      console.log("Report has prompt object:", report.prompt);
+    }
+  } catch(e) {
+    console.log("Could not get report:", e.message);
   }
-} catch(e) {
-  console.log("Could not access RequireJS:", e);
+}
+
+// Look in DOM for the actual container
+var allDivs = document.querySelectorAll('div');
+console.log("Total divs on page:", allDivs.length);
+
+// Find divs with our class names
+var customDivs = document.querySelectorAll('.custom-prompt-page-container, .left-pane-container, .right-pane');
+console.log("Found custom control divs:", customDivs.length);
+
+if (customDivs.length > 0) {
+  console.log("✅ Found custom control DOM elements!");
+  customDivs.forEach(function(div) {
+    console.log("  - Class:", div.className);
+    console.log("  - ID:", div.id);
+  });
+}
+
+TEST 4
+// Check if the PreLoad constructor has getParameters
+console.log("=== Checking PreLoad Constructor ===");
+
+// Try to access through RequireJS
+if (window.require) {
+  try {
+    // List all loaded modules
+    var contexts = require.s.contexts._;
+    var registry = contexts.registry;
+    
+    console.log("RequireJS modules loaded:");
+    for (var key in registry) {
+      if (key.toLowerCase().includes('preload') || key.toLowerCase().includes('custom')) {
+        console.log("  Found:", key);
+      }
+    }
+  } catch(e) {
+    console.log("Cannot access RequireJS registry:", e.message);
+  }
+}
+
+TEST5
+javascript// Just look for our actual rendered content
+console.log("=== Looking for rendered content ===");
+
+// Check if left pane buttons exist
+var buttons = document.querySelectorAll('.left-pane-button');
+console.log("Found left pane buttons:", buttons.length);
+
+// Check if right pane exists
+var rightPane = document.querySelector('.right-pane');
+console.log("Found right pane:", !!rightPane);
+
+// Check if container exists
+var container = document.querySelector('.custom-prompt-page-container');
+console.log("Found container:", !!container);
+
+if (container) {
+  console.log("✅ Custom control IS rendered!");
+  console.log("Container HTML:", container.outerHTML.substring(0, 200) + "...");
+} else {
+  console.log("❌ Custom control NOT rendered - this is the problem!");
 }
