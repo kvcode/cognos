@@ -136,19 +136,59 @@ define([], function () {
       oControlHost.container.appendChild(this.domNode);
       console.log("[CustomPromptPage] ✅ Layout rendered successfully");
 
-      // NEW: Now that panes are drawn, setup DragDrop handlers
+      // Setup DragDrop handlers after panes are drawn
       if (this.dragDrop && typeof this.dragDrop.draw === "function") {
         console.log("[CustomPromptPage] 🔗 Setting up DragDrop handlers");
         this.dragDrop.draw();
       }
-
-      // OLD EVENT-BASED APPROACH (kept commented for reference/testing)
-      // document.addEventListener("PromptPageReady", () => {
-      //   console.log("[CustomPromptPage] PromptPageReady Event dispatched from CustomPromptPage.js");
-      // });
-      // document.dispatchEvent(new Event("PromptPageReady"));
     } catch (err) {
       console.error("[CustomPromptPage] ❌ Error during draw():", err);
+    }
+  };
+
+  // ✨✨✨ NEW: Get Parameters (Cognos will call this on FINISH) ✨✨✨
+  CustomPromptPage.prototype.getParameters = function () {
+    // 🚨🚨🚨 CHECKPOINT: Cognos called this method 🚨🚨🚨
+    console.log("[CustomPromptPage] 🚨🚨🚨 COGNOS CALLED getParameters()!!! 🚨🚨🚨");
+    console.log("[CustomPromptPage] 🚨 Timestamp:", new Date().toISOString());
+    console.log("[CustomPromptPage] 🚨 Stack trace:", new Error().stack);
+
+    console.log("[CustomPromptPage] 📋 getParameters() called by Cognos");
+
+    try {
+      // Check if RightPane exists and has getParameters method
+      if (this.rightPane && typeof this.rightPane.getParameters === "function") {
+        console.log("[CustomPromptPage] ✅ RightPane found with getParameters() method");
+
+        const params = this.rightPane.getParameters();
+
+        console.log("[CustomPromptPage] 📦 Parameters received from RightPane:", JSON.stringify(params, null, 2));
+        console.log("[CustomPromptPage] 📊 Number of parameters:", params.length);
+
+        // Validate each parameter
+        params.forEach((param, idx) => {
+          console.log(`[CustomPromptPage] 🔍 Parameter ${idx}:`, param);
+          console.log(`[CustomPromptPage] 🔍   - parameter name:`, param.parameter);
+          console.log(`[CustomPromptPage] 🔍   - values:`, param.values);
+        });
+
+        console.log("[CustomPromptPage] 📤 Returning parameters to Cognos:", params);
+        return params;
+      } else {
+        console.warn("[CustomPromptPage] ⚠️ RightPane not available or missing getParameters()");
+        console.log("[CustomPromptPage] 🔍 this.rightPane:", this.rightPane);
+        console.log(
+          "[CustomPromptPage] 🔍 typeof this.rightPane.getParameters:",
+          typeof (this.rightPane ? this.rightPane.getParameters : undefined)
+        );
+        console.log("[CustomPromptPage] 📤 Returning empty array to Cognos");
+        return [];
+      }
+    } catch (err) {
+      console.error("[CustomPromptPage] ❌ getParameters() failed with error:", err);
+      console.error("[CustomPromptPage] ❌ Error stack:", err.stack);
+      console.log("[CustomPromptPage] 📤 Returning empty array due to error");
+      return [];
     }
   };
 
