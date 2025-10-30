@@ -99,12 +99,39 @@ define([], function () {
           e.preventDefault(); // Prevent text selection
           console.log(`[DragNDrop] 🖱 Mouse down on: ${button.textContent.trim()}`);
 
-          // Store drag data
+          // ========== OLD V1 LOGIC - START (UNCHANGED) ==========
+          // Store drag data (old format)
           this.dragData = {
             optionName: button.textContent.trim(),
             sourceIndex: idx,
             timestamp: Date.now(),
           };
+          console.log("[DragNDrop] 📦 [V1] Old dragData format:", this.dragData);
+          // ========== OLD V1 LOGIC - END ==========
+
+          // ✨✨✨ NEW V2 LOGIC - START ✨✨✨
+          console.log("[DragNDrop] 🔍 [V2] Checking for stored button config...");
+
+          if (button._buttonConfig) {
+            console.log("[DragNDrop] ✅ [V2] Found stored _buttonConfig on button!");
+            console.log("[DragNDrop] 📦 [V2] Full config object:", JSON.stringify(button._buttonConfig, null, 2));
+
+            // Store full config alongside old data
+            this.dragData.fullConfig = button._buttonConfig;
+            console.log("[DragNDrop] 💾 [V2] Added fullConfig to dragData");
+            console.log("[DragNDrop] 💾 [V2] fullConfig.paramName:", button._buttonConfig.paramName || "MISSING!");
+            console.log("[DragNDrop] 💾 [V2] fullConfig.label:", button._buttonConfig.label || "MISSING!");
+            console.log("[DragNDrop] 💾 [V2] fullConfig.promptName:", button._buttonConfig.promptName || "MISSING!");
+            console.log("[DragNDrop] 💾 [V2] fullConfig.queryName:", button._buttonConfig.queryName || "MISSING!");
+            console.log("[DragNDrop] 💾 [V2] fullConfig.dataItem:", button._buttonConfig.dataItem || "MISSING!");
+
+            // Final dragData structure
+            console.log("[DragNDrop] 🎯 [V2] Final dragData with both formats:", this.dragData);
+          } else {
+            console.warn("[DragNDrop] ⚠️ [V2] No _buttonConfig found on button (LeftPane V2 not applied?)");
+            console.log("[DragNDrop] ⏩ [V2] Falling back to V1 mode only");
+          }
+          // ✨✨✨ NEW V2 LOGIC - END ✨✨✨
 
           // Create floating element
           this.createFloatingElement(button.textContent.trim(), e.clientX, e.clientY);
@@ -115,7 +142,7 @@ define([], function () {
           // Start tracking mouse movement
           this.startDrag();
 
-          console.log("[DragNDrop] 📦 Drag data:", this.dragData);
+          console.log("[DragNDrop] 🚀 Drag started with data:", this.dragData);
         });
       });
 
@@ -208,13 +235,43 @@ define([], function () {
     if (isOver) {
       console.log("[DragNDrop] ✅ Dropped over target!");
 
-      // Add card to RightPane
+      // ========== OLD V1 LOGIC - START (UNCHANGED) ==========
+      // Add card to RightPane (old method)
       if (this.rightPane && this.rightPane.addCard) {
+        console.log("[DragNDrop] 📞 [V1] Calling rightPane.addCard() with old format");
+        console.log("[DragNDrop] 📦 [V1] Data passed:", this.dragData);
         this.rightPane.addCard(this.dragData);
-        console.log("[DragNDrop] ✅ Card added to RightPane:", this.dragData.optionName);
+        console.log("[DragNDrop] ✅ [V1] Old card added to RightPane");
       } else {
-        console.error("[DragNDrop] ❌ RightPane.addCard() not available");
+        console.error("[DragNDrop] ❌ [V1] RightPane.addCard() not available");
       }
+      // ========== OLD V1 LOGIC - END ==========
+
+      // ✨✨✨ NEW V2 LOGIC - START ✨✨✨
+      console.log("[DragNDrop] 🔍 [V2] Checking if V2 methods available...");
+
+      if (this.rightPane && typeof this.rightPane.addCardV2 === "function") {
+        console.log("[DragNDrop] ✅ [V2] Found rightPane.addCardV2() method!");
+
+        if (this.dragData.fullConfig) {
+          console.log("[DragNDrop] 📞 [V2] Calling rightPane.addCardV2() with full config");
+          console.log("[DragNDrop] 📦 [V2] Data passed (entire dragData):", JSON.stringify(this.dragData, null, 2));
+          console.log("[DragNDrop] 📦 [V2] fullConfig included:", JSON.stringify(this.dragData.fullConfig, null, 2));
+
+          this.rightPane.addCardV2(this.dragData);
+
+          console.log("[DragNDrop] ✅ [V2] New V2 card added to RightPane");
+        } else {
+          console.warn("[DragNDrop] ⚠️ [V2] dragData.fullConfig missing, skipping V2 card");
+          console.log("[DragNDrop] ⏩ [V2] Only V1 card will be created");
+        }
+      } else {
+        console.warn("[DragNDrop] ⚠️ [V2] rightPane.addCardV2() not available (RightPane V2 not implemented yet?)");
+        console.log("[DragNDrop] ⏩ [V2] Only V1 card will be created");
+      }
+      // ✨✨✨ NEW V2 LOGIC - END ✨✨✨
+
+      console.log("[DragNDrop] 🎉 Card creation complete (V1 + V2 if available)");
     } else {
       console.log("[DragNDrop] ❌ Dropped outside target zone");
     }
