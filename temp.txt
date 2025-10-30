@@ -5,4 +5,18 @@ VM8732:14 Found container: false
 VM8732:20 ❌ Custom control NOT rendered - this is the problem!
 undefined
 
+VM11873:17 Uncaught SyntaxError: Unexpected number
+
+
+=== Searching for PreLoad instance ===
+VM11879:28 Total divs on page: 152
+VM11879:32 Found custom control divs: 3
+VM11879:35 ✅ Found custom control DOM elements!
+VM11879:37   - Class: custom-prompt-page-container
+VM11879:38   - ID: 
+VM11879:37   - Class: left-pane-container
+VM11879:38   - ID: 
+VM11879:37   - Class: right-pane
+VM11879:38   - ID: 
+undefined
 
