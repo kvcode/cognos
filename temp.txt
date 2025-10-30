@@ -1,24 +1,8 @@
-[PreLoad] 🏗 Constructor called
-preLoad.js?v=1736447937:10 [PreLoad] 🔧 initialize() called
-preLoad.js?v=1736447937:59 [PreLoad] ✅ External CSS linked from: https://kvcode.github.io/cognos/LeftPane.css
-preLoad.js?v=1736447937:22 [PreLoad] 🚀 Loading CustomPromptPage from: https://kvcode.github.io/cognos/CustomPromptPage.js?v=123456
-CustomPromptPage.js?v=123456&v=1736447937:4 [CustomPromptPage] === Module Loaded ===
-preLoad.js?v=1736447937:26 [PreLoad] ✅ CustomPromptPage loaded
-CustomPromptPage.js?v=123456&v=1736447937:8 [CustomPromptPage] 🏗 Constructor called
-CustomPromptPage.js?v=123456&v=1736447937:17 [CustomPromptPage] 🔧 initialize() called
-CustomPromptPage.js?v=123456&v=1736447937:21 [CustomPromptPage] 🔗 getParameters() bound to 'this'
-CustomPromptPage.js?v=123456&v=1736447937:24 [CustomPromptPage] 🔍 Checking oControlHost.control BEFORE registration:
-CustomPromptPage.js?v=123456&v=1736447937:25 [CustomPromptPage] 🔍   oControlHost.control = _gr
-CustomPromptPage.js?v=123456&v=1736447937:26 [CustomPromptPage] 🔍   typeof oControlHost.control = object
-CustomPromptPage.js?v=123456&v=1736447937:31 [CustomPromptPage] 🔍   oControlHost.control.getParameters DOES NOT EXIST (before overwrite)
-preLoad.js?v=1736447937:37  [PreLoad] ❌ Error initializing CustomPromptPage: TypeError: Cannot set property control of #<_v41> which has only a getter
-    at CustomPromptPage.initialize (CustomPromptPage.js?v=123456&v=1736447937:35:26)
-    at preLoad.js?v=1736447937:31:24
-    at Object.execCb (require.js:5:12947)
-    at b.check (require.js:5:6684)
-    at b.<anonymous> (require.js:5:9105)
-    at require.js:5:848
-    at require.js:5:9566
-    at each (require.js:5:289)
-    at b.emit (require.js:5:9534)
-    at b.check (require.js:5:7243)
+=== Looking for rendered content ===
+VM8732:6 Found left pane buttons: 0
+VM8732:10 Found right pane: false
+VM8732:14 Found container: false
+VM8732:20 ❌ Custom control NOT rendered - this is the problem!
+undefined
+
+
