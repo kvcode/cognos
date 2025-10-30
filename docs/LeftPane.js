@@ -123,6 +123,24 @@ define([], function () {
               button.className = "left-pane-button";
               button.textContent = btn.label || `Button ${bIdx}`;
 
+              // ✨✨✨ NEW V2 FEATURE - START ✨✨✨
+              // Store full button config on DOM element for V2 implementation
+              button._buttonConfig = btn;
+              console.log(`[LeftPane] 💾 [V2] Stored full button config on button "${btn.label}"`);
+              console.log(`[LeftPane] 💾 [V2] Config object:`, JSON.stringify(btn, null, 2));
+              console.log(`[LeftPane] 💾 [V2] paramName available:`, btn.paramName || "MISSING!");
+              console.log(`[LeftPane] 💾 [V2] promptName available:`, btn.promptName || "MISSING!");
+              console.log(`[LeftPane] 💾 [V2] queryName available:`, btn.queryName || "MISSING!");
+              console.log(`[LeftPane] 💾 [V2] dataItem available:`, btn.dataItem || "MISSING!");
+
+              // Verify storage worked
+              if (button._buttonConfig) {
+                console.log(`[LeftPane] ✅ [V2] Config successfully attached to button element`);
+              } else {
+                console.error(`[LeftPane] ❌ [V2] FAILED to attach config to button element!`);
+              }
+              // ✨✨✨ NEW V2 FEATURE - END ✨✨✨
+
               // NO ICONS on buttons - just clean text
               // Icons are only for group headers
 
@@ -143,6 +161,8 @@ define([], function () {
           this.domNode.appendChild(groupContainer);
         });
       }
+
+      console.log("[LeftPane] 🎉 [V2] All buttons rendered with stored configs");
     } catch (err) {
       console.error("[LeftPane] ❌ Error during draw():", err);
     }
