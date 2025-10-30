@@ -1,43 +1,24 @@
-document.addEventListener('dragend', (e) => {
-console.log('global dragstart', e.target)
-}, true);
-undefined
-document.addEventListener('dragstart', (e) => {
-console.log('global dragstart', e.target)
-}, true);
-undefined
-document.addEventListener('drag', (e) => {
-console.log('global dragstart', e.target)
-}, true);
-undefined
-[DragNDrop] 🎯 Drag started: Marke (2-stellig) (FZ) DragNDrop.js:98:19
-[DragNDrop] 🔍 Button rect: 
-DOMRect { x: 18, y: 171.1999969482422, width: 229.1999969482422, height: 33.600006103515625, top: 171.1999969482422, right: 247.1999969482422, bottom: 204.8000030517578, left: 18 }
-DragNDrop.js:99:19
-[DragNDrop] 🔍 Button parent: 
-<div class="left-pane-buttons-container" style="display: flex;">
-DragNDrop.js:100:19
-[DragNDrop] 🔍 All parent z-indexes: DragNDrop.js:101:19
-  - left-pane-buttons-container: z-index=auto, pointer-events=auto, position=static DragNDrop.js:106:21
-  - left-pane-group: z-index=auto, pointer-events=auto, position=static DragNDrop.js:106:21
-  - left-pane-container: z-index=auto, pointer-events=auto, position=static DragNDrop.js:106:21
-  - custom-prompt-layout: z-index=auto, pointer-events=auto, position=static DragNDrop.js:106:21
-  - custom-prompt-page-container: z-index=auto, pointer-events=auto, position=static DragNDrop.js:106:21
-  - : z-index=auto, pointer-events=auto, position=static DragNDrop.js:106:21
-  - pb: z-index=auto, pointer-events=auto, position=static DragNDrop.js:106:21
-  - : z-index=auto, pointer-events=auto, position=static 2 DragNDrop.js:106:21
-  - pg: z-index=auto, pointer-events=auto, position=static DragNDrop.js:106:21
-  - clsViewerPage: z-index=auto, pointer-events=auto, position=relative DragNDrop.js:106:21
-  - : z-index=auto, pointer-events=auto, position=static 2 DragNDrop.js:106:21
-  - clsPane_Workarea_active: z-index=auto, pointer-events=auto, position=absolute DragNDrop.js:106:21
-  - : z-index=98, pointer-events=auto, position=absolute DragNDrop.js:106:21
-[DragNDrop] ✅ Custom drag ghost created DragNDrop.js:147:21
-[DragNDrop] 📦 Data: 
-Object { optionName: "Marke (2-stellig) (FZ)", sourceIndex: 1, timestamp: 1761758224363 }
-DragNDrop.js:155:19
-[DragNDrop] ✅ effectAllowed: copy DragNDrop.js:156:19
-[DragNDrop] ✅ types: 
-Array [ "text/plain" ]
-DragNDrop.js:157:19
-[DragNDrop] 🔍 defaultPrevented: false DragNDrop.js:160:19
-[DragNDrop] 🔍 Event phase: 2
+[PreLoad] 🏗 Constructor called
+preLoad.js?v=1736447937:10 [PreLoad] 🔧 initialize() called
+preLoad.js?v=1736447937:59 [PreLoad] ✅ External CSS linked from: https://kvcode.github.io/cognos/LeftPane.css
+preLoad.js?v=1736447937:22 [PreLoad] 🚀 Loading CustomPromptPage from: https://kvcode.github.io/cognos/CustomPromptPage.js?v=123456
+CustomPromptPage.js?v=123456&v=1736447937:4 [CustomPromptPage] === Module Loaded ===
+preLoad.js?v=1736447937:26 [PreLoad] ✅ CustomPromptPage loaded
+CustomPromptPage.js?v=123456&v=1736447937:8 [CustomPromptPage] 🏗 Constructor called
+CustomPromptPage.js?v=123456&v=1736447937:17 [CustomPromptPage] 🔧 initialize() called
+CustomPromptPage.js?v=123456&v=1736447937:21 [CustomPromptPage] 🔗 getParameters() bound to 'this'
+CustomPromptPage.js?v=123456&v=1736447937:24 [CustomPromptPage] 🔍 Checking oControlHost.control BEFORE registration:
+CustomPromptPage.js?v=123456&v=1736447937:25 [CustomPromptPage] 🔍   oControlHost.control = _gr
+CustomPromptPage.js?v=123456&v=1736447937:26 [CustomPromptPage] 🔍   typeof oControlHost.control = object
+CustomPromptPage.js?v=123456&v=1736447937:31 [CustomPromptPage] 🔍   oControlHost.control.getParameters DOES NOT EXIST (before overwrite)
+preLoad.js?v=1736447937:37  [PreLoad] ❌ Error initializing CustomPromptPage: TypeError: Cannot set property control of #<_v41> which has only a getter
+    at CustomPromptPage.initialize (CustomPromptPage.js?v=123456&v=1736447937:35:26)
+    at preLoad.js?v=1736447937:31:24
+    at Object.execCb (require.js:5:12947)
+    at b.check (require.js:5:6684)
+    at b.<anonymous> (require.js:5:9105)
+    at require.js:5:848
+    at require.js:5:9566
+    at each (require.js:5:289)
+    at b.emit (require.js:5:9534)
+    at b.check (require.js:5:7243)
