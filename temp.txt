@@ -13,3 +13,10 @@ VM12300:18
 === Checking window for instances ===
 VM12300:21 Found on window: __glassAppController
 undefined
+
+//////////////////////////////////////
+=== Checking window for instances ===
+VM12305:5 Found on window: __glassAppController
+VM12305:5 Found on window: cognosControl
+VM12305:11 === Manual getParameters Test ===
+undefined
