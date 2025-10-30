@@ -1,22 +1,10 @@
-=== Looking for rendered content ===
-VM8732:6 Found left pane buttons: 0
-VM8732:10 Found right pane: false
-VM8732:14 Found container: false
-VM8732:20 ❌ Custom control NOT rendered - this is the problem!
-undefined
+[PreLoad] 🧨 destroy() called
+CustomPromptPage.js?v=123456&v=1736447937:213 [CustomPromptPage] 🧨 destroy() called
+DragNDrop.js?v=12345&v=1736447937:322 [DragNDrop] 🧨 destroy() called
+DragNDrop.js?v=12345&v=1736447937:341 [DragNDrop] ✅ Destroyed
+RightPane.js?v=123456&v=1736447937:386 [RightPane] 🧨 destroy() called
+RightPane.js?v=123456&v=1736447937:406 [RightPane] ✅ destroy() complete — cleanup successful
+CustomPromptPage.js?v=123456&v=1736447937:231 [CustomPromptPage] ✅ destroy() complete
 
-VM11873:17 Uncaught SyntaxError: Unexpected number
 
-
-=== Searching for PreLoad instance ===
-VM11879:28 Total divs on page: 152
-VM11879:32 Found custom control divs: 3
-VM11879:35 ✅ Found custom control DOM elements!
-VM11879:37   - Class: custom-prompt-page-container
-VM11879:38   - ID: 
-VM11879:37   - Class: left-pane-container
-VM11879:38   - ID: 
-VM11879:37   - Class: right-pane
-VM11879:38   - ID: 
-undefined
-
+///////////////////////////////////
