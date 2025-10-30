@@ -35,10 +35,7 @@ define([], function () {
       fnDoneInitializing();
     });
   };
-  /**
-   * Inject CSS dynamically.
-   * Works with both local RequireJS paths and external URLs.
-   */
+
   PreLoad.prototype.injectCSS = function (cssUrl) {
     try {
       // External CSS (absolute URL)
@@ -64,6 +61,7 @@ define([], function () {
       console.error("[PreLoad] ❌ Failed to inject CSS:", e);
     }
   };
+
   PreLoad.prototype.draw = function (oControlHost) {
     console.log("[PreLoad] 🖼 draw() called");
     if (this.control && typeof this.control.draw === "function") {
@@ -73,7 +71,6 @@ define([], function () {
     }
   };
 
-  // ✨✨✨ NEW: getParameters method ✨✨✨
   PreLoad.prototype.getParameters = function () {
     console.log("[PreLoad] 🚨🚨🚨 getParameters() called by Cognos!");
     console.log("[PreLoad] 📋 Timestamp:", new Date().toISOString());
@@ -95,34 +92,29 @@ define([], function () {
     }
   };
 
-  // ✨✨✨ ADD THESE TWO METHODS ✨✨✨
+  // ✨✨✨ CORRECT: PreLoad methods (NOT CustomPromptPage!) ✨✨✨
 
-  CustomPromptPage.prototype.isInValidState = function () {
-    console.log("[CustomPromptPage] 🔍 isInValidState() called");
+  PreLoad.prototype.isInValidState = function () {
+    console.log("[PreLoad] 🔍 isInValidState() called");
 
-    // Check if we have at least one card with a value
-    if (this.rightPane && typeof this.rightPane.getParameters === "function") {
-      const params = this.rightPane.getParameters();
-      console.log("[CustomPromptPage] 📊 Current parameters:", params);
-
-      // Valid if we have at least one parameter (or true if none required)
-      const isValid = true; // Always valid - parameters are optional
-      console.log("[CustomPromptPage] ✅ Control is valid:", isValid);
-      return isValid;
+    if (this.control && typeof this.control.isInValidState === "function") {
+      console.log("[PreLoad] ✅ Delegating to CustomPromptPage.isInValidState()");
+      return this.control.isInValidState();
     }
 
-    console.log("[CustomPromptPage] ✅ Control is valid (default)");
+    console.log("[PreLoad] ✅ Control is valid (default)");
     return true;
   };
 
-  CustomPromptPage.prototype.setData = function (oControlHost, oDataStore) {
-    console.log("[CustomPromptPage] 📊 setData() called");
-    console.log("[CustomPromptPage] 📊 oControlHost:", oControlHost);
-    console.log("[CustomPromptPage] 📊 oDataStore:", oDataStore);
+  PreLoad.prototype.setData = function (oControlHost, oDataStore) {
+    console.log("[PreLoad] 📊 setData() called");
 
-    // You may not need this for your use case, but Cognos expects it
-    // Store for future use if needed
-    this.dataStore = oDataStore;
+    if (this.control && typeof this.control.setData === "function") {
+      console.log("[PreLoad] ✅ Delegating to CustomPromptPage.setData()");
+      this.control.setData(oControlHost, oDataStore);
+    } else {
+      console.log("[PreLoad] ⚠️ setData() skipped — control not ready");
+    }
   };
 
   PreLoad.prototype.destroy = function (oControlHost) {
@@ -131,5 +123,6 @@ define([], function () {
       this.control.destroy();
     }
   };
+
   return PreLoad;
 });
