@@ -28,7 +28,7 @@ define([], function () {
       // Add background color for better visualization
       this.domNode.style.backgroundColor = "#d3d3d3"; // light gray background
       this.domNode.style.padding = "10px";
-      this.domNode.style.minHeight = "100px";
+      this.domNode.style.minHeight = "360px";
       this.domNode.style.height = "100%"; // Adjust height if necessary
       this.domNode.style.position = "relative"; // Ensure positioning for drop area
       this.domNode.style.pointerEvents = "auto";
