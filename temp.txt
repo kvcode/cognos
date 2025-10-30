@@ -1,22 +1,24 @@
-[PreLoad] 🧨 destroy() called
-CustomPromptPage.js?v=123456&v=1736447937:213 [CustomPromptPage] 🧨 destroy() called
-DragNDrop.js?v=12345&v=1736447937:322 [DragNDrop] 🧨 destroy() called
-DragNDrop.js?v=12345&v=1736447937:341 [DragNDrop] ✅ Destroyed
-RightPane.js?v=123456&v=1736447937:386 [RightPane] 🧨 destroy() called
-RightPane.js?v=123456&v=1736447937:406 [RightPane] ✅ destroy() complete — cleanup successful
-CustomPromptPage.js?v=123456&v=1736447937:231 [CustomPromptPage] ✅ destroy() complete
+CONSOLE.ERROR
+Uncaught 
+Object { _hrg: "/cognos4/samples/javascript/CustomPromptPageGH/preLoad.js", _l9m: null, _43f: "Failed to load module.\r\ndefine\r\n/cognos4/samples/javascript/CustomPromptPageGH/preLoad.js" }
 
+POP UP - ALERT
+Error: Load timeout for modules: halpromise!_7nn?_833()_unnormalized5,halpromise!_7nn?_833()_unnormalized6,halpromise!_7nn?_833()_unnormalized7,halpromise!_7nn?_833(),text!dialogs/_0z9.xml,_sn4,_j8m,halstrings!res/rs_props_en.json?prefix=IDS_PROPDESC__unnormalized8,halstrings
+https://requirejs.org/docs/errors.html#timeout
+source: https://bi-ep-test.vw.vwg/cognos4/bi/lib/requirejs/2.3.7/require.js
+line: 5
+column: 1101
+makeError@https://bi-ep-test.vw.vwg/cognos4/bi/lib/requirejs/2.3.7/require.js:5:1101
+l@https://bi-ep-test.vw.vwg/cognos4/bi/lib/requirejs/2.3.7/require.js:5:4089
+newContext/l/w<@https://bi-ep-test.vw.vwg/cognos4/bi/lib/requirejs/2.3.7/require.js:5:4285
 
-///////////////////////////////////
-Custom control container: null
-VM12300:18 
-=== Checking window for instances ===
-VM12300:21 Found on window: __glassAppController
-undefined
-
-//////////////////////////////////////
-=== Checking window for instances ===
-VM12305:5 Found on window: __glassAppController
-VM12305:5 Found on window: cognosControl
-VM12305:11 === Manual getParameters Test ===
-undefined
+CONSOLE.ERROR
+Uncaught Error: Load timeout for modules: halpromise!_7nn?_833()_unnormalized5,halpromise!_7nn?_833()_unnormalized6,halpromise!_7nn?_833()_unnormalized7,halpromise!_7nn?_833(),text!dialogs/_0z9.xml,_sn4,_j8m,halstrings!res/rs_props_en.json?prefix=IDS_PROPDESC__unnormalized8,halstrings
+https://requirejs.org/docs/errors.html#timeout
+    makeError https://bi-ep-test.vw.vwg/cognos4/bi/lib/requirejs/2.3.7/require.js:5
+    l https://bi-ep-test.vw.vwg/cognos4/bi/lib/requirejs/2.3.7/require.js:5
+    w https://bi-ep-test.vw.vwg/cognos4/bi/lib/requirejs/2.3.7/require.js:5
+require.js:5:1101
+    makeError https://bi-ep-test.vw.vwg/cognos4/bi/lib/requirejs/2.3.7/require.js:5
+    l https://bi-ep-test.vw.vwg/cognos4/bi/lib/requirejs/2.3.7/require.js:5
+    w https://bi-ep-test.vw.vwg/cognos4/bi/lib/requirejs/2.3.7/require.js:5
