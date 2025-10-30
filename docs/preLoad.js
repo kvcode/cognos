@@ -95,6 +95,36 @@ define([], function () {
     }
   };
 
+  // ✨✨✨ ADD THESE TWO METHODS ✨✨✨
+
+  CustomPromptPage.prototype.isInValidState = function () {
+    console.log("[CustomPromptPage] 🔍 isInValidState() called");
+
+    // Check if we have at least one card with a value
+    if (this.rightPane && typeof this.rightPane.getParameters === "function") {
+      const params = this.rightPane.getParameters();
+      console.log("[CustomPromptPage] 📊 Current parameters:", params);
+
+      // Valid if we have at least one parameter (or true if none required)
+      const isValid = true; // Always valid - parameters are optional
+      console.log("[CustomPromptPage] ✅ Control is valid:", isValid);
+      return isValid;
+    }
+
+    console.log("[CustomPromptPage] ✅ Control is valid (default)");
+    return true;
+  };
+
+  CustomPromptPage.prototype.setData = function (oControlHost, oDataStore) {
+    console.log("[CustomPromptPage] 📊 setData() called");
+    console.log("[CustomPromptPage] 📊 oControlHost:", oControlHost);
+    console.log("[CustomPromptPage] 📊 oDataStore:", oDataStore);
+
+    // You may not need this for your use case, but Cognos expects it
+    // Store for future use if needed
+    this.dataStore = oDataStore;
+  };
+
   PreLoad.prototype.destroy = function (oControlHost) {
     console.log("[PreLoad] 🧨 destroy() called");
     if (this.control && typeof this.control.destroy === "function") {
