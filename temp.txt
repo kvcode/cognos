@@ -8,3 +8,8 @@ CustomPromptPage.js?v=123456&v=1736447937:231 [CustomPromptPage] ✅ destroy() c
 
 
 ///////////////////////////////////
+Custom control container: null
+VM12300:18 
+=== Checking window for instances ===
+VM12300:21 Found on window: __glassAppController
+undefined
