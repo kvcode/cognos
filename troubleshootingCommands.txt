@@ -1,27 +1,27 @@
-const rightPane = document.querySelector('.right-pane-cards');
-console.log('Drop target:', rightPane);
-console.log('pointer-events:', getComputedStyle(rightPane).pointerEvents);
-console.log('position:', getComputedStyle(rightPane).position);
-console.log('z-index:', getComputedStyle(rightPane).zIndex);
+// Check if getParameters exists on PreLoad prototype
+// This will tell us if the updated file is loaded
+window.testPreLoadMethod = function() {
+  console.log("Testing if PreLoad.getParameters exists...");
+  
+  // Try to find ANY custom control instance
+  var containers = document.querySelectorAll('[data-custom-control], [class*="custom"]');
+  console.log("Found containers:", containers.length);
+  
+  return "Check console for results";
+};
 
-// Check all parents
-let parent = rightPane.parentElement;
-while (parent) {
-  console.log('Parent:', parent.className, 'pointer-events:', getComputedStyle(parent).pointerEvents);
-  parent = parent.parentElement;
+window.testPreLoadMethod();
+
+
+// View the actual PreLoad source code in memory
+console.log("Checking PreLoad source...");
+
+// This will show us if getParameters is defined
+try {
+  // Look for RequireJS modules
+  if (window.require && window.require.defined) {
+    console.log("RequireJS modules loaded:", Object.keys(window.require.s.contexts._.defined));
+  }
+} catch(e) {
+  console.log("Could not access RequireJS:", e);
 }
-
-
-// Check if RightPane exists at all
-console.log('RightPane main:', document.querySelector('.right-pane'));
-
-// Check all divs to see what's there
-console.log('All panes:', document.querySelectorAll('[class*="pane"]'));
-
-// Check the full container
-console.log('Container:', document.querySelector('.custom-prompt-page-container'));
-```
-
-console.log('LeftPane buttons:', document.querySelectorAll('.left-pane-button'));
-console.log('LeftPane container:', document.querySelector('.left-pane-container'));
-```
