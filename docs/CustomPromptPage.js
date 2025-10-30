@@ -20,23 +20,42 @@ define([], function () {
     this.getParameters = this.getParameters.bind(this);
     console.log("[CustomPromptPage] 🔗 getParameters() bound to 'this'");
 
-    // 🔍 Check BEFORE registration
-    console.log("[CustomPromptPage] 🔍 Checking oControlHost.control BEFORE registration:");
+    // 🔍 Check BEFORE modification
+    console.log("[CustomPromptPage] 🔍 Checking oControlHost.control BEFORE modification:");
     console.log("[CustomPromptPage] 🔍   oControlHost.control =", oControlHost.control);
     console.log("[CustomPromptPage] 🔍   typeof oControlHost.control =", typeof oControlHost.control);
+    console.log("[CustomPromptPage] 🔍   oControlHost.control is read-only, will add method instead");
 
     if (oControlHost.control && typeof oControlHost.control.getParameters === "function") {
-      console.log("[CustomPromptPage] 🔍   oControlHost.control.getParameters EXISTS (before overwrite)");
+      console.log("[CustomPromptPage] 🔍   oControlHost.control.getParameters EXISTS (before modification)");
     } else {
-      console.log("[CustomPromptPage] 🔍   oControlHost.control.getParameters DOES NOT EXIST (before overwrite)");
+      console.log("[CustomPromptPage] 🔍   oControlHost.control.getParameters DOES NOT EXIST (before modification)");
     }
 
-    // 🚨 Self-register with Cognos (ONLY ONCE!)
-    oControlHost.control = this;
-    console.log("[CustomPromptPage] ✅ Self-registered to oControlHost.control");
+    // 🚨 MONKEY PATCH: Add our method to existing control object
+    try {
+      oControlHost.control.getParameters = this.getParameters;
+      console.log("[CustomPromptPage] ✅ Monkey-patched getParameters() onto oControlHost.control");
+    } catch (patchErr) {
+      console.error("[CustomPromptPage] ❌ Failed to add getParameters():", patchErr);
+      console.log("[CustomPromptPage] 🔍 Attempting alternative: define property");
 
-    // 🔍 Verify AFTER registration
-    console.log("[CustomPromptPage] 🔍 Verifying registration AFTER:");
+      try {
+        Object.defineProperty(oControlHost.control, "getParameters", {
+          value: this.getParameters,
+          writable: false,
+          enumerable: true,
+          configurable: true,
+        });
+        console.log("[CustomPromptPage] ✅ Added getParameters() via defineProperty");
+      } catch (defineErr) {
+        console.error("[CustomPromptPage] ❌ defineProperty also failed:", defineErr);
+        console.error("[CustomPromptPage] ❌❌❌ CANNOT REGISTER getParameters() - Cognos control is sealed!");
+      }
+    }
+
+    // 🔍 Verify AFTER modification
+    console.log("[CustomPromptPage] 🔍 Verifying AFTER modification:");
     console.log("[CustomPromptPage] 🔍   oControlHost.control =", oControlHost.control);
     console.log("[CustomPromptPage] 🔍   typeof oControlHost.control =", typeof oControlHost.control);
     console.log(
