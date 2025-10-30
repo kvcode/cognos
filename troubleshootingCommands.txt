@@ -1,86 +1,64 @@
-test3
-// Search through Cognos global objects
-console.log("=== Searching for PreLoad instance ===");
+// Find the PreLoad instance through the DOM
+console.log("=== Finding PreLoad Instance ===");
 
-// Check common Cognos namespaces
-if (window.cognos) {
-  console.log("✅ cognos object exists");
-  console.log("cognos keys:", Object.keys(window.cognos));
-}
+// Get the custom control container
+var container = document.querySelector('[specname="customControl"]');
+console.log("Custom control container:", container);
 
-// Check if there's a Report object
-if (window.cognos && window.cognos.Report) {
-  console.log("✅ cognos.Report exists");
-  try {
-    var report = cognos.Report.getReport("_THIS_");
-    console.log("Report instance:", report);
-    
-    // Check if report has controls
-    if (report.prompt) {
-      console.log("Report has prompt object:", report.prompt);
+// Cognos stores control instances on DOM elements
+// Try different property names Cognos uses
+if (container) {
+  console.log("Container properties:", Object.keys(container));
+  
+  // Check for control reference
+  for (var key in container) {
+    if (key.startsWith('_') || key.includes('control') || key.includes('instance')) {
+      console.log("Found property:", key, "=", typeof container[key]);
     }
-  } catch(e) {
-    console.log("Could not get report:", e.message);
   }
 }
 
-// Look in DOM for the actual container
-var allDivs = document.querySelectorAll('div');
-console.log("Total divs on page:", allDivs.length);
-
-// Find divs with our class names
-var customDivs = document.querySelectorAll('.custom-prompt-page-container, .left-pane-container, .right-pane');
-console.log("Found custom control divs:", customDivs.length);
-
-if (customDivs.length > 0) {
-  console.log("✅ Found custom control DOM elements!");
-  customDivs.forEach(function(div) {
-    console.log("  - Class:", div.className);
-    console.log("  - ID:", div.id);
-  });
+// Also check if we can access through window
+console.log("\n=== Checking window for instances ===");
+for (var key in window) {
+  if (key.toLowerCase().includes('preload') || key.toLowerCase().includes('control')) {
+    console.log("Found on window:", key);
+  }
 }
 
-TEST 4
-// Check if the PreLoad constructor has getParameters
-console.log("=== Checking PreLoad Constructor ===");
+////////////////////////////////////////////
+// Try to manually call getParameters
+console.log("=== Manual getParameters Test ===");
 
-// Try to access through RequireJS
-if (window.require) {
-  try {
-    // List all loaded modules
-    var contexts = require.s.contexts._;
-    var registry = contexts.registry;
-    
-    console.log("RequireJS modules loaded:");
-    for (var key in registry) {
-      if (key.toLowerCase().includes('preload') || key.toLowerCase().includes('custom')) {
-        console.log("  Found:", key);
+// Get all divs with our classes
+var customContainer = document.querySelector('.custom-prompt-page-container');
+
+if (customContainer && customContainer.__data__) {
+  console.log("Found __data__:", customContainer.__data__);
+}
+
+// Try to find the control through parent elements
+var cognosControl = document.querySelector('[specname="customControl"]');
+if (cognosControl) {
+  console.log("Cognos control element found");
+  
+  // Check all properties
+  Object.keys(cognosControl).forEach(function(key) {
+    var val = cognosControl[key];
+    if (val && typeof val === 'object' && val.constructor) {
+      console.log("Property:", key, "Constructor:", val.constructor.name);
+      
+      // Check if it has getParameters
+      if (typeof val.getParameters === 'function') {
+        console.log("✅✅✅ FOUND getParameters on:", key);
+        console.log("Calling it manually...");
+        try {
+          var result = val.getParameters();
+          console.log("Manual call result:", result);
+        } catch(e) {
+          console.error("Manual call failed:", e);
+        }
       }
     }
-  } catch(e) {
-    console.log("Cannot access RequireJS registry:", e.message);
-  }
-}
-
-TEST5
-javascript// Just look for our actual rendered content
-console.log("=== Looking for rendered content ===");
-
-// Check if left pane buttons exist
-var buttons = document.querySelectorAll('.left-pane-button');
-console.log("Found left pane buttons:", buttons.length);
-
-// Check if right pane exists
-var rightPane = document.querySelector('.right-pane');
-console.log("Found right pane:", !!rightPane);
-
-// Check if container exists
-var container = document.querySelector('.custom-prompt-page-container');
-console.log("Found container:", !!container);
-
-if (container) {
-  console.log("✅ Custom control IS rendered!");
-  console.log("Container HTML:", container.outerHTML.substring(0, 200) + "...");
-} else {
-  console.log("❌ Custom control NOT rendered - this is the problem!");
+  });
 }
