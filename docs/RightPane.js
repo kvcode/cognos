@@ -36,10 +36,12 @@ define([], function () {
       // Container for cards
       this.cardsContainer = document.createElement("div");
       this.cardsContainer.className = "right-pane-cards";
-      this.cardsContainer.style.height = "30px";
+      this.cardsContainer.style.minHeight = "200px"; // Enough space to see drop zone
+      this.cardsContainer.style.height = "auto"; // Grows with cards
       this.cardsContainer.style.minWidth = "120px";
       this.cardsContainer.style.backgroundColor = "#fffdd7ff";
       this.cardsContainer.style.pointerEvents = "auto";
+      this.cardsContainer.style.padding = "10px"; // Add some breathing room
 
       this.domNode.appendChild(this.cardsContainer);
 
