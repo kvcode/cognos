@@ -116,6 +116,25 @@ define([], function () {
     console.log("[CustomPromptPage] 🖼 draw() called");
 
     try {
+      // ✨✨✨ CRITICAL: Store oControlHost like IBM does! ✨✨✨
+      this.m_oControlHost = oControlHost;
+      console.log("[CustomPromptPage] 💾 Stored oControlHost");
+
+      // ✨✨✨ CRITICAL: Try to register with a parameter ✨✨✨
+      const config = oControlHost.configuration || {};
+      const parameterName = config.ParameterName || "P_CustomPrompt";
+
+      try {
+        // This tells Cognos we're managing a parameter
+        const oParameter = oControlHost.getParameter(parameterName);
+        console.log("[CustomPromptPage] 📋 Parameter registered:", parameterName);
+        console.log("[CustomPromptPage] 📋 Parameter object:", oParameter);
+      } catch (e) {
+        console.log("[CustomPromptPage] ⚠️ Parameter not found (might be OK for multi-param):", parameterName);
+        console.log("[CustomPromptPage] ⚠️ Error:", e.message);
+      }
+      // ✨✨✨ END CRITICAL SECTION ✨✨✨
+
       if (!this.domNode) {
         console.warn("[CustomPromptPage] ⚠️ domNode not initialized, aborting draw");
         return;
