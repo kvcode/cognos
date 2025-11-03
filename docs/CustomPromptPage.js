@@ -208,6 +208,18 @@ define([], function () {
     }
   };
 
+  // === isInValidState ===
+  CustomPromptPage.prototype.isInValidState = function () {
+    console.log("[CustomPromptPage] 🔍 isInValidState() called");
+    return true;
+  };
+
+  // === setData ===
+  CustomPromptPage.prototype.setData = function (oControlHost, oDataStore) {
+    console.log("[CustomPromptPage] 📊 setData() called");
+    this.dataStore = oDataStore;
+  };
+
   // === Destroy ===
   CustomPromptPage.prototype.destroy = function () {
     console.log("[CustomPromptPage] 🧨 destroy() called");
