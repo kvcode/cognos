@@ -78,25 +78,89 @@ define([], function () {
     }
   };
 
-  PreLoad.prototype.getParameters = function () {
-    console.log("[PreLoad] 🚨🚨🚨 getParameters() called by Cognos!");
+  // GET PARAMETERS WITH MAX TRACEABILITY
+  PreLoad.prototype.getParameters = function (oControlHost) {
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    console.log("[PreLoad] 🚨🚨🚨 getParameters() CALLED BY COGNOS!!!");
     console.log("[PreLoad] 📋 Timestamp:", new Date().toISOString());
+    console.log("[PreLoad] 📋 Stack trace:", new Error().stack);
 
-    if (this.control && typeof this.control.getParameters === "function") {
-      console.log("[PreLoad] ✅ Delegating to CustomPromptPage.getParameters()");
-      const params = this.control.getParameters();
-      console.log("[PreLoad] 📤 Returning parameters:", JSON.stringify(params, null, 2));
-      return params;
+    // Log the oControlHost parameter
+    console.log("[PreLoad] 🔍 oControlHost received:", oControlHost);
+    console.log("[PreLoad] 🔍 oControlHost type:", typeof oControlHost);
+
+    if (oControlHost) {
+      console.log("[PreLoad] ✅ oControlHost exists");
+      console.log("[PreLoad] 🔍 oControlHost.configuration:", oControlHost.configuration);
+      console.log("[PreLoad] 🔍 oControlHost.container:", oControlHost.container);
+      console.log("[PreLoad] 🔍 oControlHost.control:", oControlHost.control);
     } else {
-      console.warn("[PreLoad] ⚠️ getParameters() skipped — control not ready or method missing");
-      console.log("[PreLoad] 🔍 this.control exists:", !!this.control);
-      console.log(
-        "[PreLoad] 🔍 this.control.getParameters type:",
-        typeof (this.control ? this.control.getParameters : undefined)
-      );
-      console.log("[PreLoad] 📤 Returning empty array []");
-      return [];
+      console.warn("[PreLoad] ⚠️ oControlHost is null/undefined!");
     }
+
+    // Check if control exists
+    console.log("[PreLoad] 🔍 Checking this.control...");
+    console.log("[PreLoad] 🔍 this.control exists:", !!this.control);
+    console.log("[PreLoad] 🔍 this.control type:", typeof this.control);
+
+    if (this.control) {
+      console.log("[PreLoad] ✅ Control instance found");
+      console.log("[PreLoad] 🔍 this.control.getParameters exists:", !!this.control.getParameters);
+      console.log("[PreLoad] 🔍 this.control.getParameters type:", typeof this.control.getParameters);
+
+      if (typeof this.control.getParameters === "function") {
+        console.log("[PreLoad] ✅ Delegating to CustomPromptPage.getParameters()");
+        console.log("[PreLoad] 📞 Calling this.control.getParameters(oControlHost)...");
+
+        try {
+          const params = this.control.getParameters(oControlHost);
+
+          console.log("[PreLoad] 📦 Parameters received from CustomPromptPage");
+          console.log("[PreLoad] 📦 Return value type:", typeof params);
+          console.log("[PreLoad] 📦 Return value is array:", Array.isArray(params));
+          console.log("[PreLoad] 📦 Return value is null:", params === null);
+
+          if (params) {
+            console.log("[PreLoad] 📦 Parameters count:", Array.isArray(params) ? params.length : "N/A");
+            console.log("[PreLoad] 📦 Parameters JSON:", JSON.stringify(params, null, 2));
+
+            // Validate structure
+            if (Array.isArray(params) && params.length > 0) {
+              params.forEach((param, idx) => {
+                console.log(`[PreLoad] 🔍 Parameter ${idx}:`);
+                console.log(`[PreLoad] 🔍   - parameter name:`, param.parameter);
+                console.log(`[PreLoad] 🔍   - values:`, param.values);
+                console.log(`[PreLoad] 🔍   - values count:`, param.values ? param.values.length : 0);
+              });
+            }
+          } else {
+            console.log("[PreLoad] 📦 Parameters are null/undefined");
+          }
+
+          console.log("[PreLoad] 📤 RETURNING to Cognos:", params);
+          console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+          return params;
+        } catch (err) {
+          console.error("[PreLoad] ❌ ERROR calling control.getParameters():");
+          console.error("[PreLoad] ❌ Error message:", err.message);
+          console.error("[PreLoad] ❌ Error stack:", err.stack);
+          console.log("[PreLoad] 📤 RETURNING null due to error");
+          console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+          return null;
+        }
+      } else {
+        console.error("[PreLoad] ❌ this.control.getParameters is NOT a function!");
+        console.log("[PreLoad] 🔍 Available methods on this.control:", Object.keys(this.control));
+      }
+    } else {
+      console.error("[PreLoad] ❌ this.control does not exist!");
+      console.log("[PreLoad] 🔍 this object keys:", Object.keys(this));
+    }
+
+    console.warn("[PreLoad] ⚠️ Control not ready or method missing - returning null");
+    console.log("[PreLoad] 📤 RETURNING null to Cognos");
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    return null; // ← Changed from [] to null as per official docs
   };
 
   // ✨✨✨ CORRECT: PreLoad methods (NOT CustomPromptPage!) ✨✨✨
