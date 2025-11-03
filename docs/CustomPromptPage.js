@@ -19,6 +19,10 @@ define([], function () {
     // 🔒 CRITICAL: Bind methods to preserve context
     this.getParameters = this.getParameters.bind(this);
     console.log("[CustomPromptPage] 🔗 getParameters() bound to 'this'");
+    this.isInValidState = this.isInValidState.bind(this);
+    console.log("[CustomPromptPage] 🔗 isInValidState() bound to 'this'");
+    this.setData = this.setData.bind(this);
+    console.log("[CustomPromptPage] 🔗 setData() bound to 'this'");
 
     try {
       // Create main container

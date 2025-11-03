@@ -3,6 +3,13 @@ define([], function () {
   function PreLoad() {
     console.log("[PreLoad] 🏗 Constructor called");
     this.control = null;
+
+    // ⚠️ CRITICAL DEBUG: Check if methods exist at construction time
+    console.log("[PreLoad] Constructor - typeof this.getParameters:", typeof this.getParameters);
+    console.log("[PreLoad] Constructor - typeof this.isInValidState:", typeof this.isInValidState);
+    console.log("[PreLoad] Constructor - typeof this.setData:", typeof this.setData);
+    console.log("[PreLoad] Constructor - typeof this.draw:", typeof this.draw);
+    console.log("[PreLoad] Constructor - typeof this.destroy:", typeof this.destroy);
   }
   PreLoad.prototype.initialize = function (oControlHost, fnDoneInitializing) {
     console.log("[PreLoad] 🔧 initialize() called");
