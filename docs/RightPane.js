@@ -20,6 +20,10 @@ define([], function () {
   RightPane.prototype.initialize = function (oControlHost, fnDoneInitializing) {
     console.log("[RightPane] 🔧 initialize() called");
 
+    // ✨ STORE oControlHost so we can call valueChanged() later
+    this.m_oControlHost = oControlHost;
+    console.log("[RightPane] 💾 Stored oControlHost");
+
     try {
       // Create main container for RightPane
       this.domNode = document.createElement("div");
@@ -337,9 +341,17 @@ define([], function () {
       console.log("[RightPane] 💾 [V2] Stored domElement and inputElement on card object");
 
       // Input change logging (for debugging)
-      input.addEventListener("input", () => {
-        console.log(`[RightPane] ⌨️ [V2] User typed in "${config.label}":`, input.value);
-        console.log(`[RightPane] 📏 [V2] Current card width: ${card.offsetWidth}px`);
+      input.addEventListener("input", (e) => {
+        console.log(`[RightPane] ⌨️ [V2] User typed in "${config.label}":`, e.target.value);
+        console.log(`[RightPane] 📏 [V2] Current card width: ${card.domElement.offsetWidth}px`);
+
+        // 🚨 CRITICAL: Notify Cognos that a value changed!
+        if (this.m_oControlHost) {
+          console.log(`[RightPane] 📢 Notifying Cognos of value change`);
+          this.m_oControlHost.valueChanged(); // ← THIS IS KEY!
+        } else {
+          console.warn(`[RightPane] ⚠️ Cannot notify - no oControlHost stored`);
+        }
       });
 
       this.cardsContainer.appendChild(card);
