@@ -1,0 +1,17 @@
+
+🧾 Old Prompt Page – display the old prompt page
+•	Previously, the prompt page exposed all parameters.
+•	This led to a cluttered and overwhelming user experience.
+✨ New Prompt Page (Inspired by FFP UI/UX) – display the new prompt page
+•	Based on positive user feedback about the FFP interface.
+•	Designed with a cleaner, more intuitive layout.
+•	Mimics the FFP-style UI/UX for better usability.
+•	Now integrated with standard report 472.
+🧪 Demo Setup – drag the btns>cards>prompts and explain features as inputting values
+•	For the demo: 
+o	A few filters will be set.
+o	The report will be executed to showcase the new prompt page.
+•	Main focus: Demonstrating the improved UI/UX of the prompt page.
+📊 Report Overview – brief explanation about the report
+ 	- Failure rate per 1,000 sample vehicles (SF/1000) for the top 10 KDNR components across the selected production period in years. The columns represent each prod. month, and are accumulating/stacking each KDNR value and are grouping all other KDNRs which didn’t make the Top 10 as “Sonstiges.”
+Wrap up and PASS TO STEFFEN TO SHOW MULTILANGUAGE SUPPORT
