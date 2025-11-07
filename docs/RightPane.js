@@ -8,6 +8,7 @@ define([], function () {
     this.domNode = null;
     this.cardsContainer = null; // container for prompt cards
     this.autocompleteData = {};
+    this.m_oControlHost = null; // ✅ FIX: Initialize here for valueChanged() calls
 
     // ========== OLD V1 - UNCHANGED ==========
     this.cards = []; // store added cards (OLD)
@@ -268,7 +269,7 @@ define([], function () {
     return cardObject;
   };
 
-  // ✨✨✨ NEW V2 RENDER METHOD ✨✨✨
+  // ✨✨✨ NEW V2 RENDER METHOD - WITH FIXES ✨✨✨
   RightPane.prototype._renderCardV2 = function (cardObject) {
     console.log("[RightPane] 🛠 [V2] _renderCardV2() called");
     console.log("[RightPane] 📦 [V2] Card config:", JSON.stringify(cardObject.config, null, 2));
@@ -335,22 +336,33 @@ define([], function () {
       input.style.minWidth = "0"; // Allow shrinking if needed
       card.appendChild(input);
 
-      // ✨ Store references on card object
+      // ✅ FIX 1: Store references on card object BEFORE event listener
       cardObject.domElement = card;
       cardObject.inputElement = input;
       console.log("[RightPane] 💾 [V2] Stored domElement and inputElement on card object");
 
-      // Input change logging (for debugging)
+      // ✅ FIX 2: Input change logging with CORRECT reference
       input.addEventListener("input", (e) => {
         console.log(`[RightPane] ⌨️ [V2] User typed in "${config.label}":`, e.target.value);
-        console.log(`[RightPane] 📏 [V2] Current card width: ${card.domElement.offsetWidth}px`);
 
-        // 🚨 CRITICAL: Notify Cognos that a value changed!
-        if (this.m_oControlHost) {
-          console.log(`[RightPane] 📢 Notifying Cognos of value change`);
-          this.m_oControlHost.valueChanged(); // ← THIS IS KEY!
+        // ✅ FIX: Use cardObject.domElement (now properly assigned above)
+        if (cardObject.domElement) {
+          console.log(`[RightPane] 📏 [V2] Current card width: ${cardObject.domElement.offsetWidth}px`);
         } else {
-          console.warn(`[RightPane] ⚠️ Cannot notify - no oControlHost stored`);
+          console.warn(`[RightPane] ⚠️ [V2] domElement not available`);
+        }
+
+        // ✅ FIX 3: Notify Cognos that a value changed!
+        if (this.m_oControlHost) {
+          try {
+            console.log(`[RightPane] 📢 [V2] Notifying Cognos: valueChanged()`);
+            this.m_oControlHost.valueChanged();
+            console.log(`[RightPane] ✅ [V2] Cognos notified successfully`);
+          } catch (err) {
+            console.error(`[RightPane] ❌ [V2] Error notifying Cognos:`, err);
+          }
+        } else {
+          console.error(`[RightPane] ❌ [V2] Cannot notify - m_oControlHost is null!`);
         }
       });
 
@@ -414,6 +426,7 @@ define([], function () {
       this.cards = [];
       this.cardsV2 = [];
       this.autocompleteData = {};
+      this.m_oControlHost = null; // ✅ FIX: Clear reference
 
       console.log("[RightPane] ✅ destroy() complete — cleanup successful");
     } catch (err) {
