@@ -210,7 +210,7 @@ define([], function () {
       console.log("[CustomPromptPage] 🔍   oControlHost.control:", oControlHost.control);
       console.log(
         "[CustomPromptPage] 🔍   typeof oControlHost.control.getParameters:",
-        typeof oControlHost.control.getParameters
+        typeof oControlHost.page.getParameters
       );
     } catch (err) {
       console.error("[CustomPromptPage] ❌ Error during draw():", err);
