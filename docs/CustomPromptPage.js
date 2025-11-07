@@ -13,7 +13,6 @@ define([], function () {
     this.rightPane = null;
     this.dragDrop = null;
     this.m_oControlHost = null; // Store for later use
-    this.registeredParams = {}; // ✅ NEW: Store parameter objects by name
 
     // ❌ DO NOT BIND HERE - it breaks the oControlHost parameter signature!
     // Cognos needs to pass oControlHost as first parameter
@@ -147,21 +146,13 @@ define([], function () {
         console.log("[CustomPromptPage] 📋 Total unique parameters found:", allParamNames.size);
         console.log("[CustomPromptPage] 📋 Parameter names:", Array.from(allParamNames));
 
-        // ✅ FIX: Try to register each parameter with Cognos AND STORE THE OBJECTS
-        this.registeredParams = {}; // Clear previous
-
+        // Try to register each parameter with Cognos
         allParamNames.forEach((paramName) => {
           try {
-            // ✅ FIX: Use oControlHost.page.getParameter() not oControlHost.getParameter()
-            const oParameter = oControlHost.page.getParameter(paramName);
-
+            const oParameter = oControlHost.getParameter(paramName);
             if (oParameter) {
-              // ✅ FIX: STORE the parameter object for later use
-              this.registeredParams[paramName] = oParameter;
-
               console.log(`[CustomPromptPage] ✅ Parameter ${paramName} registered with Cognos`);
               console.log(`[CustomPromptPage] 🔍 Parameter object:`, oParameter);
-              console.log(`[CustomPromptPage] 💾 Stored parameter object for: ${paramName}`);
             } else {
               console.warn(`[CustomPromptPage] ⚠️ Parameter ${paramName} returned null - might not exist in report`);
             }
@@ -169,8 +160,6 @@ define([], function () {
             console.error(`[CustomPromptPage] ❌ Error registering parameter ${paramName}:`, e.message);
           }
         });
-
-        console.log(`[CustomPromptPage] 📊 Total stored parameters: ${Object.keys(this.registeredParams).length}`);
       } else {
         console.warn("[CustomPromptPage] ⚠️ No buttonGroups found in configuration");
       }
@@ -218,7 +207,6 @@ define([], function () {
         "[CustomPromptPage] 🔍   this.rightPane.getParameters exists:",
         !!(this.rightPane && typeof this.rightPane.getParameters === "function")
       );
-      console.log("[CustomPromptPage] 🔍   Registered params count:", Object.keys(this.registeredParams).length);
       console.log("[CustomPromptPage] 🔍   oControlHost.control:", oControlHost.control);
       console.log(
         "[CustomPromptPage] 🔍   typeof oControlHost.control.getParameters:",
@@ -236,6 +224,7 @@ define([], function () {
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
     console.log("[CustomPromptPage] 🚨🚨🚨 COGNOS CALLED getParameters()!!! 🚨🚨🚨");
     console.log("[CustomPromptPage] 📋 Timestamp:", new Date().toISOString());
+    console.log("[CustomPromptPage] 📋 Stack trace:", new Error().stack);
 
     // Log what we received
     console.log("[CustomPromptPage] 🔍 oControlHost received:", oControlHost);
@@ -243,6 +232,7 @@ define([], function () {
 
     if (oControlHost) {
       console.log("[CustomPromptPage] ✅ oControlHost exists");
+      console.log("[CustomPromptPage] 🔍 oControlHost.configuration:", oControlHost.configuration);
     } else {
       console.warn("[CustomPromptPage] ⚠️ oControlHost is null/undefined - using stored m_oControlHost");
       oControlHost = this.m_oControlHost;
@@ -250,108 +240,73 @@ define([], function () {
 
     // Check our state
     console.log("[CustomPromptPage] 🔍 Checking internal state...");
+    console.log("[CustomPromptPage] 🔍 this exists:", !!this);
     console.log("[CustomPromptPage] 🔍 this.rightPane exists:", !!this.rightPane);
-    console.log("[CustomPromptPage] 🔍 this.registeredParams count:", Object.keys(this.registeredParams).length);
     console.log(
       "[CustomPromptPage] 🔍 this.rightPane.getParameters exists:",
       !!(this.rightPane && typeof this.rightPane.getParameters === "function")
     );
 
     try {
-      if (!this.rightPane || typeof this.rightPane.getParameters !== "function") {
+      if (this.rightPane && typeof this.rightPane.getParameters === "function") {
+        console.log("[CustomPromptPage] ✅ RightPane found with getParameters() method");
+        console.log("[CustomPromptPage] 📞 Calling this.rightPane.getParameters()...");
+
+        const params = this.rightPane.getParameters();
+
+        console.log("[CustomPromptPage] 📦 Parameters received from RightPane");
+        console.log("[CustomPromptPage] 📦 Return type:", typeof params);
+        console.log("[CustomPromptPage] 📦 Is array:", Array.isArray(params));
+        console.log("[CustomPromptPage] 📦 Is null:", params === null);
+
+        if (params) {
+          console.log("[CustomPromptPage] 📦 Parameters count:", Array.isArray(params) ? params.length : "N/A");
+          console.log("[CustomPromptPage] 📦 Parameters JSON:", JSON.stringify(params, null, 2));
+
+          // Validate structure
+          if (Array.isArray(params) && params.length > 0) {
+            params.forEach((param, idx) => {
+              console.log(`[CustomPromptPage] 🔍 Parameter ${idx}:`);
+              console.log(`[CustomPromptPage] 🔍   - parameter name:`, param.parameter);
+              console.log(`[CustomPromptPage] 🔍   - values array:`, param.values);
+              console.log(`[CustomPromptPage] 🔍   - values count:`, param.values ? param.values.length : 0);
+
+              if (param.values && param.values.length > 0) {
+                param.values.forEach((val, vIdx) => {
+                  console.log(`[CustomPromptPage] 🔍     Value ${vIdx}:`, val);
+                  console.log(`[CustomPromptPage] 🔍       - use:`, val.use);
+                  console.log(`[CustomPromptPage] 🔍       - display:`, val.display);
+                });
+              }
+            });
+
+            console.log("[CustomPromptPage] 📤 RETURNING parameters to Cognos:", params);
+            console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            return params;
+          } else {
+            console.warn("[CustomPromptPage] ⚠️ Parameters array is empty");
+          }
+        } else {
+          console.warn("[CustomPromptPage] ⚠️ Parameters are null");
+        }
+      } else {
         console.error("[CustomPromptPage] ❌ RightPane not available or missing getParameters()");
-        console.log("[CustomPromptPage] 📤 RETURNING null to Cognos");
-        console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-        return null;
+        console.log("[CustomPromptPage] 🔍 this.rightPane:", this.rightPane);
+        console.log(
+          "[CustomPromptPage] 🔍 Available methods on this.rightPane:",
+          this.rightPane ? Object.keys(this.rightPane) : "N/A"
+        );
       }
-
-      console.log("[CustomPromptPage] ✅ RightPane found with getParameters() method");
-      console.log("[CustomPromptPage] 📞 Calling this.rightPane.getParameters()...");
-
-      // ✅ Get card data from RightPane (returns array with parameter NAMES)
-      const cardData = this.rightPane.getParameters();
-
-      console.log("[CustomPromptPage] 📦 Card data received from RightPane");
-      console.log("[CustomPromptPage] 📦 Return type:", typeof cardData);
-      console.log("[CustomPromptPage] 📦 Is array:", Array.isArray(cardData));
-      console.log("[CustomPromptPage] 📦 Count:", cardData ? cardData.length : 0);
-      console.log("[CustomPromptPage] 📦 Raw data:", JSON.stringify(cardData, null, 2));
-
-      if (!cardData || !Array.isArray(cardData) || cardData.length === 0) {
-        console.warn("[CustomPromptPage] ⚠️ No card data returned");
-        console.log("[CustomPromptPage] 📤 RETURNING null to Cognos");
-        console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-        return null;
-      }
-
-      // ✅ FIX: Convert card data to Cognos format using stored parameter objects
-      const cognosParams = [];
-
-      cardData.forEach((card, idx) => {
-        console.log(`[CustomPromptPage] 🔍 Processing card ${idx}:`, card);
-
-        const paramName = card.parameter; // This is just a STRING like "P_Brand"
-        const paramValues = card.values;
-
-        console.log(`[CustomPromptPage] 🔍   Parameter name: ${paramName}`);
-        console.log(`[CustomPromptPage] 🔍   Values:`, paramValues);
-
-        // ✅ Look up the actual Cognos parameter object
-        const paramObject = this.registeredParams[paramName];
-
-        if (!paramObject) {
-          console.error(`[CustomPromptPage] ❌ Parameter object not found for: ${paramName}`);
-          console.log(`[CustomPromptPage] 🔍 Available registered params:`, Object.keys(this.registeredParams));
-          return; // Skip this parameter
-        }
-
-        console.log(`[CustomPromptPage] ✅ Found parameter object for: ${paramName}`);
-
-        // ✅ Build Cognos-compatible parameter entry
-        const cognosParam = {
-          parameter: paramObject, // ← The actual Cognos parameter object!
-          values: paramValues, // ← The values from the card
-        };
-
-        cognosParams.push(cognosParam);
-        console.log(`[CustomPromptPage] ✅ Added Cognos parameter:`, {
-          paramName: paramName,
-          paramObject: "<<ParameterObject>>",
-          values: paramValues,
-        });
-      });
-
-      console.log("[CustomPromptPage] 🎯 ==========================================");
-      console.log("[CustomPromptPage] 🎯 FINAL RESULT:");
-      console.log("[CustomPromptPage] 🎯 Total Cognos parameters:", cognosParams.length);
-      console.log("[CustomPromptPage] 🎯 Structure validation:");
-
-      cognosParams.forEach((param, idx) => {
-        console.log(`[CustomPromptPage] 🎯   Param ${idx}:`);
-        console.log(`[CustomPromptPage] 🎯     - parameter object exists:`, !!param.parameter);
-        console.log(`[CustomPromptPage] 🎯     - parameter object type:`, typeof param.parameter);
-        console.log(`[CustomPromptPage] 🎯     - values array exists:`, !!param.values);
-        console.log(`[CustomPromptPage] 🎯     - values count:`, param.values ? param.values.length : 0);
-        if (param.values && param.values.length > 0) {
-          console.log(`[CustomPromptPage] 🎯     - first value:`, param.values[0]);
-        }
-      });
-
-      console.log("[CustomPromptPage] 🎯 ==========================================");
-      console.log("[CustomPromptPage] 📤 RETURNING", cognosParams.length, "parameters to Cognos");
-      console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-
-      return cognosParams;
     } catch (err) {
       console.error("[CustomPromptPage] ❌ getParameters() failed with error:");
       console.error("[CustomPromptPage] ❌ Error message:", err.message);
       console.error("[CustomPromptPage] ❌ Error stack:", err.stack);
     }
 
-    console.warn("[CustomPromptPage] ⚠️ Returning null (error occurred)");
+    console.warn("[CustomPromptPage] ⚠️ Returning null (no valid parameters)");
     console.log("[CustomPromptPage] 📤 RETURNING null to Cognos");
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-    return null;
+    return null; // ← As per official docs, return null when no parameters
   };
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -359,6 +314,10 @@ define([], function () {
   // ═══════════════════════════════════════════════════════════════════════════
   CustomPromptPage.prototype.isInValidState = function (oControlHost) {
     console.log("[CustomPromptPage] 🔍 isInValidState() called");
+    console.log("[CustomPromptPage] 🔍 oControlHost:", oControlHost);
+
+    // You can add validation logic here
+    // For now, always return true (control is valid)
     return true;
   };
 
@@ -367,6 +326,8 @@ define([], function () {
   // ═══════════════════════════════════════════════════════════════════════════
   CustomPromptPage.prototype.setData = function (oControlHost, oDataStore) {
     console.log("[CustomPromptPage] 📊 setData() called");
+    console.log("[CustomPromptPage] 🔍 oControlHost:", oControlHost);
+    console.log("[CustomPromptPage] 🔍 oDataStore:", oDataStore);
     this.dataStore = oDataStore;
   };
 
@@ -375,6 +336,7 @@ define([], function () {
   // ═══════════════════════════════════════════════════════════════════════════
   CustomPromptPage.prototype.destroy = function (oControlHost) {
     console.log("[CustomPromptPage] 🧨 destroy() called");
+    console.log("[CustomPromptPage] 🔍 oControlHost:", oControlHost);
 
     try {
       if (this.dragDrop && typeof this.dragDrop.destroy === "function") {
@@ -401,7 +363,6 @@ define([], function () {
       }
 
       this.m_oControlHost = null;
-      this.registeredParams = {}; // ✅ Clear stored params
 
       console.log("[CustomPromptPage] ✅ destroy() complete");
     } catch (err) {
