@@ -136,24 +136,34 @@ define([], function () {
         console.log("[RightPane] 🔍 Bubbled values:", this.bubbledValues);
         console.log("[RightPane] 🔍 paramName:", this.config.paramName);
 
-        if (this.bubbledValues.length === 0) {
-          console.log("[RightPane] ⚠️ No bubbled values, returning empty array");
+        if (!this.config.paramName) {
+          console.error("[RightPane] ❌ paramName missing in config!");
           return [];
         }
 
-        if (!this.config.paramName) {
-          console.error("[RightPane] ❌ paramName missing in config! Cannot create parameter.");
-          return [];
+        // Test what structure works for "cleared" state
+        let values;
+
+        if (this.bubbledValues.length === 0) {
+          console.log("[RightPane] ⚠️ No bubbled values - testing cleared state");
+          // Try option 1: empty array
+          values = [];
+          // Or try option 2: array with empty string (uncomment to test)
+          // values = [{ use: "" }];
+          // Or try option 3: array with null (uncomment to test)
+          // values = [{ use: null }];
+        } else {
+          values = this.bubbledValues.map((val) => ({ use: val }));
         }
 
         const result = [
           {
             parameter: this.config.paramName,
-            values: this.bubbledValues.map((val) => ({ use: val })),
+            values: values,
           },
         ];
 
-        console.log("[RightPane] 📤 Returning parameters:", JSON.stringify(result, null, 2));
+        console.log("[RightPane] 📤 Returning:", JSON.stringify(result, null, 2));
         return result;
       },
     };
