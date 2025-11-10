@@ -10,8 +10,8 @@
 /* === Left Pane === */
 .left-pane-container {
   width: 250px;
-  background-color: #f7f7f7;
-  border-right: 1px solid #ccc;
+  background-color: #fafbfc;
+  border: 1px solid #e1e5eb;
   padding: 10px;
   box-sizing: border-box;
   overflow-y: auto;
@@ -59,15 +59,17 @@
 /* === Right Pane === */
 .right-pane {
   flex: 1;
-  padding: 10px;
-  background-color: #fff;
+  padding: 8px;
+  background-color: #fafbfc;
+  border: 1px solid #e1e5eb;
   overflow-y: auto;
   position: relative;
   min-width: 300px;
 }
 
 .right-pane-cards {
-  min-height: 100px;
+  min-height: 200px;
+  padding: 18px;
 }
 
 .right-pane-card {
