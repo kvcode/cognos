@@ -232,48 +232,24 @@ define([], function () {
     console.log("[DragNDrop] 🔍 Mouse position:", x, y);
     console.log("[DragNDrop] 🔍 Is over drop zone:", isOver);
 
+    // In endDrag() method, replace the dual V1+V2 calls with just one call:
+
     if (isOver) {
       console.log("[DragNDrop] ✅ Dropped over target!");
 
-      // ========== OLD V1 LOGIC - START (UNCHANGED) ==========
-      // Add card to RightPane (old method)
-      if (this.rightPane && this.rightPane.addCard) {
-        console.log("[DragNDrop] 📞 [V1] Calling rightPane.addCard() with old format");
-        console.log("[DragNDrop] 📦 [V1] Data passed:", this.dragData);
-        this.rightPane.addCard(this.dragData);
-        console.log("[DragNDrop] ✅ [V1] Old card added to RightPane");
-      } else {
-        console.error("[DragNDrop] ❌ [V1] RightPane.addCard() not available");
-      }
-      // ========== OLD V1 LOGIC - END ==========
-
-      // ✨✨✨ NEW V2 LOGIC - START ✨✨✨
-      console.log("[DragNDrop] 🔍 [V2] Checking if V2 methods available...");
-
-      if (this.rightPane && typeof this.rightPane.addCardV2 === "function") {
-        console.log("[DragNDrop] ✅ [V2] Found rightPane.addCardV2() method!");
-
+      if (this.rightPane && typeof this.rightPane.addCard === "function") {
         if (this.dragData.fullConfig) {
-          console.log("[DragNDrop] 📞 [V2] Calling rightPane.addCardV2() with full config");
-          console.log("[DragNDrop] 📦 [V2] Data passed (entire dragData):", JSON.stringify(this.dragData, null, 2));
-          console.log("[DragNDrop] 📦 [V2] fullConfig included:", JSON.stringify(this.dragData.fullConfig, null, 2));
+          console.log("[DragNDrop] 📞 Calling rightPane.addCard() with full config");
+          console.log("[DragNDrop] 📦 Data passed:", JSON.stringify(this.dragData, null, 2));
 
-          this.rightPane.addCardV2(this.dragData);
-
-          console.log("[DragNDrop] ✅ [V2] New V2 card added to RightPane");
+          this.rightPane.addCard(this.dragData);
+          console.log("[DragNDrop] ✅ Card added to RightPane");
         } else {
-          console.warn("[DragNDrop] ⚠️ [V2] dragData.fullConfig missing, skipping V2 card");
-          console.log("[DragNDrop] ⏩ [V2] Only V1 card will be created");
+          console.warn("[DragNDrop] ⚠️ dragData.fullConfig missing, cannot create card");
         }
       } else {
-        console.warn("[DragNDrop] ⚠️ [V2] rightPane.addCardV2() not available (RightPane V2 not implemented yet?)");
-        console.log("[DragNDrop] ⏩ [V2] Only V1 card will be created");
+        console.error("[DragNDrop] ❌ RightPane.addCard() not available");
       }
-      // ✨✨✨ NEW V2 LOGIC - END ✨✨✨
-
-      console.log("[DragNDrop] 🎉 Card creation complete (V1 + V2 if available)");
-    } else {
-      console.log("[DragNDrop] ❌ Dropped outside target zone");
     }
 
     this.cleanup();
