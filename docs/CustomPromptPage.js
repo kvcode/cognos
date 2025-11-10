@@ -218,7 +218,7 @@ define([], function () {
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
     console.log("[CustomPromptPage] 🚨🚨🚨 COGNOS CALLED getParameters()!!! 🚨🚨🚨");
     console.log("[CustomPromptPage] 📋 Timestamp:", new Date().toISOString());
-    console.log("[CustomPromptPage] 📋 Stack trace:", new Error().stack);
+    // console.log("[CustomPromptPage] 📋 Stack trace:", new Error().stack);
 
     // Log what we received
     console.log("[CustomPromptPage] 🔍 oControlHost received:", oControlHost);
@@ -307,8 +307,8 @@ define([], function () {
   // IS IN VALID STATE
   // ═══════════════════════════════════════════════════════════════════════════
   CustomPromptPage.prototype.isInValidState = function (oControlHost) {
-    console.log("[CustomPromptPage] 🔍 isInValidState() called");
-    console.log("[CustomPromptPage] 🔍 oControlHost:", oControlHost);
+    // console.log("[CustomPromptPage] 🔍 isInValidState() called");
+    // console.log("[CustomPromptPage] 🔍 oControlHost:", oControlHost);
 
     // You can add validation logic here
     // For now, always return true (control is valid)
