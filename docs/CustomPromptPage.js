@@ -121,58 +121,26 @@ define([], function () {
     console.log("[CustomPromptPage] 🖼 draw() called");
 
     try {
-      // ✨ CRITICAL: Store oControlHost for later use
       this.m_oControlHost = oControlHost;
       console.log("[CustomPromptPage] 💾 Stored oControlHost");
 
-      // ✨ Try to detect which parameters this control manages
+      // Simple parameter detection from config
       const config = oControlHost.configuration || {};
-      console.log("[CustomPromptPage] 🔍 Checking for parameters in buttonGroups...");
 
       if (config.buttonGroups && Array.isArray(config.buttonGroups)) {
         const allParamNames = new Set();
 
-        config.buttonGroups.forEach((group, gIdx) => {
+        config.buttonGroups.forEach((group) => {
           if (group.buttons && Array.isArray(group.buttons)) {
-            group.buttons.forEach((btn, bIdx) => {
+            group.buttons.forEach((btn) => {
               if (btn.paramName) {
                 allParamNames.add(btn.paramName);
-                console.log(`[CustomPromptPage] 📋 Found parameter: ${btn.paramName} (${btn.label})`);
               }
             });
           }
         });
 
-        console.log("[CustomPromptPage] 📋 Total unique parameters found:", allParamNames.size);
-        console.log("[CustomPromptPage] 📋 Parameter names:", Array.from(allParamNames));
-
-        // Try to register each parameter with Cognos
-
-        // Add this BEFORE the forEach loop
-        console.log("[CustomPromptPage] 🔍 Attempting to access oControlHost.page...");
-        if (oControlHost.page && typeof oControlHost.page.getParameters === "function") {
-          try {
-            const allReportParams = oControlHost.page.getParameters();
-            console.log("[CustomPromptPage] 📋 All parameters from page:", allReportParams);
-          } catch (e) {
-            console.error("[CustomPromptPage] ❌ Failed to get all parameters:", e);
-          }
-        }
-        allParamNames.forEach((paramName) => {
-          try {
-            const oParameter = oControlHost.getParameter(paramName);
-            if (oParameter) {
-              console.log(`[CustomPromptPage] ✅ Parameter ${paramName} registered with Cognos`);
-              console.log(`[CustomPromptPage] 🔍 Parameter object:`, oParameter);
-            } else {
-              console.warn(`[CustomPromptPage] ⚠️ Parameter ${paramName} returned null - might not exist in report`);
-            }
-          } catch (e) {
-            console.error(`[CustomPromptPage] ❌ Error registering parameter ${paramName}:`, e.message);
-          }
-        });
-      } else {
-        console.warn("[CustomPromptPage] ⚠️ No buttonGroups found in configuration");
+        console.log("[CustomPromptPage] 📋 Parameters in config:", Array.from(allParamNames));
       }
 
       if (!this.domNode) {
@@ -205,23 +173,16 @@ define([], function () {
       oControlHost.container.appendChild(this.domNode);
       console.log("[CustomPromptPage] ✅ Layout rendered successfully");
 
-      // Setup DragDrop handlers after panes are drawn
       if (this.dragDrop && typeof this.dragDrop.draw === "function") {
         console.log("[CustomPromptPage] 🔗 Setting up DragDrop handlers");
         this.dragDrop.draw();
       }
 
-      // 🔍 Final verification
       console.log("[CustomPromptPage] 🔍 VERIFICATION after draw() complete:");
       console.log("[CustomPromptPage] 🔍   this.rightPane exists:", !!this.rightPane);
       console.log(
         "[CustomPromptPage] 🔍   this.rightPane.getParameters exists:",
         !!(this.rightPane && typeof this.rightPane.getParameters === "function")
-      );
-      console.log("[CustomPromptPage] 🔍   oControlHost.control:", oControlHost.control);
-      console.log(
-        "[CustomPromptPage] 🔍   typeof oControlHost.page.getParameters:",
-        typeof oControlHost.page.getParameters
       );
     } catch (err) {
       console.error("[CustomPromptPage] ❌ Error during draw():", err);
