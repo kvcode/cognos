@@ -299,40 +299,47 @@ define([], function () {
   CustomPromptPage.prototype.setData = function (oControlHost, oDataStore) {
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
     console.log("[CustomPromptPage] 📊 setData() called");
+    console.log("[CustomPromptPage] 🔍 oDataStore received:", oDataStore);
 
-    // Store the provided DataStore if any
-    if (oDataStore) {
-      if (!this.m_oDataStores) {
-        this.m_oDataStores = {};
-      }
-      this.m_oDataStores[oDataStore.name] = oDataStore;
-      console.log("[CustomPromptPage] 💾 Stored DataStore:", oDataStore.name);
+    // Initialize storage on first call
+    if (!this.m_oDataStores) {
+      this.m_oDataStores = {};
+      console.log("[CustomPromptPage] 💾 Initialized m_oDataStores storage");
     }
 
-    // ✨ TEST: Try to fetch qp_TEST using correct scope
-    console.log("[CustomPromptPage] 🧪 TEST: Fetching qp_TEST...");
+    if (oDataStore) {
+      // Store by name
+      this.m_oDataStores[oDataStore.name] = oDataStore;
 
-    try {
-      const testDataStore = oControlHost.control.getDataStore("qp_TEST");
+      console.log("[CustomPromptPage] 📦 DataStore name:", oDataStore.name);
+      console.log("[CustomPromptPage] 📦 DataStore index:", oDataStore.index);
+      console.log("[CustomPromptPage] 📊 Row count:", oDataStore.rowCount);
+      console.log("[CustomPromptPage] 📊 Column count:", oDataStore.columnCount);
+      console.log("[CustomPromptPage] 📊 Column names:", oDataStore.columnNames);
+      console.log("[CustomPromptPage] 📊 Column data types:", oDataStore.dataTypes);
 
-      console.log("[CustomPromptPage] 🔍 TEST result:", testDataStore);
-
-      if (testDataStore) {
-        console.log("[CustomPromptPage] ✅ qp_TEST found!");
-        console.log("[CustomPromptPage] 📊 Row count:", testDataStore.rowCount);
-        console.log("[CustomPromptPage] 📊 Column count:", testDataStore.columnCount);
-        console.log("[CustomPromptPage] 📊 Column names:", testDataStore.columnNames);
-
-        if (testDataStore.rowCount > 0) {
-          const firstValue = testDataStore.getCellValue(0, 0);
-          console.log("[CustomPromptPage] 📦 First value:", firstValue);
+      // Log first 5 values for verification
+      if (oDataStore.rowCount > 0) {
+        console.log(`[CustomPromptPage] 📦 First ${Math.min(5, oDataStore.rowCount)} values from ${oDataStore.name}:`);
+        for (let i = 0; i < Math.min(5, oDataStore.rowCount); i++) {
+          const value = oDataStore.getCellValue(i, 0);
+          const formatted = oDataStore.getFormattedCellValue(i, 0);
+          console.log(`[CustomPromptPage]   [${i}]: value="${value}", formatted="${formatted}"`);
         }
       } else {
-        console.warn("[CustomPromptPage] ⚠️ qp_TEST returned null");
+        console.warn(`[CustomPromptPage] ⚠️ ${oDataStore.name} has 0 rows - query returned no data`);
       }
-    } catch (err) {
-      console.error("[CustomPromptPage] ❌ Error:", err.message);
+
+      console.log(`[CustomPromptPage] ✅ Stored DataStore: ${oDataStore.name}`);
+    } else {
+      console.warn("[CustomPromptPage] ⚠️ oDataStore is null!");
     }
+
+    // Summary of all stored DataStores so far
+    console.log("[CustomPromptPage] 📊 SUMMARY - Total DataStores stored:", Object.keys(this.m_oDataStores).length);
+    console.log("[CustomPromptPage] 📋 Available DataStores:", Object.keys(this.m_oDataStores));
+
+    this.dataStore = oDataStore; // Keep last one for backward compatibility
 
     console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
   };
