@@ -128,6 +128,20 @@ define([], function () {
   CustomPromptPage.prototype.draw = function (oControlHost) {
     console.log("[CustomPromptPage] 🖼 draw() called");
 
+    // ✨ NEW: Pass DataStores to RightPane NOW (after setData has been called)
+    if (this.rightPane && this.m_oDataStores && Object.keys(this.m_oDataStores).length > 0) {
+      this.rightPane.setDataStores(this.m_oDataStores);
+      console.log("[CustomPromptPage] 📦 DataStores passed to RightPane in draw()");
+    } else {
+      console.warn("[CustomPromptPage] ⚠️ No DataStores available in draw()");
+      console.log("[CustomPromptPage] 🔍 this.rightPane exists:", !!this.rightPane);
+      console.log("[CustomPromptPage] 🔍 this.m_oDataStores exists:", !!this.m_oDataStores);
+      console.log(
+        "[CustomPromptPage] 🔍 DataStores count:",
+        this.m_oDataStores ? Object.keys(this.m_oDataStores).length : 0
+      );
+    }
+
     try {
       this.m_oControlHost = oControlHost;
       console.log("[CustomPromptPage] 💾 Stored oControlHost");
