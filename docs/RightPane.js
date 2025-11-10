@@ -10,6 +10,7 @@ define([], function () {
     this.autocompleteData = {};
     this.m_oControlHost = null;
     this.cards = [];
+    this.dataStores = {}; // ✨ NEW: Store DataStores
     console.log("[RightPane] 💾 Initialized cards array for structured cards");
   }
 
@@ -63,6 +64,20 @@ define([], function () {
     }
   };
 
+  // ✨ NEW: Method to receive DataStores
+  RightPane.prototype.setDataStores = function (dataStores) {
+    console.log("[RightPane] 📦 setDataStores() called");
+    this.dataStores = dataStores || {};
+    console.log("[RightPane] 💾 Available DataStores:", Object.keys(this.dataStores));
+
+    // Log details about each DataStore
+    Object.keys(this.dataStores).forEach((key) => {
+      const ds = this.dataStores[key];
+      console.log(`[RightPane] 📊 DataStore "${key}": ${ds.rowCount} rows`);
+    });
+  };
+
+  //AddCard Method to create Cards
   RightPane.prototype.addCard = function (cardData) {
     console.log("[RightPane] ➕ addCard() called!");
     console.log("[RightPane] 📦 Received cardData:", JSON.stringify(cardData, null, 2));
@@ -162,6 +177,35 @@ define([], function () {
       paramInfo.textContent = `Param: ${config.paramName || "MISSING!"}`;
       card.appendChild(paramInfo);
 
+      // ✨ NEW: Check if DataStore exists for this card's queryName
+      const queryName = config.queryName;
+      let datalistId = null;
+
+      if (queryName && this.dataStores && this.dataStores[queryName]) {
+        console.log(`[RightPane] ✅ Found DataStore for ${queryName}`);
+
+        const dataStore = this.dataStores[queryName];
+        datalistId = `datalist-${queryName}-${Date.now()}`; // Unique ID
+
+        // Create datalist element
+        const datalist = document.createElement("datalist");
+        datalist.id = datalistId;
+
+        // Populate with values from DataStore
+        console.log(`[RightPane] 📋 Populating datalist with ${dataStore.rowCount} values`);
+        for (let i = 0; i < dataStore.rowCount; i++) {
+          const value = dataStore.getCellValue(i, 0);
+          const option = document.createElement("option");
+          option.value = value;
+          datalist.appendChild(option);
+        }
+
+        card.appendChild(datalist);
+        console.log(`[RightPane] ✅ Created datalist with ID: ${datalistId}`);
+      } else {
+        console.log(`[RightPane] ⚠️ No DataStore found for queryName: ${queryName}`);
+      }
+
       // Input wrapper (contains bubbles + input)
       const inputWrapper = document.createElement("div");
       inputWrapper.className = "input-wrapper";
@@ -176,6 +220,13 @@ define([], function () {
       input.className = "right-pane-card-input";
       input.type = "text";
       input.placeholder = "Type value and press Enter...";
+
+      // ✨ Link input to datalist if available
+      if (datalistId) {
+        input.setAttribute("list", datalistId);
+        console.log(`[RightPane] 🔗 Input linked to datalist: ${datalistId}`);
+      }
+
       inputWrapper.appendChild(input);
 
       // Click wrapper to focus input
@@ -326,6 +377,7 @@ define([], function () {
       this.cards = [];
       this.autocompleteData = {};
       this.m_oControlHost = null;
+      this.dataStores = {};
 
       console.log("[RightPane] ✅ destroy() complete — cleanup successful");
     } catch (err) {
