@@ -294,13 +294,100 @@ define([], function () {
   };
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // SET DATA
+  // SET DATA START
   // ═══════════════════════════════════════════════════════════════════════════
   CustomPromptPage.prototype.setData = function (oControlHost, oDataStore) {
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
     console.log("[CustomPromptPage] 📊 setData() called");
     console.log("[CustomPromptPage] 🔍 oControlHost:", oControlHost);
     console.log("[CustomPromptPage] 🔍 oDataStore:", oDataStore);
-    this.dataStore = oDataStore;
+
+    // Store the provided DataStore (if any)
+    if (oDataStore) {
+      console.log("[CustomPromptPage] 📦 DataStore name:", oDataStore.name);
+      console.log("[CustomPromptPage] 📊 DataStore row count:", oDataStore.rowCount);
+
+      if (!this.m_oDataStores) {
+        this.m_oDataStores = {};
+      }
+
+      this.m_oDataStores[oDataStore.name] = oDataStore;
+      this.dataStore = oDataStore; // Keep for backward compatibility
+
+      console.log("[CustomPromptPage] 💾 Stored DataStore:", oDataStore.name);
+    }
+
+    // ✨✨✨ NOW try to fetch all query DataStores from config ✨✨✨
+    console.log("[CustomPromptPage] 🔍 Attempting to fetch all queries from config...");
+
+    const config = oControlHost.configuration || {};
+
+    if (config.buttonGroups && Array.isArray(config.buttonGroups)) {
+      // Extract all unique query names
+      const queryNames = new Set();
+
+      config.buttonGroups.forEach((group) => {
+        if (group.buttons && Array.isArray(group.buttons)) {
+          group.buttons.forEach((btn) => {
+            if (btn.queryName) {
+              queryNames.add(btn.queryName);
+            }
+          });
+        }
+      });
+
+      console.log("[CustomPromptPage] 📋 Query names from config:", Array.from(queryNames));
+      console.log("[CustomPromptPage] 📊 Total queries to fetch:", queryNames.size);
+
+      // Initialize storage if not already done
+      if (!this.m_oDataStores) {
+        this.m_oDataStores = {};
+      }
+
+      // Try to fetch each query as a DataStore
+      queryNames.forEach((queryName) => {
+        console.log(`[CustomPromptPage] 🔍 Attempting: ${queryName}`);
+
+        try {
+          const dataStore = oControlHost.getDataStore(queryName);
+
+          if (dataStore) {
+            console.log(`[CustomPromptPage] ✅ SUCCESS: ${queryName}`);
+            console.log(`[CustomPromptPage] 📊 ${queryName} - Row count:`, dataStore.rowCount);
+            console.log(`[CustomPromptPage] 📊 ${queryName} - Column count:`, dataStore.columnCount);
+            console.log(`[CustomPromptPage] 📊 ${queryName} - Column names:`, dataStore.columnNames);
+
+            // Store it
+            this.m_oDataStores[queryName] = dataStore;
+
+            // Log first few values for verification
+            if (dataStore.rowCount > 0) {
+              console.log(`[CustomPromptPage] 📦 ${queryName} - First 5 values:`);
+              for (let i = 0; i < Math.min(5, dataStore.rowCount); i++) {
+                const value = dataStore.getCellValue(i, 0);
+                console.log(`[CustomPromptPage]   [${i}]: ${value}`);
+              }
+            } else {
+              console.warn(`[CustomPromptPage] ⚠️ ${queryName} has 0 rows`);
+            }
+          } else {
+            console.warn(`[CustomPromptPage] ⚠️ FAILED: ${queryName} returned null`);
+          }
+        } catch (err) {
+          console.error(`[CustomPromptPage] ❌ ERROR fetching ${queryName}:`, err.message);
+        }
+      });
+
+      console.log(
+        "[CustomPromptPage] 📊 Total DataStores successfully loaded:",
+        Object.keys(this.m_oDataStores).length
+      );
+      console.log("[CustomPromptPage] 📋 Available DataStores:", Object.keys(this.m_oDataStores));
+    } else {
+      console.warn("[CustomPromptPage] ⚠️ No buttonGroups found in configuration");
+    }
+
+    console.log("━━━━━━━━━━SET DATA DONE ━━━━━━━━━━━━━━━━");
   };
 
   // ═══════════════════════════════════════════════════════════════════════════
