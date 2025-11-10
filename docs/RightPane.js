@@ -162,15 +162,20 @@ define([], function () {
     return cardObject;
   };
 
-  // ✨ NEW: Remove card and re-enable source button
+  // Remove card Method and re-enable source button
   RightPane.prototype.removeCard = function (cardObject) {
     console.log(`[RightPane] 🗑 removeCard() called for:`, cardObject.config.label);
+    console.log(`[RightPane] 🔍 Card has bubbledValues:`, cardObject.bubbledValues);
+    console.log(`[RightPane] 🔍 Before removal, total cards:`, this.cards.length);
 
     // Find and remove from cards array
     const index = this.cards.indexOf(cardObject);
     if (index > -1) {
       this.cards.splice(index, 1);
-      console.log(`[RightPane] 💾 Removed from cards array, remaining:`, this.cards.length);
+      console.log(`[RightPane] 💾 Removed from cards array at index ${index}`);
+      console.log(`[RightPane] 💾 After removal, total cards:`, this.cards.length);
+    } else {
+      console.warn(`[RightPane] ⚠️ Card not found in cards array!`);
     }
 
     // Remove from DOM
@@ -365,13 +370,18 @@ define([], function () {
     console.log(`[RightPane] ✅ Bubble added to DOM`);
   };
 
+  // _removeBubble Method
   RightPane.prototype._removeBubble = function (cardObject, value, bubbleElement) {
     console.log(`[RightPane] 🗑 Removing bubble: "${value}"`);
+    console.log(`[RightPane] 🔍 Before removal, bubbledValues:`, cardObject.bubbledValues);
 
     const index = cardObject.bubbledValues.indexOf(value);
     if (index > -1) {
       cardObject.bubbledValues.splice(index, 1);
-      console.log(`[RightPane] 💾 Removed from bubbledValues:`, cardObject.bubbledValues);
+      console.log(`[RightPane] 💾 Removed from bubbledValues at index ${index}`);
+      console.log(`[RightPane] 💾 After removal, bubbledValues:`, cardObject.bubbledValues);
+    } else {
+      console.warn(`[RightPane] ⚠️ Value "${value}" not found in bubbledValues!`);
     }
 
     if (bubbleElement && bubbleElement.parentNode) {
@@ -389,6 +399,7 @@ define([], function () {
     }
   };
 
+  // GetParameters Method
   RightPane.prototype.getParameters = function () {
     console.log("[RightPane] 📋 getParameters() called");
     console.log("[RightPane] 📊 Total cards to check:", this.cards.length);
@@ -398,6 +409,7 @@ define([], function () {
 
       this.cards.forEach((cardObject, idx) => {
         console.log(`[RightPane] 🔍 Checking card ${idx}:`, cardObject.config.label);
+        console.log(`[RightPane] 🔍 Card ${idx} bubbledValues:`, cardObject.bubbledValues);
 
         const cardParams = cardObject.getParameters();
 
