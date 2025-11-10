@@ -9,7 +9,7 @@ define([], function () {
     this.cardsContainer = null;
     this.autocompleteData = {};
     this.m_oControlHost = null;
-    this.cards = []; // Structured card objects
+    this.cards = [];
     console.log("[RightPane] 💾 Initialized cards array for structured cards");
   }
 
@@ -117,16 +117,17 @@ define([], function () {
       config: config,
       domElement: null,
       inputElement: null,
+      bubblesContainer: null,
+      bubbledValues: [], // ✨ NEW: Store confirmed values as bubbles
 
       getParameters: function () {
         console.log("[RightPane] 📋 Card getParameters() called for:", this.config.label);
-
-        const value = this.inputElement ? this.inputElement.value.trim() : "";
-        console.log("[RightPane] 🔍 Input value:", value);
+        console.log("[RightPane] 🔍 Bubbled values:", this.bubbledValues);
         console.log("[RightPane] 🔍 paramName:", this.config.paramName);
 
-        if (!value) {
-          console.log("[RightPane] ⚠️ No value entered, returning empty array");
+        // ✨ Only return bubbled values, NOT raw input
+        if (this.bubbledValues.length === 0) {
+          console.log("[RightPane] ⚠️ No bubbled values, returning empty array");
           return [];
         }
 
@@ -138,11 +139,11 @@ define([], function () {
         const result = [
           {
             parameter: this.config.paramName,
-            values: [{ use: value }],
+            values: this.bubbledValues.map((val) => ({ use: val })),
           },
         ];
 
-        console.log("[RightPane] 📤 Returning parameter:", JSON.stringify(result, null, 2));
+        console.log("[RightPane] 📤 Returning parameters:", JSON.stringify(result, null, 2));
         return result;
       },
     };
@@ -174,7 +175,6 @@ define([], function () {
       card.style.maxWidth = "720px";
       card.style.width = "auto";
       card.style.boxSizing = "border-box";
-      console.log("[RightPane] 📏 Card width: min=480px, max=720px, auto-grow");
 
       const header = document.createElement("div");
       header.className = "right-pane-card-header";
@@ -193,38 +193,75 @@ define([], function () {
       paramInfo.style.marginBottom = "5px";
       card.appendChild(paramInfo);
 
+      // ✨ NEW: Create input-like container for bubbles + input
+      const inputWrapper = document.createElement("div");
+      inputWrapper.className = "input-wrapper";
+      inputWrapper.style.display = "flex";
+      inputWrapper.style.flexWrap = "wrap";
+      inputWrapper.style.alignItems = "center";
+      inputWrapper.style.gap = "5px";
+      inputWrapper.style.padding = "5px";
+      inputWrapper.style.border = "1px solid #28a745";
+      inputWrapper.style.borderRadius = "3px";
+      inputWrapper.style.backgroundColor = "#fff";
+      inputWrapper.style.minHeight = "32px";
+      inputWrapper.style.cursor = "text";
+      inputWrapper.style.boxSizing = "border-box";
+
+      // ✨ Bubbles container (inside wrapper)
+      const bubblesContainer = document.createElement("div");
+      bubblesContainer.className = "bubbles-container";
+      bubblesContainer.style.display = "flex";
+      bubblesContainer.style.flexWrap = "wrap";
+      bubblesContainer.style.gap = "5px";
+      inputWrapper.appendChild(bubblesContainer);
+
+      // ✨ Actual input (inline, grows as needed)
       const input = document.createElement("input");
       input.className = "right-pane-card-input";
       input.type = "text";
-      input.placeholder = "Enter value...";
-      input.style.width = "100%";
-      input.style.padding = "5px";
-      input.style.boxSizing = "border-box";
-      input.style.border = "1px solid #28a745";
-      input.style.minWidth = "0";
-      card.appendChild(input);
+      input.placeholder = "Type value and press Enter...";
+      input.style.border = "none";
+      input.style.outline = "none";
+      input.style.flex = "1";
+      input.style.minWidth = "120px";
+      input.style.padding = "2px";
+      input.style.fontSize = "14px";
+      inputWrapper.appendChild(input);
 
+      // Click wrapper to focus input
+      inputWrapper.addEventListener("click", () => {
+        input.focus();
+      });
+
+      card.appendChild(inputWrapper);
+
+      // Store references
       cardObject.domElement = card;
       cardObject.inputElement = input;
-      console.log("[RightPane] 💾 Stored domElement and inputElement on card object");
+      cardObject.bubblesContainer = bubblesContainer;
 
-      input.addEventListener("input", (e) => {
-        console.log(`[RightPane] ⌨️ User typed in "${config.label}":`, e.target.value);
+      // ✨ NEW: Handle Enter/Tab to create bubble
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === "Tab") {
+          e.preventDefault();
 
-        if (cardObject.domElement) {
-          console.log(`[RightPane] 📏 Current card width: ${cardObject.domElement.offsetWidth}px`);
-        }
+          const value = input.value.trim();
+          if (value) {
+            console.log(`[RightPane] 🎯 Creating bubble for value: "${value}"`);
+            this._createBubble(cardObject, value);
+            input.value = ""; // Clear input
 
-        if (this.m_oControlHost) {
-          try {
-            console.log(`[RightPane] 📢 Notifying Cognos: valueChanged()`);
-            this.m_oControlHost.valueChanged();
-            console.log(`[RightPane] ✅ Cognos notified successfully`);
-          } catch (err) {
-            console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
+            // Notify Cognos of change
+            if (this.m_oControlHost) {
+              try {
+                this.m_oControlHost.valueChanged();
+                console.log(`[RightPane] ✅ Cognos notified of value change`);
+              } catch (err) {
+                console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
+              }
+            }
           }
-        } else {
-          console.error(`[RightPane] ❌ Cannot notify - m_oControlHost is null!`);
         }
       });
 
@@ -232,6 +269,94 @@ define([], function () {
       console.log("[RightPane] ✅ Card rendered to DOM:", config.label);
     } catch (err) {
       console.error("[RightPane] ❌ _renderCard() failed:", err);
+    }
+  };
+
+  // ✨ NEW: Create bubble
+  RightPane.prototype._createBubble = function (cardObject, value) {
+    console.log(`[RightPane] 🫧 Creating bubble: "${value}"`);
+
+    // Check if value already exists
+    if (cardObject.bubbledValues.includes(value)) {
+      console.warn(`[RightPane] ⚠️ Value "${value}" already exists as bubble`);
+      return;
+    }
+
+    // Add to bubbledValues array
+    cardObject.bubbledValues.push(value);
+    console.log(`[RightPane] 💾 Added to bubbledValues:`, cardObject.bubbledValues);
+
+    // Create bubble DOM element
+    const bubble = document.createElement("span");
+    bubble.className = "bubble";
+    bubble.style.display = "inline-flex";
+    bubble.style.alignItems = "center";
+    bubble.style.gap = "5px";
+    bubble.style.padding = "3px 8px";
+    bubble.style.backgroundColor = "#88c1ed";
+    bubble.style.color = "#000";
+    bubble.style.borderRadius = "12px";
+    bubble.style.fontSize = "13px";
+    bubble.style.fontWeight = "500";
+    bubble.style.whiteSpace = "nowrap";
+
+    // Value text
+    const valueSpan = document.createElement("span");
+    valueSpan.textContent = value;
+    bubble.appendChild(valueSpan);
+
+    // Remove button
+    const removeBtn = document.createElement("button");
+    removeBtn.textContent = "×";
+    removeBtn.style.border = "none";
+    removeBtn.style.background = "transparent";
+    removeBtn.style.color = "#000";
+    removeBtn.style.fontSize = "18px";
+    removeBtn.style.fontWeight = "bold";
+    removeBtn.style.lineHeight = "1";
+    removeBtn.style.cursor = "pointer";
+    removeBtn.style.padding = "0";
+    removeBtn.style.margin = "0";
+    removeBtn.style.width = "16px";
+    removeBtn.style.height = "16px";
+
+    removeBtn.addEventListener("click", () => {
+      console.log(`[RightPane] 🗑 Remove button clicked for: "${value}"`);
+      this._removeBubble(cardObject, value, bubble);
+    });
+
+    bubble.appendChild(removeBtn);
+
+    // Add to bubbles container
+    cardObject.bubblesContainer.appendChild(bubble);
+    console.log(`[RightPane] ✅ Bubble added to DOM`);
+  };
+
+  // ✨ NEW: Remove bubble
+  RightPane.prototype._removeBubble = function (cardObject, value, bubbleElement) {
+    console.log(`[RightPane] 🗑 Removing bubble: "${value}"`);
+
+    // Remove from bubbledValues array
+    const index = cardObject.bubbledValues.indexOf(value);
+    if (index > -1) {
+      cardObject.bubbledValues.splice(index, 1);
+      console.log(`[RightPane] 💾 Removed from bubbledValues:`, cardObject.bubbledValues);
+    }
+
+    // Remove bubble from DOM
+    if (bubbleElement && bubbleElement.parentNode) {
+      bubbleElement.parentNode.removeChild(bubbleElement);
+      console.log(`[RightPane] ✅ Bubble removed from DOM`);
+    }
+
+    // Notify Cognos of change
+    if (this.m_oControlHost) {
+      try {
+        this.m_oControlHost.valueChanged();
+        console.log(`[RightPane] ✅ Cognos notified of value removal`);
+      } catch (err) {
+        console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
+      }
     }
   };
 
@@ -244,6 +369,7 @@ define([], function () {
 
       this.cards.forEach((cardObject, idx) => {
         console.log(`[RightPane] 🔍 Checking card ${idx}:`, cardObject.config.label);
+        console.log(`[RightPane] 🔍 Bubbled values:`, cardObject.bubbledValues);
 
         const cardParams = cardObject.getParameters();
 
@@ -251,7 +377,7 @@ define([], function () {
           allParams.push(...cardParams);
           console.log(`[RightPane] ✅ Card ${idx} returned parameters:`, JSON.stringify(cardParams, null, 2));
         } else {
-          console.log(`[RightPane] ⚠️ Card ${idx} has no parameters (empty input or missing paramName)`);
+          console.log(`[RightPane] ⚠️ Card ${idx} has no parameters (no bubbled values)`);
         }
       });
 
