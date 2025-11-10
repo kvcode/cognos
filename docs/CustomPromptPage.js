@@ -75,13 +75,13 @@ define([], function () {
             this.rightPane.initialize(oControlHost, () => {
               console.log("[CustomPromptPage] ✅ RightPane initialized");
 
-              // ✨ NEW: Pass DataStores to RightPane
-              if (this.m_oDataStores && Object.keys(this.m_oDataStores).length > 0) {
-                this.rightPane.setDataStores(this.m_oDataStores);
-                console.log("[CustomPromptPage] 📦 DataStores passed to RightPane");
-              } else {
-                console.warn("[CustomPromptPage] ⚠️ No DataStores available to pass to RightPane");
-              }
+              // // ✨ NEW: Pass DataStores to RightPane its too early
+              // if (this.m_oDataStores && Object.keys(this.m_oDataStores).length > 0) {
+              //   this.rightPane.setDataStores(this.m_oDataStores);
+              //   console.log("[CustomPromptPage] 📦 DataStores passed to RightPane");
+              // } else {
+              //   console.warn("[CustomPromptPage] ⚠️ No DataStores available to pass to RightPane");
+              // }
 
               // --- Now load DragDrop with BOTH panes ready
               console.log(`[CustomPromptPage] 🚀 Loading DragDrop from: ${DragDropPath}`);
