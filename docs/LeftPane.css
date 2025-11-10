@@ -107,6 +107,30 @@
   background-color: #f0f8ff;
 }
 
+/* === Card Remove Button (X in top-right) === */
+.card-remove-btn {
+  background: transparent;
+  border: none;
+  color: #d32f2f;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-remove-btn:hover {
+  color: #b71c1c;
+  background-color: #ffebee;
+  border-radius: 50%;
+}
+
 /* === Input Wrapper (contains bubbles + input) === */
 .input-wrapper {
   display: flex;

@@ -77,6 +77,13 @@ define([], function () {
     });
   };
 
+  // ✨ NEW: Check if card with paramName already exists
+  RightPane.prototype.hasCard = function (paramName) {
+    const exists = this.cards.some((card) => card.config.paramName === paramName);
+    console.log(`[RightPane] 🔍 hasCard(${paramName}):`, exists);
+    return exists;
+  };
+
   //AddCard Method to create Cards
   RightPane.prototype.addCard = function (cardData) {
     console.log("[RightPane] ➕ addCard() called!");
@@ -122,6 +129,7 @@ define([], function () {
       inputElement: null,
       bubblesContainer: null,
       bubbledValues: [],
+      sourceButton: cardData.sourceButton || null, // ✨ NEW: Store source button reference
 
       getParameters: function () {
         console.log("[RightPane] 📋 Card getParameters() called for:", this.config.label);
@@ -154,6 +162,42 @@ define([], function () {
     return cardObject;
   };
 
+  // ✨ NEW: Remove card and re-enable source button
+  RightPane.prototype.removeCard = function (cardObject) {
+    console.log(`[RightPane] 🗑 removeCard() called for:`, cardObject.config.label);
+
+    // Find and remove from cards array
+    const index = this.cards.indexOf(cardObject);
+    if (index > -1) {
+      this.cards.splice(index, 1);
+      console.log(`[RightPane] 💾 Removed from cards array, remaining:`, this.cards.length);
+    }
+
+    // Remove from DOM
+    if (cardObject.domElement && cardObject.domElement.parentNode) {
+      cardObject.domElement.parentNode.removeChild(cardObject.domElement);
+      console.log(`[RightPane] ✅ Removed card DOM element`);
+    }
+
+    // ✨ Re-enable source button in LeftPane
+    if (cardObject.sourceButton) {
+      cardObject.sourceButton.style.opacity = "1";
+      cardObject.sourceButton.style.cursor = "grab";
+      cardObject.sourceButton.style.pointerEvents = "auto";
+      console.log(`[RightPane] 🎨 Re-enabled source button`);
+    }
+
+    // Notify Cognos
+    if (this.m_oControlHost) {
+      try {
+        this.m_oControlHost.valueChanged();
+        console.log(`[RightPane] ✅ Cognos notified of card removal`);
+      } catch (err) {
+        console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
+      }
+    }
+  };
+
   RightPane.prototype._renderCard = function (cardObject) {
     console.log("[RightPane] 🛠 _renderCard() called");
     console.log("[RightPane] 📦 Card config:", JSON.stringify(cardObject.config, null, 2));
@@ -165,11 +209,32 @@ define([], function () {
       const card = document.createElement("div");
       card.className = "right-pane-card";
 
-      // Header
+      // Header with X button
+      const headerContainer = document.createElement("div");
+      headerContainer.style.display = "flex";
+      headerContainer.style.justifyContent = "space-between";
+      headerContainer.style.alignItems = "center";
+      headerContainer.style.marginBottom = "5px";
+
       const header = document.createElement("div");
       header.className = "right-pane-card-header";
       header.textContent = config.label || config.optionName || "Unnamed Prompt";
-      card.appendChild(header);
+      header.style.flex = "1";
+      headerContainer.appendChild(header);
+
+      // ✨ NEW: X button to remove card
+      const removeCardBtn = document.createElement("button");
+      removeCardBtn.className = "card-remove-btn";
+      removeCardBtn.textContent = "×";
+      removeCardBtn.title = "Remove card";
+
+      removeCardBtn.addEventListener("click", () => {
+        console.log(`[RightPane] 🗑 Card remove button clicked for: ${config.label}`);
+        this.removeCard(cardObject);
+      });
+
+      headerContainer.appendChild(removeCardBtn);
+      card.appendChild(headerContainer);
 
       // Param info
       const paramInfo = document.createElement("div");
@@ -177,7 +242,7 @@ define([], function () {
       paramInfo.textContent = `Param: ${config.paramName || "MISSING!"}`;
       card.appendChild(paramInfo);
 
-      // ✨ NEW: Check if DataStore exists for this card's queryName
+      // ✨ Check if DataStore exists for this card's queryName
       const queryName = config.queryName;
       let datalistId = null;
 
@@ -185,13 +250,11 @@ define([], function () {
         console.log(`[RightPane] ✅ Found DataStore for ${queryName}`);
 
         const dataStore = this.dataStores[queryName];
-        datalistId = `datalist-${queryName}-${Date.now()}`; // Unique ID
+        datalistId = `datalist-${queryName}-${Date.now()}`;
 
-        // Create datalist element
         const datalist = document.createElement("datalist");
         datalist.id = datalistId;
 
-        // Populate with values from DataStore
         console.log(`[RightPane] 📋 Populating datalist with ${dataStore.rowCount} values`);
         for (let i = 0; i < dataStore.rowCount; i++) {
           const value = dataStore.getCellValue(i, 0);
@@ -221,7 +284,6 @@ define([], function () {
       input.type = "text";
       input.placeholder = "Type value and press Enter...";
 
-      // ✨ Link input to datalist if available
       if (datalistId) {
         input.setAttribute("list", datalistId);
         console.log(`[RightPane] 🔗 Input linked to datalist: ${datalistId}`);
@@ -229,7 +291,6 @@ define([], function () {
 
       inputWrapper.appendChild(input);
 
-      // Click wrapper to focus input
       inputWrapper.addEventListener("click", () => {
         input.focus();
       });

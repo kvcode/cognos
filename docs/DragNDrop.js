@@ -109,6 +109,7 @@ define([], function () {
               sourceIndex: idx,
               timestamp: Date.now(),
               fullConfig: button._buttonConfig,
+              sourceButton: button, // ✨ NEW: Store button reference
             };
 
             console.log("[DragNDrop] 💾 dragData created with fullConfig");
@@ -122,6 +123,7 @@ define([], function () {
               optionName: button.textContent.trim(),
               sourceIndex: idx,
               timestamp: Date.now(),
+              sourceButton: button,
             };
           }
 
@@ -227,17 +229,32 @@ define([], function () {
 
       if (this.rightPane && typeof this.rightPane.addCard === "function") {
         if (this.dragData.fullConfig) {
+          const paramName = this.dragData.fullConfig.paramName;
+
+          // ✨ NEW: Check for duplicate
+          if (this.rightPane.hasCard(paramName)) {
+            console.warn(`[DragNDrop] ⚠️ Card with ${paramName} already exists - skipping`);
+            this.cleanup();
+            return;
+          }
+
           console.log("[DragNDrop] 📞 Calling rightPane.addCard()");
           this.rightPane.addCard(this.dragData);
           console.log("[DragNDrop] ✅ Card added to RightPane");
+
+          // ✨ NEW: Grey out source button
+          if (this.dragData.sourceButton) {
+            this.dragData.sourceButton.style.opacity = "0.4";
+            this.dragData.sourceButton.style.cursor = "not-allowed";
+            this.dragData.sourceButton.style.pointerEvents = "none";
+            console.log("[DragNDrop] 🎨 Greyed out source button");
+          }
         } else {
           console.warn("[DragNDrop] ⚠️ dragData.fullConfig missing, cannot create card");
         }
       } else {
         console.error("[DragNDrop] ❌ RightPane.addCard() not available");
       }
-    } else {
-      console.log("[DragNDrop] ❌ Dropped outside target zone");
     }
 
     this.cleanup();
