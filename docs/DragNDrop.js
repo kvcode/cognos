@@ -57,7 +57,7 @@ define([], function () {
     try {
       // Store drop zone reference
       this.dropZone = this.rightPane.cardsContainer;
-      console.log("[DragNDrop] 📍 Drop zone stored:", this.dropZone);
+      console.log("[DragNDrop] 📍 Drop zone stored");
 
       // Setup mouse-based drag handlers
       this.setupDragHandlers();
@@ -99,39 +99,31 @@ define([], function () {
           e.preventDefault(); // Prevent text selection
           console.log(`[DragNDrop] 🖱 Mouse down on: ${button.textContent.trim()}`);
 
-          // ========== OLD V1 LOGIC - START (UNCHANGED) ==========
-          // Store drag data (old format)
-          this.dragData = {
-            optionName: button.textContent.trim(),
-            sourceIndex: idx,
-            timestamp: Date.now(),
-          };
-          console.log("[DragNDrop] 📦 [V1] Old dragData format:", this.dragData);
-          // ========== OLD V1 LOGIC - END ==========
-
-          // ✨✨✨ NEW V2 LOGIC - START ✨✨✨
-          console.log("[DragNDrop] 🔍 [V2] Checking for stored button config...");
-
+          // Check for stored button config
           if (button._buttonConfig) {
-            console.log("[DragNDrop] ✅ [V2] Found stored _buttonConfig on button!");
-            console.log("[DragNDrop] 📦 [V2] Full config object:", JSON.stringify(button._buttonConfig, null, 2));
+            console.log("[DragNDrop] ✅ Found stored button config");
 
-            // Store full config alongside old data
-            this.dragData.fullConfig = button._buttonConfig;
-            console.log("[DragNDrop] 💾 [V2] Added fullConfig to dragData");
-            console.log("[DragNDrop] 💾 [V2] fullConfig.paramName:", button._buttonConfig.paramName || "MISSING!");
-            console.log("[DragNDrop] 💾 [V2] fullConfig.label:", button._buttonConfig.label || "MISSING!");
-            console.log("[DragNDrop] 💾 [V2] fullConfig.promptName:", button._buttonConfig.promptName || "MISSING!");
-            console.log("[DragNDrop] 💾 [V2] fullConfig.queryName:", button._buttonConfig.queryName || "MISSING!");
-            console.log("[DragNDrop] 💾 [V2] fullConfig.dataItem:", button._buttonConfig.dataItem || "MISSING!");
+            // Create dragData with full config
+            this.dragData = {
+              optionName: button.textContent.trim(),
+              sourceIndex: idx,
+              timestamp: Date.now(),
+              fullConfig: button._buttonConfig,
+            };
 
-            // Final dragData structure
-            console.log("[DragNDrop] 🎯 [V2] Final dragData with both formats:", this.dragData);
+            console.log("[DragNDrop] 💾 dragData created with fullConfig");
+            console.log("[DragNDrop] 💾 paramName:", button._buttonConfig.paramName);
+            console.log("[DragNDrop] 💾 label:", button._buttonConfig.label);
           } else {
-            console.warn("[DragNDrop] ⚠️ [V2] No _buttonConfig found on button (LeftPane V2 not applied?)");
-            console.log("[DragNDrop] ⏩ [V2] Falling back to V1 mode only");
+            console.warn("[DragNDrop] ⚠️ No _buttonConfig found on button");
+
+            // Fallback without fullConfig
+            this.dragData = {
+              optionName: button.textContent.trim(),
+              sourceIndex: idx,
+              timestamp: Date.now(),
+            };
           }
-          // ✨✨✨ NEW V2 LOGIC - END ✨✨✨
 
           // Create floating element
           this.createFloatingElement(button.textContent.trim(), e.clientX, e.clientY);
@@ -142,7 +134,7 @@ define([], function () {
           // Start tracking mouse movement
           this.startDrag();
 
-          console.log("[DragNDrop] 🚀 Drag started with data:", this.dragData);
+          console.log("[DragNDrop] 🚀 Drag started");
         });
       });
 
@@ -228,20 +220,14 @@ define([], function () {
     const rect = this.dropZone.getBoundingClientRect();
     const isOver = x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
 
-    console.log("[DragNDrop] 🔍 Drop zone rect:", rect);
-    console.log("[DragNDrop] 🔍 Mouse position:", x, y);
     console.log("[DragNDrop] 🔍 Is over drop zone:", isOver);
-
-    // In endDrag() method, replace the dual V1+V2 calls with just one call:
 
     if (isOver) {
       console.log("[DragNDrop] ✅ Dropped over target!");
 
       if (this.rightPane && typeof this.rightPane.addCard === "function") {
         if (this.dragData.fullConfig) {
-          console.log("[DragNDrop] 📞 Calling rightPane.addCard() with full config");
-          console.log("[DragNDrop] 📦 Data passed:", JSON.stringify(this.dragData, null, 2));
-
+          console.log("[DragNDrop] 📞 Calling rightPane.addCard()");
           this.rightPane.addCard(this.dragData);
           console.log("[DragNDrop] ✅ Card added to RightPane");
         } else {
@@ -250,6 +236,8 @@ define([], function () {
       } else {
         console.error("[DragNDrop] ❌ RightPane.addCard() not available");
       }
+    } else {
+      console.log("[DragNDrop] ❌ Dropped outside target zone");
     }
 
     this.cleanup();
@@ -271,10 +259,12 @@ define([], function () {
     }
 
     // Reset button opacity
-    const buttons = this.leftPane.domNode.querySelectorAll(".left-pane-button");
-    buttons.forEach((btn) => {
-      btn.style.opacity = "1";
-    });
+    if (this.leftPane && this.leftPane.domNode) {
+      const buttons = this.leftPane.domNode.querySelectorAll(".left-pane-button");
+      buttons.forEach((btn) => {
+        btn.style.opacity = "1";
+      });
+    }
 
     // Remove event listeners
     if (this.boundMouseMove) {
