@@ -29,7 +29,6 @@
   border-radius: 3px;
 }
 
-/* === CRITICAL: Vertical button layout === */
 .left-pane-buttons-container {
   display: flex;
   flex-direction: column;
@@ -74,9 +73,27 @@
 .right-pane-card {
   padding: 10px;
   margin-bottom: 10px;
-  background-color: #e6f0ff;
-  border: 1px solid #99c0ff;
+  background-color: #d4edda;
+  border: 2px solid #28a745;
   border-radius: 4px;
+  min-width: 480px;
+  max-width: 720px;
+  width: auto;
+  box-sizing: border-box;
+}
+
+.right-pane-card-header {
+  font-weight: bold;
+  margin-bottom: 5px;
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.right-pane-card-param-info {
+  font-size: 11px;
+  color: #666;
+  margin-bottom: 5px;
 }
 
 .right-pane.drop-hover,
@@ -85,10 +102,75 @@
   background-color: #f0f8ff;
 }
 
+/* === Input Wrapper (contains bubbles + input) === */
+.input-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  padding: 5px;
+  border: 1px solid #28a745;
+  border-radius: 3px;
+  background-color: #fff;
+  min-height: 32px;
+  cursor: text;
+  box-sizing: border-box;
+}
+
+/* === Bubbles Container === */
+.bubbles-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+/* === Individual Bubble === */
+.bubble {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  background-color: #88c1ed;
+  color: #000;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* === Bubble Remove Button === */
+.bubble-remove {
+  border: none;
+  background: transparent;
+  color: #000;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  width: 16px;
+  height: 16px;
+}
+
+.bubble-remove:hover {
+  color: #d32f2f;
+}
+
+/* === Input Field (inside wrapper) === */
+.right-pane-card-input {
+  border: none;
+  outline: none;
+  flex: 1;
+  min-width: 120px;
+  padding: 2px;
+  font-size: 14px;
+}
+
 /* === Floating Drag Element === */
 .drag-floating {
   position: fixed;
-  pointer-events: none; /* CRITICAL - doesn't block drop zone */
+  pointer-events: none;
   z-index: 9999;
   padding: 8px 12px;
   background: #e1e1e1;
