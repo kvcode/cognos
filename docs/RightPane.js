@@ -181,9 +181,7 @@ define([], function () {
 
     // ✨ Re-enable source button in LeftPane
     if (cardObject.sourceButton) {
-      cardObject.sourceButton.style.opacity = "1";
-      cardObject.sourceButton.style.cursor = "grab";
-      cardObject.sourceButton.style.pointerEvents = "auto";
+      cardObject.sourceButton.classList.remove("disabled");
       console.log(`[RightPane] 🎨 Re-enabled source button`);
     }
 

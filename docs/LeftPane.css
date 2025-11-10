@@ -56,6 +56,21 @@
   cursor: grab;
 }
 
+/* === Left Pane Button - Disabled State === */
+.left-pane-button.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+  background-color: #d0d0d0;
+  color: #888;
+  text-decoration: line-through;
+  border: 1px dashed #999;
+}
+
+.left-pane-button.disabled:active {
+  cursor: not-allowed;
+}
+
 /* === Right Pane === */
 .right-pane {
   flex: 1;

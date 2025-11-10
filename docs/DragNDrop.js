@@ -244,10 +244,8 @@ define([], function () {
 
           // ✨ NEW: Grey out source button
           if (this.dragData.sourceButton) {
-            this.dragData.sourceButton.style.opacity = "0.4";
-            this.dragData.sourceButton.style.cursor = "not-allowed";
-            this.dragData.sourceButton.style.pointerEvents = "none";
-            console.log("[DragNDrop] 🎨 Greyed out source button");
+            this.dragData.sourceButton.classList.add("disabled");
+            console.log("[DragNDrop] 🎨 Disabled source button with CSS class");
           }
         } else {
           console.warn("[DragNDrop] ⚠️ dragData.fullConfig missing, cannot create card");
