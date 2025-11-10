@@ -147,6 +147,17 @@ define([], function () {
         console.log("[CustomPromptPage] 📋 Parameter names:", Array.from(allParamNames));
 
         // Try to register each parameter with Cognos
+
+        // Add this BEFORE the forEach loop
+        console.log("[CustomPromptPage] 🔍 Attempting to access oControlHost.page...");
+        if (oControlHost.page && typeof oControlHost.page.getParameters === "function") {
+          try {
+            const allReportParams = oControlHost.page.getParameters();
+            console.log("[CustomPromptPage] 📋 All parameters from page:", allReportParams);
+          } catch (e) {
+            console.error("[CustomPromptPage] ❌ Failed to get all parameters:", e);
+          }
+        }
         allParamNames.forEach((paramName) => {
           try {
             const oParameter = oControlHost.getParameter(paramName);
