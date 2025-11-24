@@ -290,6 +290,10 @@ define([], function () {
 
         console.log(`[RightPane] ✅ Final validated columns - useColumn: ${useCol}, displayColumn: ${displayCol}`);
 
+        // ✨ Store validated columns on cardObject for later use to avoid Cognos alert errors
+        cardObject.validatedUseCol = useCol;
+        cardObject.validatedDisplayCol = displayCol;
+
         datalistId = `datalist-${queryName}-${Date.now()}`;
         const datalist = document.createElement("datalist");
         datalist.id = datalistId;
@@ -360,8 +364,8 @@ define([], function () {
 
             if (datalistId && config.queryName && this.dataStores[config.queryName]) {
               const dataStore = this.dataStores[config.queryName];
-              const useCol = config.useColumn !== undefined ? config.useColumn : 0;
-              const displayCol = config.displayColumn !== undefined ? config.displayColumn : 1;
+              const useCol = cardObject.validatedUseCol; // ✨ Use validated values
+              const displayCol = cardObject.validatedDisplayCol; // ✨ Use validated values
 
               // Find matching row
               for (let i = 0; i < dataStore.rowCount; i++) {
