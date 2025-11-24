@@ -1,88 +1,15 @@
-{
-    "BaseScriptPath": "/cognos4/samples/javascript/CustomPromptPage/",
-    "BaseScriptPaths": {
-        "CustomPromptPage": "https://kvcode.github.io/cognos/CustomPromptPage.js?v=1234567",
-        "LeftPaneCSS": "https://kvcode.github.io/cognos/LeftPane.css?v=12356",
-        "LeftPane": "https://kvcode.github.io/cognos/LeftPane.js?v=12356",
-        "RightPane": "https://kvcode.github.io/cognos/RightPane.js?v=1234567",
-        "DragDrop": "https://kvcode.github.io/cognos/DragNDrop.js?v=123456"
-    },
-    "orientation": "horizontal",
-    "align": "center",
-    "backgroundColor": "#1C1C1C",
-    "fill": "#F0F0F0",
-    "selectionFill": "#88c1ed",
-    "selectionBorderColor": "#88c1ed",
-    "selectionBackgroundColor": "#1C1C1C",
-    "selectFirstGroupExpanded": true,
-    "buttonGroups": [
-        {
-            "groupLabel": "Fahrzeug (FZ)",
-            "groupIcon": "<svg viewBox='0 0 24 24' width='16' height='16'><path fill='#88c1ed' d='M3 12l18-6-6 18z'/></svg>",
-            "defaultExpanded": true,
-            "buttons": [
-                {
-                    "label": "ZP8-Datum (Jahr) (FZ)",
-                    "promptName": "ZP8_Jahr",
-                    "paramName": "P_ZP8_Jahr",
-                    "queryName": "qp_ZP8_Jahr",
-                    "dataItem": "ZP8_Year",
-                    "useColumn": 0,
-                    "displayColumn": 0
-                },
-                {
-                    "label": "Marke (2-stellig) (FZ)",
-                    "promptName": "Brand",
-                    "paramName": "P_Brand",
-                    "queryName": "qp_Brand",
-                    "dataItem": "Brand_Code",
-                    "useColumn": 0,
-                    "displayColumn": 0
-                },
-                {
-                    "label": "ISO-Land (Auslieferung) (3-stellig) (FZ)",
-                    "promptName": "Country",
-                    "paramName": "P_Country",
-                    "queryName": "qp_Country",
-                    "dataItem": "Country_ISO",
-                    "useColumn": 0,
-                    "displayColumn": 1
-                },
-                {
-                    "label": "V-Model 2-digit (VH)",
-                    "promptName": "VModell2st",
-                    "paramName": "P_VModell2st",
-                    "queryName": "qp_VModell2st",
-                    "dataItem": "VModell2st",
-                    "useColumn": 0,
-                    "displayColumn": 0
-                }
-            ]
-        },
-        {
-            "groupLabel": "Anträge Schäden (S)",
-            "groupIcon": "<svg viewBox='0 0 24 24' width='16' height='16'><path fill='#88c1ed' d='M4 4h16v16H4z'/></svg>",
-            "defaultExpanded": false,
-            "buttons": [
-                {
-                    "label": "KDNR (S)",
-                    "promptName": "CustomerID",
-                    "paramName": "P_CustomerID",
-                    "queryName": "qp_KDNR",
-                    "dataItem": "Customer_Number",
-                    "useColumn": 0,
-                    "displayColumn": 0
-                },
-                {
-                    "label": "Antrags-Nr. (S)",
-                    "promptName": "ApplicationNumber",
-                    "paramName": "P_ApplicationNumber",
-                    "queryName": "qp_Application",
-                    "dataItem": "Application_No",
-                    "useColumn": 0,
-                    "displayColumn": 0
-                }
-            ]
-        }
-    ]
-}
+_43f
+: 
+"Index out of bounds: passed 1, expected between 0 and 0"
+
+firefox
+Scriptable Report Error
+
+Module:
+/cognos4/samples/javascript/CustomPromptPageGH/preLoad.js
+
+Method:
+getCellValue
+
+Description:
+Index out of bounds: passed 1, expected between 0 and 0
