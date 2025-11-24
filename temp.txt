@@ -47,3 +47,33 @@ Array [ "qp_VModell2st", "qp_Brand" ]
 length: 2
 ​
 <prototype>: Array []
+
+_______________________________________________
+
+[RightPane] ✅ Found DataStore for qp_Brand
+RightPane.js?v=1234567&v=1736447937:271 [RightPane] 📋 Config requested useColumn: 0, displayColumn: 1
+RightPane.js?v=1234567&v=1736447937:272 [RightPane] 📋 DataStore "qp_Brand" has 1 column(s)
+RightPane.js?v=1234567&v=1736447937:284  [RightPane] ⚠️ displayColumn 1 out of bounds (only 1 columns available)
+RightPane._renderCard @ RightPane.js?v=1234567&v=1736447937:284
+RightPane.addCard @ RightPane.js?v=1234567&v=1736447937:109
+DragNDrop.endDrag @ DragNDrop.js?v=123456&v=1736447937:242
+boundMouseUp @ DragNDrop.js?v=123456&v=1736447937:187
+RightPane.js?v=1234567&v=1736447937:287  [RightPane] ⚠️ Falling back to useColumn (0) for displayColumn
+RightPane._renderCard @ RightPane.js?v=1234567&v=1736447937:287
+RightPane.addCard @ RightPane.js?v=1234567&v=1736447937:109
+DragNDrop.endDrag @ DragNDrop.js?v=123456&v=1736447937:242
+boundMouseUp @ DragNDrop.js?v=123456&v=1736447937:187
+RightPane.js?v=1234567&v=1736447937:291 [RightPane] ✅ Final validated columns - useColumn: 0, displayColumn: 0
+RightPane.js?v=1234567&v=1736447937:297 [RightPane] 📋 Populating datalist with 8 values
+RightPane.js?v=1234567&v=1736447937:308 [RightPane] 📋 Row 0: display="AU", use="AU"
+RightPane.js?v=1234567&v=1736447937:308 [RightPane] 📋 Row 1: display="BY", use="BY"
+RightPane.js?v=1234567&v=1736447937:308 [RightPane] 📋 Row 2: display="LB", use="LB"
+RightPane.js?v=1234567&v=1736447937:313 [RightPane] ✅ Created datalist with ID: datalist-qp_Brand-1763990949533
+RightPane.js?v=1234567&v=1736447937:335 [RightPane] 🔗 Input linked to datalist: datalist-qp_Brand-1763990949533
+RightPane.js?v=1234567&v=1736447937:394 [RightPane] ✅ Card rendered to DOM: Marke (2-stellig) (FZ)
+RightPane.js?v=1234567&v=1736447937:110 [RightPane] ✅ Card rendered to DOM
+DragNDrop.js?v=123456&v=1736447937:243 [DragNDrop] ✅ Card added to RightPane
+DragNDrop.js?v=123456&v=1736447937:248 [DragNDrop] 🎨 Disabled source button with CSS class
+DragNDrop.js?v=123456&v=1736447937:263 [DragNDrop] 🧹 Cleaning up drag operation
+DragNDrop.js?v=123456&v=1736447937:298 [DragNDrop] ✅ Cleanup complete
+_7b5.js?v=1736447937:6  Uncaught _x22 {_hrg: '/cognos4/samples/javascript/CustomPromptPageGH/preLoad.js', _l9m: 'getCellValue', _43f: 'Index out of bounds: passed 1, expected between 0 and
