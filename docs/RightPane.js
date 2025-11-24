@@ -129,7 +129,7 @@ define([], function () {
       inputElement: null,
       bubblesContainer: null,
       bubbledValues: [],
-      sourceButton: cardData.sourceButton || null, // ✨ NEW: Store source button reference
+      sourceButton: cardData.sourceButton || null,
 
       getParameters: function () {
         console.log("[RightPane] 📋 Card getParameters() called for:", this.config.label);
@@ -141,19 +141,16 @@ define([], function () {
           return [];
         }
 
-        // Test what structure works for "cleared" state
         let values;
-
         if (this.bubbledValues.length === 0) {
-          console.log("[RightPane] ⚠️ No bubbled values - testing cleared state");
-          // Try option 1: empty array
+          console.log("[RightPane] ⚠️ No bubbled values - returning empty array");
           values = [];
-          // Or try option 2: array with empty string (uncomment to test)
-          // values = [{ use: "" }];
-          // Or try option 3: array with null (uncomment to test)
-          // values = [{ use: null }];
         } else {
-          values = this.bubbledValues.map((val) => ({ use: val }));
+          // ✨ Map to Cognos structure with use/display
+          values = this.bubbledValues.map((val) => ({
+            use: val.use,
+            display: val.display,
+          }));
         }
 
         const result = [
@@ -177,7 +174,6 @@ define([], function () {
     console.log(`[RightPane] 🗑 removeCard() called for:`, cardObject.config.label);
 
     // ✨ CRITICAL: Clear bubbled values BEFORE notifying Cognos
-    // This ensures getParameters() returns empty values array for this param
     console.log(`[RightPane] 🧹 Clearing bubbledValues before removal`);
     cardObject.bubbledValues = [];
 
@@ -197,6 +193,9 @@ define([], function () {
     if (index > -1) {
       this.cards.splice(index, 1);
       console.log(`[RightPane] 💾 Removed from cards array at index ${index}`);
+      console.log(`[RightPane] 💾 After removal, total cards:`, this.cards.length);
+    } else {
+      console.warn(`[RightPane] ⚠️ Card not found in cards array!`);
     }
 
     // Remove from DOM
@@ -205,7 +204,7 @@ define([], function () {
       console.log(`[RightPane] ✅ Removed card DOM element`);
     }
 
-    // Re-enable source button
+    // Re-enable source button in LeftPane
     if (cardObject.sourceButton) {
       cardObject.sourceButton.classList.remove("disabled");
       console.log(`[RightPane] 🎨 Re-enabled source button`);
@@ -236,7 +235,7 @@ define([], function () {
       header.style.flex = "1";
       headerContainer.appendChild(header);
 
-      // ✨ NEW: X button to remove card
+      // X button to remove card
       const removeCardBtn = document.createElement("button");
       removeCardBtn.className = "card-remove-btn";
       removeCardBtn.textContent = "×";
@@ -264,21 +263,34 @@ define([], function () {
         console.log(`[RightPane] ✅ Found DataStore for ${queryName}`);
 
         const dataStore = this.dataStores[queryName];
-        datalistId = `datalist-${queryName}-${Date.now()}`;
 
+        // ✨ Column configuration - defaults to col 0 = use, col 1 = display
+        const useCol = config.useColumn !== undefined ? config.useColumn : 0;
+        const displayCol = config.displayColumn !== undefined ? config.displayColumn : 1;
+
+        console.log(`[RightPane] 📋 Using useColumn: ${useCol}, displayColumn: ${displayCol}`);
+
+        datalistId = `datalist-${queryName}-${Date.now()}`;
         const datalist = document.createElement("datalist");
         datalist.id = datalistId;
 
         console.log(`[RightPane] 📋 Populating datalist with ${dataStore.rowCount} values`);
         for (let i = 0; i < dataStore.rowCount; i++) {
-          const value = dataStore.getCellValue(i, 0);
+          const displayValue = dataStore.getCellValue(i, displayCol);
+          const useValue = dataStore.getCellValue(i, useCol);
+
           const option = document.createElement("option");
-          option.value = value;
+          option.value = displayValue; // What user sees/types
+          option.setAttribute("data-use-value", useValue); // Store use value for reference
           datalist.appendChild(option);
+
+          if (i < 3) {
+            console.log(`[RightPane] 📋 Row ${i}: display="${displayValue}", use="${useValue}"`);
+          }
         }
 
         card.appendChild(datalist);
-        console.log(`[RightPane] ✅ Created datalist with ID: ${datalistId}`);
+        console.log(`[RightPane] ✅ Created datalist with use/display mapping`);
       } else {
         console.log(`[RightPane] ⚠️ No DataStore found for queryName: ${queryName}`);
       }
@@ -316,15 +328,34 @@ define([], function () {
       cardObject.inputElement = input;
       cardObject.bubblesContainer = bubblesContainer;
 
-      // Handle Enter/Tab to create bubble
+      // ✨ Handle Enter/Tab to create bubble with use/display lookup
       input.addEventListener("keydown", (e) => {
         if (e.key === "Enter" || e.key === "Tab") {
           e.preventDefault();
 
-          const value = input.value.trim();
-          if (value) {
-            console.log(`[RightPane] 🎯 Creating bubble for value: "${value}"`);
-            this._createBubble(cardObject, value);
+          const displayValue = input.value.trim();
+          if (displayValue) {
+            // Look up the corresponding use value from DataStore
+            let useValue = displayValue; // Default to same if not found
+
+            if (datalistId && config.queryName && this.dataStores[config.queryName]) {
+              const dataStore = this.dataStores[config.queryName];
+              const useCol = config.useColumn !== undefined ? config.useColumn : 0;
+              const displayCol = config.displayColumn !== undefined ? config.displayColumn : 1;
+
+              // Find matching row
+              for (let i = 0; i < dataStore.rowCount; i++) {
+                const dsDisplay = dataStore.getCellValue(i, displayCol);
+                if (dsDisplay === displayValue) {
+                  useValue = dataStore.getCellValue(i, useCol);
+                  console.log(`[RightPane] 🔍 Mapped "${displayValue}" → use="${useValue}"`);
+                  break;
+                }
+              }
+            }
+
+            console.log(`[RightPane] 🎯 Creating bubble: display="${displayValue}", use="${useValue}"`);
+            this._createBubble(cardObject, displayValue, useValue);
             input.value = "";
 
             if (this.m_oControlHost) {
@@ -346,34 +377,37 @@ define([], function () {
     }
   };
 
-  RightPane.prototype._createBubble = function (cardObject, value) {
-    console.log(`[RightPane] 🫧 Creating bubble: "${value}"`);
+  RightPane.prototype._createBubble = function (cardObject, displayValue, useValue) {
+    console.log(`[RightPane] 🫧 Creating bubble: display="${displayValue}", use="${useValue}"`);
 
-    if (cardObject.bubbledValues.includes(value)) {
-      console.warn(`[RightPane] ⚠️ Value "${value}" already exists as bubble`);
+    // Check for duplicate display values
+    if (cardObject.bubbledValues.some((v) => v.display === displayValue)) {
+      console.warn(`[RightPane] ⚠️ Value "${displayValue}" already exists as bubble`);
       return;
     }
 
-    cardObject.bubbledValues.push(value);
+    // Store both values as object
+    cardObject.bubbledValues.push({
+      display: displayValue,
+      use: useValue || displayValue, // Fallback to display if use is missing
+    });
     console.log(`[RightPane] 💾 Added to bubbledValues:`, cardObject.bubbledValues);
 
-    // Create bubble
+    // Create bubble - show display value to user
     const bubble = document.createElement("span");
     bubble.className = "bubble";
 
-    // Value text
     const valueSpan = document.createElement("span");
-    valueSpan.textContent = value;
+    valueSpan.textContent = displayValue; // User sees display value
     bubble.appendChild(valueSpan);
 
-    // Remove button
     const removeBtn = document.createElement("button");
     removeBtn.className = "bubble-remove";
     removeBtn.textContent = "×";
 
     removeBtn.addEventListener("click", () => {
-      console.log(`[RightPane] 🗑 Remove button clicked for: "${value}"`);
-      this._removeBubble(cardObject, value, bubble);
+      console.log(`[RightPane] 🗑 Remove button clicked for: "${displayValue}"`);
+      this._removeBubble(cardObject, displayValue, bubble);
     });
 
     bubble.appendChild(removeBtn);
@@ -381,18 +415,18 @@ define([], function () {
     console.log(`[RightPane] ✅ Bubble added to DOM`);
   };
 
-  // _removeBubble Method
-  RightPane.prototype._removeBubble = function (cardObject, value, bubbleElement) {
-    console.log(`[RightPane] 🗑 Removing bubble: "${value}"`);
+  RightPane.prototype._removeBubble = function (cardObject, displayValue, bubbleElement) {
+    console.log(`[RightPane] 🗑 Removing bubble: "${displayValue}"`);
     console.log(`[RightPane] 🔍 Before removal, bubbledValues:`, cardObject.bubbledValues);
 
-    const index = cardObject.bubbledValues.indexOf(value);
+    // Find by display value
+    const index = cardObject.bubbledValues.findIndex((v) => v.display === displayValue);
     if (index > -1) {
       cardObject.bubbledValues.splice(index, 1);
       console.log(`[RightPane] 💾 Removed from bubbledValues at index ${index}`);
       console.log(`[RightPane] 💾 After removal, bubbledValues:`, cardObject.bubbledValues);
     } else {
-      console.warn(`[RightPane] ⚠️ Value "${value}" not found in bubbledValues!`);
+      console.warn(`[RightPane] ⚠️ Value "${displayValue}" not found in bubbledValues!`);
     }
 
     if (bubbleElement && bubbleElement.parentNode) {
