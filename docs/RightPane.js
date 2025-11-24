@@ -175,17 +175,28 @@ define([], function () {
   // Remove card Method and re-enable source button
   RightPane.prototype.removeCard = function (cardObject) {
     console.log(`[RightPane] 🗑 removeCard() called for:`, cardObject.config.label);
-    console.log(`[RightPane] 🔍 Card has bubbledValues:`, cardObject.bubbledValues);
-    console.log(`[RightPane] 🔍 Before removal, total cards:`, this.cards.length);
 
-    // Find and remove from cards array
+    // ✨ CRITICAL: Clear bubbled values BEFORE notifying Cognos
+    // This ensures getParameters() returns empty values array for this param
+    console.log(`[RightPane] 🧹 Clearing bubbledValues before removal`);
+    cardObject.bubbledValues = [];
+
+    // Notify Cognos FIRST (while card still in array)
+    // This triggers getParameters() which will return empty values for this param
+    if (this.m_oControlHost) {
+      try {
+        this.m_oControlHost.valueChanged();
+        console.log(`[RightPane] ✅ Cognos notified of parameter clearing`);
+      } catch (err) {
+        console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
+      }
+    }
+
+    // NOW remove from cards array
     const index = this.cards.indexOf(cardObject);
     if (index > -1) {
       this.cards.splice(index, 1);
       console.log(`[RightPane] 💾 Removed from cards array at index ${index}`);
-      console.log(`[RightPane] 💾 After removal, total cards:`, this.cards.length);
-    } else {
-      console.warn(`[RightPane] ⚠️ Card not found in cards array!`);
     }
 
     // Remove from DOM
@@ -194,20 +205,10 @@ define([], function () {
       console.log(`[RightPane] ✅ Removed card DOM element`);
     }
 
-    // ✨ Re-enable source button in LeftPane
+    // Re-enable source button
     if (cardObject.sourceButton) {
       cardObject.sourceButton.classList.remove("disabled");
       console.log(`[RightPane] 🎨 Re-enabled source button`);
-    }
-
-    // Notify Cognos
-    if (this.m_oControlHost) {
-      try {
-        this.m_oControlHost.valueChanged();
-        console.log(`[RightPane] ✅ Cognos notified of card removal`);
-      } catch (err) {
-        console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
-      }
     }
   };
 
