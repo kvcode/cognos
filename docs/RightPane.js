@@ -264,33 +264,48 @@ define([], function () {
 
         const dataStore = this.dataStores[queryName];
 
-        // ✨ Column configuration - defaults to col 0 = use, col 1 = display
-        const useCol = config.useColumn !== undefined ? config.useColumn : 0;
-        const displayCol = config.displayColumn !== undefined ? config.displayColumn : 1;
+        // ✨ Smart defaults based on actual column count
+        let useCol = config.useColumn !== undefined ? config.useColumn : 0;
+        let displayCol = config.displayColumn !== undefined ? config.displayColumn : 1;
 
-        console.log(`[RightPane] 📋 Using useColumn: ${useCol}, displayColumn: ${displayCol}`);
-
-        datalistId = `datalist-${queryName}-${Date.now()}`;
-        const datalist = document.createElement("datalist");
-        datalist.id = datalistId;
-
-        console.log(`[RightPane] 📋 Populating datalist with ${dataStore.rowCount} values`);
-        for (let i = 0; i < dataStore.rowCount; i++) {
-          const displayValue = dataStore.getCellValue(i, displayCol);
-          const useValue = dataStore.getCellValue(i, useCol);
-
-          const option = document.createElement("option");
-          option.value = displayValue; // What user sees/types
-          option.setAttribute("data-use-value", useValue); // Store use value for reference
-          datalist.appendChild(option);
-
-          if (i < 3) {
-            console.log(`[RightPane] 📋 Row ${i}: display="${displayValue}", use="${useValue}"`);
-          }
+        // ✨ Defensive check - if only 1 column exists, use it for both
+        if (dataStore.columnCount === 1) {
+          console.log(`[RightPane] ⚠️ Only 1 column in DataStore, using column 0 for both use and display`);
+          useCol = 0;
+          displayCol = 0;
         }
 
-        card.appendChild(datalist);
-        console.log(`[RightPane] ✅ Created datalist with use/display mapping`);
+        // Validate column indices
+        if (useCol >= dataStore.columnCount || displayCol >= dataStore.columnCount) {
+          console.error(
+            `[RightPane] ❌ Column index out of bounds! useCol=${useCol}, displayCol=${displayCol}, columnCount=${dataStore.columnCount}`
+          );
+          console.error(`[RightPane] ❌ Skipping datalist creation for ${queryName}`);
+        } else {
+          console.log(`[RightPane] 📋 Using useColumn: ${useCol}, displayColumn: ${displayCol}`);
+
+          datalistId = `datalist-${queryName}-${Date.now()}`;
+          const datalist = document.createElement("datalist");
+          datalist.id = datalistId;
+
+          console.log(`[RightPane] 📋 Populating datalist with ${dataStore.rowCount} values`);
+          for (let i = 0; i < dataStore.rowCount; i++) {
+            const displayValue = dataStore.getCellValue(i, displayCol);
+            const useValue = dataStore.getCellValue(i, useCol);
+
+            const option = document.createElement("option");
+            option.value = displayValue;
+            option.setAttribute("data-use-value", useValue);
+            datalist.appendChild(option);
+
+            if (i < 3) {
+              console.log(`[RightPane] 📋 Row ${i}: display="${displayValue}", use="${useValue}"`);
+            }
+          }
+
+          card.appendChild(datalist);
+          console.log(`[RightPane] ✅ Created datalist with use/display mapping`);
+        }
       } else {
         console.log(`[RightPane] ⚠️ No DataStore found for queryName: ${queryName}`);
       }
