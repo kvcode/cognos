@@ -264,48 +264,53 @@ define([], function () {
 
         const dataStore = this.dataStores[queryName];
 
-        // ✨ Smart defaults based on actual column count
+        // Read from config or use defaults
         let useCol = config.useColumn !== undefined ? config.useColumn : 0;
         let displayCol = config.displayColumn !== undefined ? config.displayColumn : 1;
 
-        // ✨ Defensive check - if only 1 column exists, use it for both
-        if (dataStore.columnCount === 1) {
-          console.log(`[RightPane] ⚠️ Only 1 column in DataStore, using column 0 for both use and display`);
-          useCol = 0;
-          displayCol = 0;
-        }
+        console.log(`[RightPane] 📋 Config requested useColumn: ${useCol}, displayColumn: ${displayCol}`);
+        console.log(`[RightPane] 📋 DataStore "${queryName}" has ${dataStore.columnCount} column(s)`);
 
-        // Validate column indices
-        if (useCol >= dataStore.columnCount || displayCol >= dataStore.columnCount) {
-          console.error(
-            `[RightPane] ❌ Column index out of bounds! useCol=${useCol}, displayCol=${displayCol}, columnCount=${dataStore.columnCount}`
+        // ✨ CRITICAL: Validate and fallback based on actual column count
+        if (useCol >= dataStore.columnCount) {
+          console.warn(
+            `[RightPane] ⚠️ useColumn ${useCol} out of bounds (only ${dataStore.columnCount} columns available)`
           );
-          console.error(`[RightPane] ❌ Skipping datalist creation for ${queryName}`);
-        } else {
-          console.log(`[RightPane] 📋 Using useColumn: ${useCol}, displayColumn: ${displayCol}`);
-
-          datalistId = `datalist-${queryName}-${Date.now()}`;
-          const datalist = document.createElement("datalist");
-          datalist.id = datalistId;
-
-          console.log(`[RightPane] 📋 Populating datalist with ${dataStore.rowCount} values`);
-          for (let i = 0; i < dataStore.rowCount; i++) {
-            const displayValue = dataStore.getCellValue(i, displayCol);
-            const useValue = dataStore.getCellValue(i, useCol);
-
-            const option = document.createElement("option");
-            option.value = displayValue;
-            option.setAttribute("data-use-value", useValue);
-            datalist.appendChild(option);
-
-            if (i < 3) {
-              console.log(`[RightPane] 📋 Row ${i}: display="${displayValue}", use="${useValue}"`);
-            }
-          }
-
-          card.appendChild(datalist);
-          console.log(`[RightPane] ✅ Created datalist with use/display mapping`);
+          console.warn(`[RightPane] ⚠️ Falling back to column 0 for useColumn`);
+          useCol = 0;
         }
+
+        if (displayCol >= dataStore.columnCount) {
+          console.warn(
+            `[RightPane] ⚠️ displayColumn ${displayCol} out of bounds (only ${dataStore.columnCount} columns available)`
+          );
+          console.warn(`[RightPane] ⚠️ Falling back to useColumn (${useCol}) for displayColumn`);
+          displayCol = useCol; // Use same column as useCol
+        }
+
+        console.log(`[RightPane] ✅ Final validated columns - useColumn: ${useCol}, displayColumn: ${displayCol}`);
+
+        datalistId = `datalist-${queryName}-${Date.now()}`;
+        const datalist = document.createElement("datalist");
+        datalist.id = datalistId;
+
+        console.log(`[RightPane] 📋 Populating datalist with ${dataStore.rowCount} values`);
+        for (let i = 0; i < dataStore.rowCount; i++) {
+          const displayValue = dataStore.getCellValue(i, displayCol);
+          const useValue = dataStore.getCellValue(i, useCol);
+
+          const option = document.createElement("option");
+          option.value = displayValue;
+          option.setAttribute("data-use-value", useValue);
+          datalist.appendChild(option);
+
+          if (i < 3) {
+            console.log(`[RightPane] 📋 Row ${i}: display="${displayValue}", use="${useValue}"`);
+          }
+        }
+
+        card.appendChild(datalist);
+        console.log(`[RightPane] ✅ Created datalist with ID: ${datalistId}`);
       } else {
         console.log(`[RightPane] ⚠️ No DataStore found for queryName: ${queryName}`);
       }
