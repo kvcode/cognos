@@ -13,3 +13,37 @@ getCellValue
 
 Description:
 Index out of bounds: passed 1, expected between 0 and 0
+
+
+[CustomPromptPage] 📊 setData() called CustomPromptPage.js:323:13
+[CustomPromptPage] 🔍 oDataStore received: 
+Object { _i6h: "/cognos4/samples/javascript/CustomPromptPageGH/preLoad.js", _7rn: "qp_Brand", _v5n: 1, _dqn: {…}, _saf: (1) […], _8ii: (1) […] }
+CustomPromptPage.js:324:13
+[CustomPromptPage] 📦 DataStore name: qp_Brand CustomPromptPage.js:336:15
+[CustomPromptPage] 📦 DataStore index: 1 CustomPromptPage.js:337:15
+[CustomPromptPage] 📊 Row count: 8 CustomPromptPage.js:338:15
+[CustomPromptPage] 📊 Column count: 1 CustomPromptPage.js:339:15
+[CustomPromptPage] 📊 Column names: 
+Array [ "Brand (2-digit) (VH)" ]
+CustomPromptPage.js:340:15
+[CustomPromptPage] 📊 Column data types: 
+Array [ "string" ]
+CustomPromptPage.js:341:15
+[CustomPromptPage] 📦 First 5 values from qp_Brand: CustomPromptPage.js:345:17
+[CustomPromptPage]   [0]: value="AU", formatted="AU" CustomPromptPage.js:349:19
+[CustomPromptPage]   [1]: value="BY", formatted="BY" CustomPromptPage.js:349:19
+[CustomPromptPage]   [2]: value="LB", formatted="LB" CustomPromptPage.js:349:19
+[CustomPromptPage]   [3]: value="SE", formatted="SE" CustomPromptPage.js:349:19
+[CustomPromptPage]   [4]: value="SK", formatted="SK" CustomPromptPage.js:349:19
+[CustomPromptPage] ✅ Stored DataStore: qp_Brand CustomPromptPage.js:355:15
+[CustomPromptPage] 📊 SUMMARY - Total DataStores stored: 2 CustomPromptPage.js:361:13
+[CustomPromptPage] 📋 Available DataStores: 
+Array [ "qp_VModell2st", "qp_Brand" ]
+​
+0: "qp_VModell2st"
+​
+1: "qp_Brand"
+​
+length: 2
+​
+<prototype>: Array []
