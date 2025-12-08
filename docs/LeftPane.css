@@ -178,7 +178,19 @@
   border-radius: 12px;
   font-size: 13px;
   font-weight: 500;
+
+  /* ✨ NEW: Constrain width and add ellipsis */
+  max-width: 200px;
   white-space: nowrap;
+}
+
+/* ✨ NEW: Make the text inside bubble truncate */
+.bubble span:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
 }
 
 /* === Bubble Remove Button === */

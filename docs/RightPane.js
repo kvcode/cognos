@@ -420,6 +420,7 @@ define([], function () {
     // Create bubble - show display value to user
     const bubble = document.createElement("span");
     bubble.className = "bubble";
+    bubble.title = displayValue;
 
     const valueSpan = document.createElement("span");
     valueSpan.textContent = displayValue; // User sees display value
