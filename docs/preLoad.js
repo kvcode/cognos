@@ -15,7 +15,7 @@ define([], function () {
     console.log("[PreLoad] 🔧 initialize() called");
     const config = oControlHost.configuration || {};
     const basePaths = config.BaseScriptPaths || {};
-    const fallbackBase = config.BaseScriptPath || "/cognos4/samples/javascript/CustomPromptPageGH/";
+    const fallbackBase = config.BaseScriptPath || "/cognos4/samples/javascript/CustomPromptPage/";
     // === Inject CSS ===
     const cssPath = basePaths.LeftPaneCSS || fallbackBase + "LeftPane.css";
     this.injectCSS(cssPath);
