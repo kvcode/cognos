@@ -22,11 +22,25 @@
 }
 
 .left-pane-group-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-weight: bold;
   margin-bottom: 8px;
   padding: 5px;
   background-color: #abbec6;
   border-radius: 3px;
+}
+
+.left-pane-group-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0; /* Removes extra space around SVG */
+}
+
+.left-pane-group-icon svg {
+  display: block; /* Removes inline spacing issues */
 }
 
 .left-pane-buttons-container {
@@ -68,6 +82,13 @@
 
 .left-pane-button.disabled:active {
   cursor: not-allowed;
+}
+
+.group-arrow {
+  margin-left: auto; /* Pushes to the right */
+  font-weight: bold;
+  user-select: none;
+  line-height: 1;
 }
 
 /* === Right Pane === */

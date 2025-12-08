@@ -89,9 +89,7 @@ define([], function () {
 
           // Expand/collapse arrow
           const arrowSpan = document.createElement("span");
-          arrowSpan.style.float = "right";
-          arrowSpan.style.fontWeight = "bold";
-          arrowSpan.style.userSelect = "none";
+          arrowSpan.className = "group-arrow";
 
           const isExpanded = this.groupStates[label];
           arrowSpan.textContent = isExpanded ? "▲" : "▼";
