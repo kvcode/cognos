@@ -28,7 +28,7 @@
   font-weight: bold;
   margin-bottom: 8px;
   padding: 5px;
-  background-color: #abbec6;
+  background-color: #1b3e4a;
   border-radius: 3px;
 }
 
@@ -55,8 +55,8 @@
   padding: 8px 12px;
   text-align: left;
   cursor: grab;
-  background-color: #e1e9f3;
-  border: 1px solid #07384d;
+  background-color: #e5e9eb;
+  border: 1px solid #00141f;
   border-radius: 3px;
   user-select: none;
   -webkit-user-select: none;
