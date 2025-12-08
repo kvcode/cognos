@@ -206,16 +206,15 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 3px 8px;
+  padding: 4px 8px;
   background-color: #88c1ed;
   color: #000;
   border-radius: 12px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
-
-  /* ✨ NEW: Constrain width and add ellipsis */
   max-width: 200px;
   white-space: nowrap;
+  line-height: 1.4; /* ✨ Add this for better vertical alignment */
 }
 
 /* ✨ NEW: Make the text inside bubble truncate */
@@ -225,6 +224,7 @@
   white-space: nowrap;
   flex: 1;
   min-width: 0;
+  line-height: 1.4; /* ✨ Match parent line-height */
 }
 
 /* === Bubble Remove Button === */
@@ -232,7 +232,7 @@
   border: none;
   background: transparent;
   color: #000;
-  font-size: 18px;
+  font-size: 16px; /* ✨ Reduced from 18px */
   font-weight: bold;
   line-height: 1;
   cursor: pointer;
@@ -240,10 +240,14 @@
   margin: 0;
   width: 16px;
   height: 16px;
+  flex-shrink: 0; /* ✨ Prevent button from being squeezed */
+  display: flex; /* ✨ Center the X properly */
+  align-items: center;
+  justify-content: center;
 }
 
 .bubble-remove:hover {
-  color: #d32f2f;
+  color: #680d0f;
 }
 
 /* === Input Field (inside wrapper) === */
@@ -252,8 +256,9 @@
   outline: none;
   flex: 1;
   min-width: 120px;
-  padding: 2px;
-  font-size: 14px;
+  padding: 4px; /* ✨ Increased from 2px */
+  font-size: 14px; /* ✨ Match bubble font-size */
+  line-height: 1.4; /* ✨ Match bubble line-height */
 }
 
 /* === Floating Drag Element === */
