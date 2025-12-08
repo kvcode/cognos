@@ -174,7 +174,7 @@
 }
 
 .card-remove-btn:hover {
-  color: #680d0f;
+  color: #b50116;
   border-radius: 50%;
 }
 
@@ -247,7 +247,7 @@
 }
 
 .bubble-remove:hover {
-  color: #680d0f;
+  color: #b50116;
 }
 
 /* === Input Field (inside wrapper) === */
@@ -256,9 +256,9 @@
   outline: none;
   flex: 1;
   min-width: 120px;
-  padding: 4px; /* ✨ Increased from 2px */
-  font-size: 14px; /* ✨ Match bubble font-size */
-  line-height: 1.4; /* ✨ Match bubble line-height */
+  padding: 6px;
+  font-size: 16px; /* ✅ Standard input size - fixes datalist suggestions */
+  line-height: 1.5;
 }
 
 /* === Floating Drag Element === */
