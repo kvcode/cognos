@@ -84,6 +84,7 @@
 .right-pane-cards {
   display: flex;
   flex-wrap: wrap;
+  align-items: flex-start;
   gap: 10px;
   min-height: 200px;
   padding-top: 4px;
