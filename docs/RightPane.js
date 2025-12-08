@@ -394,6 +394,47 @@ define([], function () {
         }
       });
 
+      // ✨✨✨ ADD THIS NEW BLOCK RIGHT HERE (AFTER LINE 395) ✨✨✨
+      // Handle click/selection from datalist (auto-confirm)
+      input.addEventListener("change", (e) => {
+        const displayValue = input.value.trim();
+
+        if (displayValue && datalistId) {
+          // Look up the corresponding use value from DataStore
+          let useValue = displayValue; // Default to same if not found
+
+          if (config.queryName && this.dataStores[config.queryName]) {
+            const dataStore = this.dataStores[config.queryName];
+            const useCol = cardObject.validatedUseCol;
+            const displayCol = cardObject.validatedDisplayCol;
+
+            // Find matching row
+            for (let i = 0; i < dataStore.rowCount; i++) {
+              const dsDisplay = dataStore.getCellValue(i, displayCol);
+              if (dsDisplay === displayValue) {
+                useValue = dataStore.getCellValue(i, useCol);
+                console.log(`[RightPane] 🔍 Mapped "${displayValue}" → use="${useValue}"`);
+                break;
+              }
+            }
+          }
+
+          console.log(`[RightPane] 🎯 Datalist selection confirmed: display="${displayValue}", use="${useValue}"`);
+          this._createBubble(cardObject, displayValue, useValue);
+          input.value = "";
+
+          if (this.m_oControlHost) {
+            try {
+              this.m_oControlHost.valueChanged();
+              console.log(`[RightPane] ✅ Cognos notified of value change`);
+            } catch (err) {
+              console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
+            }
+          }
+        }
+      });
+      // ✨✨✨ END OF NEW BLOCK ✨✨✨
+
       this.cardsContainer.appendChild(card);
       console.log("[RightPane] ✅ Card rendered to DOM:", config.label);
     } catch (err) {
