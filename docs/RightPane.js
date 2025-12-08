@@ -341,8 +341,12 @@ define([], function () {
 
       inputWrapper.appendChild(input);
 
-      inputWrapper.addEventListener("click", () => {
-        input.focus();
+      inputWrapper.addEventListener("click", (e) => {
+        // If click was on wrapper/bubbles (not input itself), trigger input click
+        if (e.target !== input) {
+          input.focus();
+          input.click(); // ✅ Trigger click to show datalist
+        }
       });
 
       card.appendChild(inputWrapper);
