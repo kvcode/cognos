@@ -159,7 +159,7 @@
 .card-remove-btn {
   background: transparent;
   border: none;
-  color: #d32f2f;
+  color: #00141f;
   font-size: 24px;
   font-weight: bold;
   line-height: 1;
@@ -174,8 +174,7 @@
 }
 
 .card-remove-btn:hover {
-  color: #b71c1c;
-  background-color: #ffebee;
+  color: #680d0f;
   border-radius: 50%;
 }
 
@@ -204,7 +203,7 @@
 /* === Individual Bubble === */
 .bubble {
   display: inline-flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 5px;
   padding: 4px 8px;
   background-color: #88c1ed;
@@ -224,6 +223,7 @@
   white-space: nowrap;
   flex: 1;
   min-width: 0;
+  padding-top: 1px;
   line-height: 1.4; /* ✨ Match parent line-height */
 }
 
