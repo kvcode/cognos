@@ -94,6 +94,40 @@ define([], function () {
       buttons.forEach((button, idx) => {
         button.style.cursor = "grab";
 
+        // ✨✨✨ ADD THIS ENTIRE BLOCK - DOUBLE-CLICK HANDLER ✨✨✨
+        button.addEventListener("dblclick", (e) => {
+          e.preventDefault();
+          console.log(`[DragNDrop] 🖱️🖱️ Double-click on: ${button.textContent.trim()}`);
+
+          if (!button._buttonConfig) {
+            console.warn("[DragNDrop] ⚠️ No _buttonConfig found on button");
+            return;
+          }
+
+          const paramName = button._buttonConfig.paramName;
+
+          if (this.rightPane.hasCard(paramName)) {
+            console.warn(`[DragNDrop] ⚠️ Card with ${paramName} already exists - skipping`);
+            return;
+          }
+
+          const dragData = {
+            optionName: button.textContent.trim(),
+            sourceIndex: idx,
+            timestamp: Date.now(),
+            fullConfig: button._buttonConfig,
+            sourceButton: button,
+          };
+
+          console.log("[DragNDrop] 📞 Calling rightPane.addCard() from double-click");
+          this.rightPane.addCard(dragData);
+          console.log("[DragNDrop] ✅ Card added via double-click");
+
+          button.classList.add("disabled");
+          console.log("[DragNDrop] 🎨 Disabled source button");
+        });
+        // ✨✨✨ END OF NEW BLOCK ✨✨✨
+
         // Mouse down - start drag
         button.addEventListener("mousedown", (e) => {
           e.preventDefault(); // Prevent text selection
