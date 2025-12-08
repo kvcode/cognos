@@ -76,9 +76,9 @@
   opacity: 0.4;
   cursor: not-allowed;
   pointer-events: none;
-  background-color: #d0d0d0;
-  color: #888;
-  border: 1px dashed #999;
+  background-color: #e5e9eb;
+  color: #809399;
+  border: 1px dashed #00141f;
 }
 
 .left-pane-button.disabled:active {
@@ -106,8 +106,8 @@
 .right-pane-card {
   padding: 10px;
   margin-bottom: 10px;
-  background-color: #e1e9f3;
-  border: 2px solid #07384d;
+  background-color: #e5e9eb;
+  border: 2px solid #00141f;
   border-radius: 4px;
   box-sizing: border-box;
   flex: 1 1 calc(50% - 10px);
