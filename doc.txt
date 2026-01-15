@@ -1,0 +1,231 @@
+# Custom Prompt Page - User Documentation
+
+## Overview
+
+The Custom Prompt Page is a modern, interactive drag-and-drop interface that replaces traditional Cognos prompt pages. Users can drag parameter buttons from a left navigation pane into configurable cards, then select values through autocomplete-enabled input fields with bubble-based multi-selection.
+
+**Key Features:**
+- Drag-and-drop or double-click to add parameter cards
+- Autocomplete input powered by Cognos DataStores
+- Multi-value selection with visual bubbles
+- Collapsible button groups
+- Automatic parameter passing to reports
+
+---
+
+## Installation & Setup
+
+### 1. Upload Files to Cognos
+
+Upload these files to your Cognos server (e.g., `/webcontent/bi/js/CustomPromptPage/`):
+- `preLoad.js`
+- `CustomPromptPage.js`
+- `LeftPane.js`
+- `RightPane.js`
+- `DragNDrop.js`
+- `LeftPane.css`
+- `config.json`
+
+### 2. Create Custom Control in Report
+
+1. In Report Studio/Cognos Analytics, create a new **Prompt Page**
+2. Add a **Custom Control** to the page
+3. Set the **Module path** property to: `../js/CustomPromptPage/preLoad.js`
+4. Enable **"UI with event propagation"** in the report properties (critical for drag-and-drop)
+
+### 3. Configure Base Paths
+
+In the Custom Control properties, set the **configuration** property:
+
+```json
+{
+  "BaseScriptPath": "../js/CustomPromptPage/",
+  "BaseScriptPaths": {
+    "CustomPromptPage": "../js/CustomPromptPage/CustomPromptPage.js",
+    "LeftPane": "../js/CustomPromptPage/LeftPane.js",
+    "RightPane": "../js/CustomPromptPage/RightPane.js",
+    "DragDrop": "../js/CustomPromptPage/DragNDrop.js",
+    "LeftPaneCSS": "../js/CustomPromptPage/LeftPane.css"
+  },
+  "buttonGroups": [...]
+}
+```
+
+---
+
+## Data Sets Configuration
+
+### Critical Rule: DataStore Names MUST Match config.json
+
+For each button that requires autocomplete data, you must:
+
+1. Create a **Data Set** in Cognos (query that returns the values)
+2. **Name the Data Set** exactly as specified in `config.json` under `queryName`
+3. Attach the Data Set to your Custom Control
+
+### Example:
+
+If your button configuration has:
+```json
+{
+  "label": "Marke (2-stellig) (FZ)",
+  "paramName": "P_Brand",
+  "queryName": "qp_Brand",
+  "useColumn": 0,
+  "displayColumn": 1
+}
+```
+
+Then create a Data Set named **`qp_Brand`** that returns:
+- Column 0: Brand codes (2-digit, e.g., "01", "02")  
+- Column 1: Brand names (full text, e.g., "Mercedes-Benz", "BMW")
+
+### Column Configuration
+
+- **`useColumn`**: Index of the column containing the **value** to pass to the report parameter
+- **`displayColumn`**: Index of the column containing the **label** shown to users
+
+If only 1 column exists, both default to column 0.
+
+---
+
+## JSON Configuration Structure
+
+### Button Groups
+
+The `buttonGroups` array defines the left pane structure:
+
+```json
+{
+  "buttonGroups": [
+    {
+      "groupLabel": "Fahrzeug (FZ)",
+      "defaultExpanded": true,
+      "groupIcon": "<svg>...</svg>",
+      "buttons": [
+        {
+          "label": "Marke (2-stellig) (FZ)",
+          "paramName": "P_Brand",
+          "queryName": "qp_Brand",
+          "useColumn": 0,
+          "displayColumn": 1
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Button Properties
+
+| Property | Required | Description |
+|----------|----------|-------------|
+| `label` | Yes | Button text displayed to user |
+| `paramName` | Yes | Cognos parameter name (must match report parameter) |
+| `queryName` | Yes* | Name of the Data Set to use for autocomplete |
+| `useColumn` | No | Column index for parameter value (default: 0) |
+| `displayColumn` | No | Column index for display text (default: 1) |
+
+\* Optional if no autocomplete is needed
+
+---
+
+## Report Parameters
+
+For each button, create a corresponding **Report Parameter** in Cognos:
+
+1. Parameter name must match `paramName` in config.json
+2. Set as **Multi-select** if users should select multiple values
+3. Data type should match your query column type
+
+Example:
+- Config: `"paramName": "P_Brand"`
+- Report: Create parameter named `P_Brand` (multi-select string)
+
+---
+
+## Usage Workflow
+
+### For End Users:
+
+1. **Open the prompt page** - buttons appear in left pane grouped by category
+2. **Add a parameter card**:
+   - **Drag** a button to the right pane, OR
+   - **Double-click** a button
+3. **Select values**:
+   - Type in the input field - autocomplete suggestions appear
+   - Press **Enter** or **Tab** to confirm selection
+   - Click from autocomplete dropdown to auto-confirm
+   - Values appear as bubbles above the input
+4. **Remove values**: Click the **×** on any bubble
+5. **Remove card**: Click the **×** in the card header
+6. **Submit**: Click **Finish** - parameters pass to the report
+
+---
+
+## Troubleshooting
+
+### Drag-and-drop doesn't work
+- ✅ Enable "UI with event propagation" in report properties
+- Alternative: Use double-click instead
+
+### Autocomplete shows no suggestions
+- ✅ Check Data Set name matches `queryName` exactly (case-sensitive)
+- ✅ Verify query returns data (run it independently)
+- ✅ Check `useColumn`/`displayColumn` don't exceed actual column count
+
+### Parameters don't pass to report
+- ✅ Verify report parameter name matches `paramName` in config
+- ✅ Check console logs for errors
+- ✅ Ensure values are bubbled before clicking Finish
+
+### Button is grayed out
+- This is normal after adding the card - prevents duplicates
+- Remove the card to re-enable the button
+
+---
+
+## Example Complete Configuration
+
+```json
+{
+  "BaseScriptPath": "../js/CustomPromptPage/",
+  "buttonGroups": [
+    {
+      "groupLabel": "Vehicle Data",
+      "buttons": [
+        {
+          "label": "Brand (2-digit)",
+          "paramName": "P_Brand",
+          "queryName": "qp_Brand",
+          "useColumn": 0,
+          "displayColumn": 1
+        },
+        {
+          "label": "Model Year",
+          "paramName": "P_ModelYear",
+          "queryName": "qp_ModelYear"
+        }
+      ]
+    }
+  ]
+}
+```
+
+**Required Data Sets:**
+- `qp_Brand` - Returns brand codes + names (2 columns)
+- `qp_ModelYear` - Returns years (1 column)
+
+**Required Report Parameters:**
+- `P_Brand` (multi-select string)
+- `P_ModelYear` (multi-select string/number)
+
+---
+
+## Advanced Tips
+
+- **Group Icons**: Add SVG icons to `groupIcon` property (see `svgsForEmbeddingJSON.txt`)
+- **Single-column data**: Set both `useColumn: 0` and `displayColumn: 0`
+- **Performance**: Limit Data Set queries to ~1000 rows for best autocomplete performance
+- **Styling**: Modify `LeftPane.css` to match your corporate theme
+
