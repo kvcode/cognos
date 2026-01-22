@@ -12,37 +12,10 @@
       },
       "description": "Load the most common vehicle filter parameters",
       "parameters": [
-        {
-          "paramName": "P_ZP8_Jahr"
-        },
-        {
-          "paramName": "P_VModel3st"
-        },
-        {
-          "paramName": "P_Marke"
-        },
-        {
-          "paramName": "P_ISO-LandAus3st"
-        }
-      ]
-    },
-    {
-      "id": "preset_german_market",
-      "label": "German Market Overview",
-      "labels": {
-        "de": "Deutscher Markt Übersicht",
-        "en": "German Market Overview"
-      },
-      "description": "Pre-filter for German market VW vehicles",
-      "parameters": [
-        {
-          "paramName": "P_ISO-LandAus3st",
-          "values": [{ "use": "DEU", "display": "Deutschland" }]
-        },
-        {
-          "paramName": "P_Marke",
-          "values": [{ "use": "01", "display": "VW" }]
-        }
+        { "paramName": "P_ZP8_Jahr" },
+        { "paramName": "P_VModel3st" },
+        { "paramName": "P_Marke" },
+        { "paramName": "P_ISO-LandAus3st" }
       ]
     }
   ],
@@ -55,68 +28,10 @@
         "en": "Vehicle (VH)"
       },
       "groupIcon": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M8.5 9L9.8 7.2C10.1 6.8 10.6 6.5 11.2 6.5H14.8C15.5 6.5 16.1 6.9 16.4 7.5L17.5 9.5H19C19.8 9.5 20.5 10.2 20.5 11V15C20.5 15.6 20 16 19.5 16H19.3C19.1 17.2 18.1 18 17 18C15.9 18 14.9 17.2 14.7 16H9.3C9.1 17.2 8.1 18 7 18C5.9 18 4.9 17.2 4.7 16H4.5C4 16 3.5 15.6 3.5 15V12C3.5 11.6 3.6 11.2 3.9 10.9L5.4 9.4C5.7 9.1 6.1 9 6.5 9H8.5ZM9.2 10L10.3 8.5C10.4 8.3 10.6 8.2 10.8 8.2H14.2C14.5 8.2 14.7 8.4 14.8 8.6L15.5 10H9.2ZM7 10H6.5C6.4 10 6.3 10.1 6.2 10.2L4.7 11.7C4.6 11.8 4.5 11.9 4.5 12V15H4.7C4.9 13.8 5.9 13 7 13C8.1 13 9.1 13.8 9.3 15H14.7C14.9 13.8 15.9 13 17 13C18.1 13 19.1 13.8 19.3 15H19.5V11C19.5 10.7 19.3 10.5 19 10.5H7V10ZM7 14C6.4 14 6 14.4 6 15C6 15.6 6.4 16 7 16C7.6 16 8 15.6 8 15C8 14.4 7.6 14 7 14ZM16 15C16 14.4 16.4 14 17 14C17.6 14 18 14.4 18 15C18 15.6 17.6 16 17 16C16.4 16 16 15.6 16 15Z\" fill=\"currentColor\"></path></svg>",
-      "buttons": [
+      "defaultExpanded": true,
+      "items": [
         {
-          "label": "Modelljahr (FZ)",
-          "labels": {
-            "de": "Modelljahr (FZ)",
-            "en": "Model Year (VH)"
-          },
-          "tooltip": "Filter by model year",
-          "tooltips": {
-            "de": "Nach Modelljahr filtern",
-            "en": "Filter by model year"
-          },
-          "paramName": "P_ModelYear",
-          "queryName": "qp_ModelYear",
-          "helpText": "Select model year(s) for vehicle filtering",
-          "helpTexts": {
-            "de": "Modelljahr(e) für Fahrzeugfilterung auswählen",
-            "en": "Select model year(s) for vehicle filtering"
-          }
-        },
-        {
-          "label": "Marke (2-stellig) (FZ)",
-          "labels": {
-            "de": "Marke (2-stellig) (FZ)",
-            "en": "Brand (2-digit) (VH)"
-          },
-          "tooltip": "Select vehicle brand(s)",
-          "tooltips": {
-            "de": "Fahrzeugmarke(n) auswählen",
-            "en": "Select vehicle brand(s)"
-          },
-          "paramName": "P_Marke",
-          "queryName": "qp_Marke",
-          "useColumn": 0,
-          "displayColumn": 1,
-          "required": true,
-          "helpText": "Required: At least one brand must be selected",
-          "helpTexts": {
-            "de": "Erforderlich: Mindestens eine Marke muss ausgewählt werden",
-            "en": "Required: At least one brand must be selected"
-          }
-        },
-        {
-          "label": "ISO-Land (Auslieferung) (3-stellig) (FZ)",
-          "labels": {
-            "de": "ISO-Land (Auslieferung) (3-stellig) (FZ)",
-            "en": "ISO-Country (Delivery) (3-digit) (VH)"
-          },
-          "tooltip": "Filter by delivery country (ISO 3-letter code)",
-          "tooltips": {
-            "de": "Nach Lieferland filtern (ISO 3-Buchstaben-Code)",
-            "en": "Filter by delivery country (ISO 3-letter code)"
-          },
-          "paramName": "P_ISO-LandAus3st",
-          "queryName": "qp_ISO-Land3stAus",
-          "useColumn": 0,
-          "displayColumn": 1
-        }
-      ],
-
-      "subgroups": [
-        {
+          "type": "subgroup",
           "subgroupLabel": "ZP8 Datum",
           "labels": {
             "de": "ZP8 Datum",
@@ -185,6 +100,7 @@
           ]
         },
         {
+          "type": "subgroup",
           "subgroupLabel": "V-Modell",
           "labels": {
             "de": "V-Modell",
@@ -206,12 +122,7 @@
               "paramName": "P_VModel2st",
               "queryName": "qp_VModel2",
               "useColumn": 0,
-              "displayColumn": 1,
-              "helpText": "Broadest model classification",
-              "helpTexts": {
-                "de": "Breiteste Modellklassifizierung",
-                "en": "Broadest model classification"
-              }
+              "displayColumn": 1
             },
             {
               "label": "V-Modell 3-stellig (FZ)",
@@ -227,12 +138,7 @@
               "paramName": "P_VModel3st",
               "queryName": "qp_VModel3",
               "useColumn": 0,
-              "displayColumn": 1,
-              "helpText": "Standard model code used in most reports",
-              "helpTexts": {
-                "de": "Standard-Modellcode in den meisten Berichten verwendet",
-                "en": "Standard model code used in most reports"
-              }
+              "displayColumn": 1
             },
             {
               "label": "V-Modell 4-stellig (FZ)",
@@ -246,12 +152,7 @@
                 "en": "Vehicle model 4-digit code - manual entry"
               },
               "paramName": "P_VModel4st",
-              "type": "text",
-              "helpText": "Manual entry: Type 4-digit codes (no autocomplete due to large dataset)",
-              "helpTexts": {
-                "de": "Manuelle Eingabe: 4-stellige Codes eingeben (keine Autovervollständigung wegen großem Datensatz)",
-                "en": "Manual entry: Type 4-digit codes (no autocomplete due to large dataset)"
-              }
+              "type": "text"
             },
             {
               "label": "V-Modell 5-stellig (FZ)",
@@ -265,12 +166,7 @@
                 "en": "Vehicle model 5-digit code - manual entry"
               },
               "paramName": "P_VModel5st",
-              "type": "text",
-              "helpText": "Manual entry: Type 5-digit codes (no autocomplete due to large dataset)",
-              "helpTexts": {
-                "de": "Manuelle Eingabe: 5-stellige Codes eingeben (keine Autovervollständigung wegen großem Datensatz)",
-                "en": "Manual entry: Type 5-digit codes (no autocomplete due to large dataset)"
-              }
+              "type": "text"
             },
             {
               "label": "V-Modell 6-stellig (FZ)",
@@ -284,14 +180,59 @@
                 "en": "Vehicle model 6-digit code - manual entry"
               },
               "paramName": "P_VModel6st",
-              "type": "text",
-              "helpText": "Manual entry: Type 6-digit codes (no autocomplete due to large dataset)",
-              "helpTexts": {
-                "de": "Manuelle Eingabe: 6-stellige Codes eingeben (keine Autovervollständigung wegen großem Datensatz)",
-                "en": "Manual entry: Type 6-digit codes (no autocomplete due to large dataset)"
-              }
+              "type": "text"
             }
           ]
+        },
+        {
+          "type": "button",
+          "label": "Modelljahr (FZ)",
+          "labels": {
+            "de": "Modelljahr (FZ)",
+            "en": "Model Year (VH)"
+          },
+          "tooltip": "Filter by model year",
+          "tooltips": {
+            "de": "Nach Modelljahr filtern",
+            "en": "Filter by model year"
+          },
+          "paramName": "P_ModelYear",
+          "queryName": "qp_ModelYear"
+        },
+        {
+          "type": "button",
+          "label": "Marke (2-stellig) (FZ)",
+          "labels": {
+            "de": "Marke (2-stellig) (FZ)",
+            "en": "Brand (2-digit) (VH)"
+          },
+          "tooltip": "Select vehicle brand(s)",
+          "tooltips": {
+            "de": "Fahrzeugmarke(n) auswählen",
+            "en": "Select vehicle brand(s)"
+          },
+          "paramName": "P_Marke",
+          "queryName": "qp_Marke",
+          "useColumn": 0,
+          "displayColumn": 1,
+          "required": true
+        },
+        {
+          "type": "button",
+          "label": "ISO-Land (Auslieferung) (3-stellig) (FZ)",
+          "labels": {
+            "de": "ISO-Land (Auslieferung) (3-stellig) (FZ)",
+            "en": "ISO-Country (Delivery) (3-digit) (VH)"
+          },
+          "tooltip": "Filter by delivery country (ISO 3-letter code)",
+          "tooltips": {
+            "de": "Nach Lieferland filtern (ISO 3-Buchstaben-Code)",
+            "en": "Filter by delivery country (ISO 3-letter code)"
+          },
+          "paramName": "P_ISO-LandAus3st",
+          "queryName": "qp_ISO-Land3stAus",
+          "useColumn": 0,
+          "displayColumn": 1
         }
       ]
     },
@@ -304,8 +245,9 @@
       },
       "groupIcon": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M21 8.5C21 10.3365 19.3108 12 17 12H13.3507C13.8056 11.2953 13.7362 10.4133 13.3698 9.77232C13.1297 9.3523 13 8.94194 13 8.5C13 6.6635 14.6891 5 17 5C19.3108 5 21 6.6635 21 8.5ZM17 13C19.7614 13 22 10.9853 22 8.5C22 6.01472 19.7614 4 17 4C14.2385 4 12 6.01472 12 8.5C12 9.1541 12.1963 9.73435 12.5017 10.2686C12.7526 10.7075 12.7311 11.2688 12.3736 11.6263L11.8535 12.1464C11.5385 12.4614 11.7616 13 12.2071 13H17ZM8 12C9.10457 12 10 11.1046 10 10C10 8.89543 9.10457 8 8 8C6.89543 8 6 8.89543 6 10C6 11.1046 6.89543 12 8 12ZM8 13C9.65685 13 11 11.6569 11 10C11 8.34315 9.65685 7 8 7C6.34315 7 5 8.34315 5 10C5 11.6569 6.34315 13 8 13ZM11.0121 16H4.98825C4.54664 16 4.15732 16.2897 4.03042 16.7127L3.34422 19H12.6562L11.97 16.7127C11.8431 16.2897 11.4537 16 11.0121 16ZM4.98825 15C4.10503 15 3.32639 15.5793 3.0726 16.4253L2.19329 19.3563C2.09705 19.6771 2.33727 20 2.6722 20H13.3282C13.6631 20 13.9033 19.6771 13.8071 19.3563L12.9278 16.4253C12.674 15.5793 11.8953 15 11.0121 15H4.98825ZM19 8H15V7H19V8ZM15 10H18V9H15V10Z\" fill=\"currentColor\"></path></svg>",
       "defaultExpanded": false,
-      "buttons": [
+      "items": [
         {
+          "type": "button",
           "label": "Beanstandungsstatus (DIB)",
           "labels": {
             "de": "Beanstandungsstatus (DIB)",
@@ -322,6 +264,7 @@
           "displayColumn": 1
         },
         {
+          "type": "button",
           "label": "Erfasst am (DIB) VON",
           "labels": {
             "de": "Erfasst am (DIB) VON",
@@ -335,14 +278,10 @@
           "paramName": "P_Erf.DatFrom",
           "type": "date",
           "dateFormat": "yyyy-MM-dd",
-          "maxValues": 1,
-          "helpText": "Single date selection only - start of period",
-          "helpTexts": {
-            "de": "Nur Einzeldatumsauswahl - Beginn des Zeitraums",
-            "en": "Single date selection only - start of period"
-          }
+          "maxValues": 1
         },
         {
+          "type": "button",
           "label": "Erfasst am (DIB) BIS",
           "labels": {
             "de": "Erfasst am (DIB) BIS",
@@ -356,155 +295,7 @@
           "paramName": "P_Erf.DatTo",
           "type": "date",
           "dateFormat": "yyyy-MM-dd",
-          "maxValues": 1,
-          "helpText": "Single date selection only - end of period",
-          "helpTexts": {
-            "de": "Nur Einzeldatumsauswahl - Ende des Zeitraums",
-            "en": "Single date selection only - end of period"
-          }
-        },
-        {
-          "label": "Fehlerobjekt (KCOD) (EB1) (DIB)",
-          "labels": {
-            "de": "Fehlerobjekt (KCOD) (EB1) (DIB)",
-            "en": "Fault Object (KCOD) (EB1) (CST)"
-          },
-          "tooltip": "Fault object identification code",
-          "tooltips": {
-            "de": "Fehlerobjekt-Identifikationscode",
-            "en": "Fault object identification code"
-          },
-          "paramName": "P_KCOD_FObj.EB1",
-          "queryName": "qp_KCOD_FObj.EB1",
-          "useColumn": 0,
-          "displayColumn": 1
-        },
-        {
-          "label": "Fehlerobjekt (WCOD) (EB1) (DIB)",
-          "labels": {
-            "de": "Fehlerobjekt (WCOD) (EB1) (DIB)",
-            "en": "Fault Object (WCOD) (EB1) (CST)"
-          },
-          "tooltip": "Alternative fault object code",
-          "tooltips": {
-            "de": "Alternativer Fehlerobjektcode",
-            "en": "Alternative fault object code"
-          },
-          "paramName": "P_WCOD_FObj.EB1",
-          "queryName": "qp_WCOD_FObj.EB1",
-          "useColumn": 0,
-          "displayColumn": 1
-        }
-      ]
-    },
-
-    {
-      "groupLabel": "Anträge Schäden (S)",
-      "labels": {
-        "de": "Anträge Schäden (S)",
-        "en": "Damage Claims (DC)"
-      },
-      "groupIcon": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M17.84 10.3278L18.84 10.5478L19.99 5.6135C20.009 5.5345 20.008 5.4525 19.989 5.3745C19.92 5.1075 19.648 4.9455 19.38 5.0135L15.72 5.9335L13.92 3.2235C13.897 3.1945 13.869 3.1665 13.84 3.1425C13.608 2.9555 13.268 2.9915 13.08 3.2235L11.42 5.7135L8.851 3.1535C8.73 3.0265 8.551 2.9725 8.38 3.0135C8.215 3.0565 8.083 3.1805 8.031 3.3435L7.181 5.8735L4.66 5.0335C4.509 4.9825 4.343 5.0045 4.21 5.0935C4.08 5.1905 4.003 5.3415 4 5.5035V8.0035H5V6.1935L7.34 6.9735C7.34288 6.97408 7.34542 6.97498 7.34783 6.97584C7.3496 6.97647 7.3513 6.97708 7.353 6.9775C7.611 7.0615 7.887 6.9215 7.971 6.6635L8.721 4.4335L11.151 6.8535C11.255 6.9615 11.402 7.0155 11.55 7.0035C11.698 6.9835 11.832 6.9045 11.92 6.7835L13.5 4.4035L15.08 6.7835C15.204 6.9525 15.415 7.0345 15.62 6.9935L18.84 6.1835L17.84 10.3278Z\" fill=\"currentColor\"></path><path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M18.9207 19.0036H19.5C20.326 18.9836 21.033 18.4076 21.221 17.6036L21.78 15.0536C21.872 14.6686 21.799 14.2636 21.58 13.9336C21.353 13.5876 20.989 13.3556 20.58 13.2936L17.58 12.7036C17.033 12.5676 16.521 12.3156 16.08 11.9636L13.58 9.7636C12.988 9.2866 12.26 9.0096 11.5 8.9736H6.5C5.722 9.0076 4.994 9.3706 4.5 9.9736L2.7 12.4036C2.276 13.0216 2.033 13.7456 2 14.4936V17.4936C2 18.3216 2.672 18.9936 3.5 18.9936H4.04801C4.27586 20.1399 5.28759 21.0036 6.5 21.0036C7.881 21.0036 9 19.8846 9 18.5036C9 17.1226 7.881 16.0036 6.5 16.0036C5.29465 16.0036 4.28765 16.8573 4.05207 17.9936H3.5C3.225 17.9936 3 17.7696 3 17.4936V14.4936C3.032 13.9616 3.204 13.4466 3.5 13.0036L5.301 10.5736C5.608 10.2276 6.038 10.0126 6.5 9.9736H11.5C12.018 10.0066 12.513 10.1946 12.921 10.5136L15.421 12.7136C15.998 13.2016 16.684 13.5456 17.421 13.7136L20.421 14.3036C20.545 14.3296 20.655 14.4006 20.73 14.5036C20.8 14.6136 20.821 14.7476 20.79 14.8736L20.23 17.4236C20.129 17.7486 19.84 17.9786 19.5 18.0036H18.9207C18.6892 16.8623 17.6805 16.0036 16.4707 16.0036C15.2609 16.0036 14.2522 16.8623 14.0207 18.0036H10.9605V19.0036H14.0207C14.2522 20.1449 15.2609 21.0036 16.4707 21.0036C17.6805 21.0036 18.6892 20.1449 18.9207 19.0036ZM15.0105 18.8486C15.1662 19.5111 15.7605 20.0036 16.4707 20.0036C17.2987 20.0036 17.9707 19.3326 17.9707 18.5036C17.9707 17.6746 17.2987 17.0036 16.4707 17.0036C15.7605 17.0036 15.1662 17.4961 15.0105 18.1586V18.8486ZM5 18.5036C5 17.6746 5.672 17.0036 6.5 17.0036C7.329 17.0036 8 17.6746 8 18.5036C8 19.3326 7.329 20.0036 6.5 20.0036C5.672 20.0036 5 19.3326 5 18.5036Z\" fill=\"currentColor\"></path></svg>",
-      "defaultExpanded": false,
-      "buttons": [
-        {
-          "label": "Antrags-Nr. (S)",
-          "labels": {
-            "de": "Antrags-Nr. (S)",
-            "en": "Claim Number (DC)"
-          },
-          "tooltip": "Enter claim number for filtering",
-          "tooltips": {
-            "de": "Antragsnummer zum Filtern eingeben",
-            "en": "Enter claim number for filtering"
-          },
-          "paramName": "P_AntragsNr",
-          "type": "text",
-          "helpText": "Manual entry - type claim number and press Enter",
-          "helpTexts": {
-            "de": "Manuelle Eingabe - Antragsnummer eingeben und Enter drücken",
-            "en": "Manual entry - type claim number and press Enter"
-          }
-        },
-        {
-          "label": "KDNR (S)",
-          "labels": {
-            "de": "KDNR (S)",
-            "en": "Customer Number (DC)"
-          },
-          "tooltip": "Customer identification number",
-          "tooltips": {
-            "de": "Kundenidentifikationsnummer",
-            "en": "Customer identification number"
-          },
-          "paramName": "P_KDNR",
-          "queryName": "qp_KDNR",
-          "useColumn": 0,
-          "displayColumn": 1
-        }
-      ]
-    },
-
-    {
-      "groupLabel": "Diagnose (DG)",
-      "labels": {
-        "de": "Diagnose (DG)",
-        "en": "Diagnostics (DG)"
-      },
-      "groupIcon": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M8 3.5C8 3.22386 8.22386 3 8.5 3H15.5C15.7761 3 16 3.22386 16 3.5V5.5C16 5.77614 15.7761 6 15.5 6H8.5C8.22386 6 8 5.77614 8 5.5V3.5ZM9 5V4H15V5H9Z\" fill=\"currentColor\"></path><path d=\"M6 4C5.44772 4 5 4.44772 5 5V19C5 19.5523 5.44771 20 6 20H18C18.5523 20 19 19.5523 19 19V5C19 4.44772 18.5523 4 18 4H17V5H18V19H6V5H7V4H6Z\" fill=\"currentColor\"></path><path d=\"M8 16.5H10.5V15.5H8V16.5Z\" fill=\"currentColor\"></path><path d=\"M10.5 14H8V13H10.5V14Z\" fill=\"currentColor\"></path><path d=\"M8 11.5H10.5V10.5H8V11.5Z\" fill=\"currentColor\"></path><path d=\"M10.5 9H8V8H10.5V9Z\" fill=\"currentColor\"></path><path d=\"M16.3536 8.35355L13.7071 11C13.3166 11.3905 12.6834 11.3905 12.2929 11L11.1464 9.85355L11.8536 9.14645L13 10.2929L15.6464 7.64645L16.3536 8.35355Z\" fill=\"currentColor\"></path><path d=\"M16.3536 13.3536L13.7071 16C13.3166 16.3905 12.6834 16.3905 12.2929 16L11.1464 14.8536L11.8536 14.1464L13 15.2929L15.6464 12.6464L16.3536 13.3536Z\" fill=\"currentColor\"></path></svg>",
-      "defaultExpanded": false,
-      "buttons": [
-        {
-          "label": "Protokoll (ID) (DGPR)",
-          "labels": {
-            "de": "Protokoll (ID) (DGPR)",
-            "en": "Protocol (ID) (DGPR)"
-          },
-          "tooltip": "Diagnostic protocol identifier",
-          "tooltips": {
-            "de": "Diagnoseprotokoll-Kennung",
-            "en": "Diagnostic protocol identifier"
-          },
-          "paramName": "P_ProtokollID",
-          "type": "text",
-          "maxValues": 1,
-          "helpText": "Single protocol ID only",
-          "helpTexts": {
-            "de": "Nur einzelne Protokoll-ID",
-            "en": "Single protocol ID only"
-          }
-        },
-        {
-          "label": "Adresse (DGSG)",
-          "labels": {
-            "de": "Adresse (DGSG)",
-            "en": "Address (DGSG)"
-          },
-          "tooltip": "Diagnostic address code",
-          "tooltips": {
-            "de": "Diagnoseadresscode",
-            "en": "Diagnostic address code"
-          },
-          "paramName": "P_Adresse_DGSG",
-          "queryName": "qp_Adresse_DGSG",
-          "useColumn": 0,
-          "displayColumn": 1
-        },
-        {
-          "label": "DTC (PCode) (DGFS)",
-          "labels": {
-            "de": "DTC (PCode) (DGFS)",
-            "en": "DTC (PCode) (DGFS)"
-          },
-          "tooltip": "Diagnostic Trouble Code",
-          "tooltips": {
-            "de": "Diagnose-Fehlercode",
-            "en": "Diagnostic Trouble Code"
-          },
-          "paramName": "P_DTC",
-          "queryName": "qp_DTC",
-          "useColumn": 0,
-          "displayColumn": 1
+          "maxValues": 1
         }
       ]
     }
