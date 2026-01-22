@@ -313,10 +313,13 @@ define([], function () {
 
     // Subgroup buttons
     const subButtonsContainer = document.createElement("div");
+    subButtonsContainer.className = "left-pane-subgroup-buttons";
     subButtonsContainer.style.marginLeft = "12px";
+    subButtonsContainer.style.paddingRight = "12px";
     subButtonsContainer.style.display = "flex";
     subButtonsContainer.style.flexDirection = "column";
     subButtonsContainer.style.gap = "5px";
+    subButtonsContainer.style.boxSizing = "border-box";
 
     if (subgroup.buttons && Array.isArray(subgroup.buttons)) {
       subgroup.buttons.forEach((btn, bIdx) => {

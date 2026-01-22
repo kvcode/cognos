@@ -53,10 +53,27 @@
 /* Tooltip wrapper - maintains full width */
 .left-pane-buttons-container > div {
   width: 100%;
+  box-sizing: border-box;
 }
 
 .left-pane-buttons-container > div > button {
   width: 100%;
+  box-sizing: border-box;
+}
+
+.left-pane-subgroup-buttons {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.left-pane-subgroup-buttons > div {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.left-pane-subgroup-buttons > div > button {
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .left-pane-button {
