@@ -33,7 +33,7 @@
         "de": "Deutscher Markt Übersicht",
         "en": "German Market Overview"
       },
-      "description": "Pre-filter for German market Mercedes vehicles",
+      "description": "Pre-filter for German market VW vehicles",
       "parameters": [
         {
           "paramName": "P_ISO-LandAus3st",
@@ -41,7 +41,7 @@
         },
         {
           "paramName": "P_Marke",
-          "values": [{ "use": "01", "display": "Mercedes-Benz" }]
+          "values": [{ "use": "01", "display": "VW" }]
         }
       ]
     }

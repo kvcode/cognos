@@ -115,6 +115,9 @@ define([], function () {
   // ═══════════════════════════════════════════════════════════════════════════
   // RENDER PRESETS SECTION
   // ═══════════════════════════════════════════════════════════════════════════
+  // ═══════════════════════════════════════════════════════════════════════════
+  // RENDER PRESETS SECTION
+  // ═══════════════════════════════════════════════════════════════════════════
   LeftPane.prototype.renderPresetsSection = function () {
     console.log("[LeftPane] 🎯 Rendering presets section");
 
@@ -124,11 +127,33 @@ define([], function () {
     presetsContainer.style.paddingBottom = "15px";
     presetsContainer.style.borderBottom = "2px solid #00141f";
 
-    // Header
+    // Initialize state if not exists
+    if (this.groupStates["__PRESETS__"] === undefined) {
+      this.groupStates["__PRESETS__"] = true; // Default expanded
+    }
+
+    // Header (clickable)
     const header = document.createElement("div");
     header.className = "left-pane-group-header";
-    header.style.cursor = "default";
-    header.textContent = "⚡ Presets";
+    header.style.cursor = "pointer";
+
+    const labelSpan = document.createElement("span");
+    labelSpan.textContent = "⚡ Presets";
+    header.appendChild(labelSpan);
+
+    const arrowSpan = document.createElement("span");
+    arrowSpan.className = "group-arrow";
+    const isExpanded = this.groupStates["__PRESETS__"];
+    arrowSpan.textContent = isExpanded ? "▲" : "▼";
+    header.appendChild(arrowSpan);
+
+    header.addEventListener("click", () => {
+      this.groupStates["__PRESETS__"] = !this.groupStates["__PRESETS__"];
+      const newState = this.groupStates["__PRESETS__"];
+      buttonsContainer.style.display = newState ? "flex" : "none";
+      arrowSpan.textContent = newState ? "▲" : "▼";
+    });
+
     presetsContainer.appendChild(header);
 
     // Buttons
@@ -157,6 +182,7 @@ define([], function () {
       buttonsContainer.appendChild(button);
     });
 
+    buttonsContainer.style.display = isExpanded ? "flex" : "none";
     presetsContainer.appendChild(buttonsContainer);
     this.domNode.appendChild(presetsContainer);
   };
