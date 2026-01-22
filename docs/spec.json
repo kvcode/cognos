@@ -5,23 +5,22 @@
     "description": "Custom prompt page with modular left pane, drag/drop support, and configurable script paths",
     "version": "1.2",
     "author": "KK",
-    "css": [
-      "LeftPane.css"
-    ],
-    "js": [
-      "preLoad.js",
-      "CustomPromptPage.js",
-      "LeftPane.js",
-      "RightPane.js",
-      "DragDrop.js"
-    ],
+    "css": ["LeftPane.css"],
+    "js": ["preLoad.js", "CustomPromptPage.js", "LeftPane.js", "RightPane.js", "DragDrop.js"],
     "properties": [
+      {
+        "name": "BaseScriptPath",
+        "displayName": "Base Script Path",
+        "type": "string",
+        "defaultValue": "/cognos4/samples/javascript/CustomPromptPage/",
+        "description": "Base directory path for all module files"
+      },
       {
         "name": "BaseScriptPaths",
         "displayName": "Base Script Paths",
         "type": "json",
         "defaultValue": "{}",
-        "description": "JSON object with absolute URLs for JS modules. Example: {\"CustomPromptPage\": \"/path/CustomPromptPage.js\", \"LeftPane\": \"/path/LeftPane.js\", \"RightPane\": \"/path/RightPane.js\", \"DragDrop\": \"/path/DragDrop.js\"}"
+        "description": "JSON object with absolute URLs for JS modules..."
       },
       {
         "name": "buttonGroups",
