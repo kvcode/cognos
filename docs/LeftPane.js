@@ -7,33 +7,28 @@ define([], function () {
     this.presets = null;
     this.groupStates = {};
     this.subgroupStates = {};
-    this.locale = "en"; // Default locale
+    this.locale = "en";
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
   // HELPER: Get Localized Text
   // ═══════════════════════════════════════════════════════════════════════════
   LeftPane.prototype.getLocalizedText = function (config, property) {
-    const pluralProperty = property + "s"; // e.g., 'labels', 'tooltips'
+    const pluralProperty = property + "s";
 
-    // Try locale-specific version first
     if (config[pluralProperty] && typeof config[pluralProperty] === "object") {
-      // Current locale
       if (config[pluralProperty][this.locale]) {
         return config[pluralProperty][this.locale];
       }
-      // Fallback to English
       if (config[pluralProperty]["en"]) {
         return config[pluralProperty]["en"];
       }
-      // First available
       const keys = Object.keys(config[pluralProperty]);
       if (keys.length > 0) {
         return config[pluralProperty][keys[0]];
       }
     }
 
-    // Fallback to singular property
     return config[property] || "";
   };
 
@@ -42,9 +37,8 @@ define([], function () {
   // ═══════════════════════════════════════════════════════════════════════════
   LeftPane.prototype.initialize = function (oControlHost, fnDoneInitializing) {
     try {
-      // Detect locale
       if (oControlHost.locale) {
-        this.locale = oControlHost.locale.substring(0, 2); // 'de' from 'de-DE'
+        this.locale = oControlHost.locale.substring(0, 2);
         console.log("[LeftPane] 🌍 Detected locale:", this.locale);
       }
 
@@ -64,11 +58,13 @@ define([], function () {
         const label = group.groupLabel || `Group ${idx}`;
         this.groupStates[label] = group.defaultExpanded !== false;
 
-        // Initialize subgroup states
-        if (group.subgroups && Array.isArray(group.subgroups)) {
-          group.subgroups.forEach((subgroup, subIdx) => {
-            const subLabel = `${label}_${subgroup.subgroupLabel || subIdx}`;
-            this.subgroupStates[subLabel] = subgroup.defaultExpanded !== false;
+        // Initialize subgroup states from items array
+        if (group.items && Array.isArray(group.items)) {
+          group.items.forEach((item, itemIdx) => {
+            if (item.type === "subgroup") {
+              const subLabel = `${label}_${item.subgroupLabel || itemIdx}`;
+              this.subgroupStates[subLabel] = item.defaultExpanded !== false;
+            }
           });
         }
       });
@@ -115,9 +111,6 @@ define([], function () {
   // ═══════════════════════════════════════════════════════════════════════════
   // RENDER PRESETS SECTION
   // ═══════════════════════════════════════════════════════════════════════════
-  // ═══════════════════════════════════════════════════════════════════════════
-  // RENDER PRESETS SECTION
-  // ═══════════════════════════════════════════════════════════════════════════
   LeftPane.prototype.renderPresetsSection = function () {
     console.log("[LeftPane] 🎯 Rendering presets section");
 
@@ -127,15 +120,14 @@ define([], function () {
     presetsContainer.style.paddingBottom = "15px";
     presetsContainer.style.borderBottom = "2px solid #00141f";
 
-    // Initialize state if not exists
     if (this.groupStates["__PRESETS__"] === undefined) {
-      this.groupStates["__PRESETS__"] = true; // Default expanded
+      this.groupStates["__PRESETS__"] = true;
     }
 
-    // Header (clickable)
     const header = document.createElement("div");
     header.className = "left-pane-group-header";
     header.style.cursor = "pointer";
+    header.title = "Quick-load common parameter combinations";
 
     const labelSpan = document.createElement("span");
     labelSpan.textContent = "⚡ Presets";
@@ -156,7 +148,6 @@ define([], function () {
 
     presetsContainer.appendChild(header);
 
-    // Buttons
     const buttonsContainer = document.createElement("div");
     buttonsContainer.className = "left-pane-buttons-container";
     buttonsContainer.style.marginTop = "8px";
@@ -169,17 +160,20 @@ define([], function () {
       button.textContent = label;
 
       const tooltip = preset.description || this.getLocalizedText(preset, "description");
+
+      const wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
       if (tooltip) {
-        button.title = tooltip;
+        wrapper.title = tooltip;
       }
 
       button._presetConfig = preset;
 
-      // Special styling
       button.style.backgroundColor = "#8cbee6";
       button.style.fontWeight = "600";
 
-      buttonsContainer.appendChild(button);
+      wrapper.appendChild(button);
+      buttonsContainer.appendChild(wrapper);
     });
 
     buttonsContainer.style.display = isExpanded ? "flex" : "none";
@@ -200,6 +194,11 @@ define([], function () {
     const header = document.createElement("div");
     header.className = "left-pane-group-header";
     header.style.cursor = "pointer";
+
+    const groupTooltip = this.getLocalizedText(group, "tooltip") || this.getLocalizedText(group, "description");
+    if (groupTooltip) {
+      header.title = groupTooltip;
+    }
 
     if (group.groupIcon) {
       const iconContainer = document.createElement("span");
@@ -227,22 +226,23 @@ define([], function () {
 
     groupContainer.appendChild(header);
 
-    // Buttons container
+    // Items container
     const buttonsContainer = document.createElement("div");
     buttonsContainer.className = "left-pane-buttons-container";
 
-    // Main buttons
-    if (group.buttons && group.buttons.length > 0) {
-      group.buttons.forEach((btn, bIdx) => {
-        this.renderButton(btn, bIdx, buttonsContainer);
+    // ✨ NEW: Render items in order from JSON
+    if (group.items && Array.isArray(group.items)) {
+      group.items.forEach((item, itemIdx) => {
+        if (item.type === "subgroup") {
+          this.renderSubgroup(item, itemIdx, label, buttonsContainer);
+        } else if (item.type === "button") {
+          this.renderButton(item, itemIdx, buttonsContainer);
+        } else {
+          console.warn(`[LeftPane] ⚠️ Unknown item type: ${item.type}`);
+        }
       });
-    }
-
-    // Subgroups
-    if (group.subgroups && Array.isArray(group.subgroups)) {
-      group.subgroups.forEach((subgroup, subIdx) => {
-        this.renderSubgroup(subgroup, subIdx, label, buttonsContainer);
-      });
+    } else {
+      console.warn(`[LeftPane] ⚠️ Group "${label}" has no items array`);
     }
 
     buttonsContainer.style.display = isExpanded ? "flex" : "none";
@@ -261,12 +261,17 @@ define([], function () {
     button.textContent = label;
 
     const tooltip = this.getLocalizedText(btn, "tooltip");
+
+    const wrapper = document.createElement("div");
+    wrapper.style.position = "relative";
     if (tooltip) {
-      button.title = tooltip;
+      wrapper.title = tooltip;
     }
 
     button._buttonConfig = btn;
-    container.appendChild(button);
+
+    wrapper.appendChild(button);
+    container.appendChild(wrapper);
   };
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -289,6 +294,11 @@ define([], function () {
     subHeader.style.fontSize = "13px";
     subHeader.style.display = "flex";
     subHeader.style.justifyContent = "space-between";
+
+    const subTooltip = this.getLocalizedText(subgroup, "tooltip") || this.getLocalizedText(subgroup, "description");
+    if (subTooltip) {
+      subHeader.title = subTooltip;
+    }
 
     const subLabelSpan = document.createElement("span");
     subLabelSpan.textContent = this.getLocalizedText(subgroup, "subgroupLabel") || subLabel;

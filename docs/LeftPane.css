@@ -50,6 +50,15 @@
   gap: 5px;
 }
 
+/* Tooltip wrapper - maintains full width */
+.left-pane-buttons-container > div {
+  width: 100%;
+}
+
+.left-pane-buttons-container > div > button {
+  width: 100%;
+}
+
 .left-pane-button {
   display: block;
   width: 100%;
