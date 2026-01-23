@@ -11,7 +11,7 @@ define([], function () {
     this.m_oControlHost = null;
     this.cards = [];
     this.dataStores = {};
-    this.locale = "en"; // Default locale
+    this.locale = "en";
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -36,13 +36,15 @@ define([], function () {
     return config[property] || "";
   };
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // INITIALIZE
+  // ═══════════════════════════════════════════════════════════════════════════
   RightPane.prototype.initialize = function (oControlHost, fnDoneInitializing) {
     console.log("[RightPane] 🔧 initialize() called");
 
     this.m_oControlHost = oControlHost;
     console.log("[RightPane] 💾 Stored oControlHost");
 
-    // Detect locale
     if (oControlHost.locale) {
       this.locale = oControlHost.locale.substring(0, 2);
       console.log("[RightPane] 🌍 Detected locale:", this.locale);
@@ -71,6 +73,9 @@ define([], function () {
     }
   };
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // DRAW
+  // ═══════════════════════════════════════════════════════════════════════════
   RightPane.prototype.draw = function (oControlHost) {
     console.log("[RightPane] 🖼 draw() called");
 
@@ -92,6 +97,9 @@ define([], function () {
     }
   };
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // SET DATA STORES
+  // ═══════════════════════════════════════════════════════════════════════════
   RightPane.prototype.setDataStores = function (dataStores) {
     console.log("[RightPane] 📦 setDataStores() called");
     this.dataStores = dataStores || {};
@@ -103,14 +111,18 @@ define([], function () {
     });
   };
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // HAS CARD - Check if card exists for paramName
+  // ═══════════════════════════════════════════════════════════════════════════
   RightPane.prototype.hasCard = function (paramName) {
     const exists = this.cards.some((card) => {
       // Check single paramName
-      if (card.config.paramName === paramName) return true;
-      // Check paramNames.from and paramNames.to for dateFromTo type
+      if (card.config.paramName === paramName) {
+        return true;
+      }
+      // Check paramNames (for dateFromTo)
       if (card.config.paramNames) {
-        if (card.config.paramNames.from === paramName) return true;
-        if (card.config.paramNames.to === paramName) return true;
+        return card.config.paramNames.from === paramName || card.config.paramNames.to === paramName;
       }
       return false;
     });
@@ -118,6 +130,9 @@ define([], function () {
     return exists;
   };
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ADD CARD
+  // ═══════════════════════════════════════════════════════════════════════════
   RightPane.prototype.addCard = function (cardData) {
     console.log("[RightPane] ➕ addCard() called!");
     console.log("[RightPane] 📦 Received cardData:", JSON.stringify(cardData, null, 2));
@@ -154,7 +169,6 @@ define([], function () {
   // ═══════════════════════════════════════════════════════════════════════════
   RightPane.prototype._createCardObject = function (cardData) {
     console.log("[RightPane] 🏗 _createCardObject() called");
-    console.log("[RightPane] 📦 Input cardData:", JSON.stringify(cardData, null, 2));
 
     const config = cardData.fullConfig;
     console.log("[RightPane] 🔍 Extracting config:", JSON.stringify(config, null, 2));
@@ -166,21 +180,24 @@ define([], function () {
       bubblesContainer: null,
       bubbledValues: [],
       sourceButton: cardData.sourceButton || null,
-      dateFromInput: null, // For date ranges
-      dateToInput: null, // For date ranges
-      isRequired: cardData.isRequired || config.required || false,
+      isRequired: cardData.isRequired || false,
+      dateFromInput: null,
+      dateToInput: null,
 
+      // ═══════════════════════════════════════════════════════════════════
+      // GET PARAMETERS - Called by Cognos on finish
+      // ═══════════════════════════════════════════════════════════════════
       getParameters: function () {
         console.log("[RightPane] 📋 Card getParameters() called for:", this.config.label);
-        console.log("[RightPane] 🔍 Bubbled values:", this.bubbledValues);
-        console.log("[RightPane] 🔍 Card type:", this.config.type);
+        console.log("[RightPane] 🔍 promptType:", this.config.promptType);
+
+        const promptType = this.config.promptType || "";
 
         // ═══════════════════════════════════════════════════════════════════
         // TYPE: dateRange - Single parameter with range format for in_range()
         // ═══════════════════════════════════════════════════════════════════
-        if (this.config.type === "dateRange") {
+        if (promptType === "dateRange") {
           console.log("[RightPane] 📅 Processing dateRange type");
-          console.log("[RightPane] 🔍 paramName:", this.config.paramName);
 
           if (!this.config.paramName) {
             console.error("[RightPane] ❌ paramName missing for dateRange!");
@@ -192,7 +209,6 @@ define([], function () {
 
           if (!fromValue || !toValue) {
             console.log("[RightPane] ⚠️ Date range incomplete - returning empty");
-            // Return empty parameter to clear any existing values
             return [
               {
                 parameter: this.config.paramName,
@@ -201,7 +217,7 @@ define([], function () {
             ];
           }
 
-          // ✨ CORRECT FORMAT for in_range() - uses "range" property
+          // RangeParameter format for in_range()
           const result = [
             {
               parameter: this.config.paramName,
@@ -217,14 +233,13 @@ define([], function () {
         }
 
         // ═══════════════════════════════════════════════════════════════════
-        // TYPE: dateFromTo - Two separate parameters (FROM and TO)
+        // TYPE: dateFromTo - Two separate parameters for BETWEEN ? AND ?
         // ═══════════════════════════════════════════════════════════════════
-        if (this.config.type === "dateFromTo") {
+        if (promptType === "dateFromTo") {
           console.log("[RightPane] 📅 Processing dateFromTo type");
-          console.log("[RightPane] 🔍 paramNames:", this.config.paramNames);
 
           if (!this.config.paramNames || !this.config.paramNames.from || !this.config.paramNames.to) {
-            console.error("[RightPane] ❌ paramNames.from and paramNames.to required for dateFromTo!");
+            console.error("[RightPane] ❌ paramNames.from/to missing for dateFromTo!");
             return [];
           }
 
@@ -240,7 +255,6 @@ define([], function () {
               values: [{ use: fromValue, display: fromValue }],
             });
           } else {
-            // Return empty to clear
             result.push({
               parameter: this.config.paramNames.from,
               values: [],
@@ -254,7 +268,6 @@ define([], function () {
               values: [{ use: toValue, display: toValue }],
             });
           } else {
-            // Return empty to clear
             result.push({
               parameter: this.config.paramNames.to,
               values: [],
@@ -268,48 +281,43 @@ define([], function () {
         // ═══════════════════════════════════════════════════════════════════
         // TYPE: date - Single date value
         // ═══════════════════════════════════════════════════════════════════
-        if (this.config.type === "date") {
+        if (promptType === "date") {
           console.log("[RightPane] 📅 Processing date type");
-          console.log("[RightPane] 🔍 paramName:", this.config.paramName);
 
           if (!this.config.paramName) {
             console.error("[RightPane] ❌ paramName missing for date!");
             return [];
           }
 
-          const values = this.bubbledValues.map((val) => ({
-            use: val.use,
-            display: val.display,
-          }));
-
-          return [
+          const result = [
             {
               parameter: this.config.paramName,
-              values: values,
+              values: this.bubbledValues.map((val) => ({
+                use: val.use,
+                display: val.display,
+              })),
             },
           ];
+
+          console.log("[RightPane] 📅 Date returning:", JSON.stringify(result, null, 2));
+          return result;
         }
 
         // ═══════════════════════════════════════════════════════════════════
-        // DEFAULT: Regular bubbles (multi-select or text)
+        // DEFAULT: Regular value prompt (bubble-based)
         // ═══════════════════════════════════════════════════════════════════
-        console.log("[RightPane] 🔍 Processing regular bubble type");
-        console.log("[RightPane] 🔍 paramName:", this.config.paramName);
-
         if (!this.config.paramName) {
           console.error("[RightPane] ❌ paramName missing in config!");
           return [];
         }
 
-        const values = this.bubbledValues.map((val) => ({
-          use: val.use,
-          display: val.display,
-        }));
-
         const result = [
           {
             parameter: this.config.paramName,
-            values: values,
+            values: this.bubbledValues.map((val) => ({
+              use: val.use,
+              display: val.display,
+            })),
           },
         ];
 
@@ -328,7 +336,7 @@ define([], function () {
   RightPane.prototype.removeCard = function (cardObject) {
     console.log(`[RightPane] 🗑 removeCard() called for:`, cardObject.config.label);
 
-    // Don't allow removing required cards
+    // Block removal of required cards
     if (cardObject.isRequired) {
       console.warn(`[RightPane] ⚠️ Cannot remove required card: ${cardObject.config.label}`);
       return;
@@ -375,13 +383,14 @@ define([], function () {
 
     try {
       const config = cardObject.config;
+      const promptType = config.promptType || "";
 
       // Create card
       const card = document.createElement("div");
       card.className = "right-pane-card";
 
-      // Add required class if applicable
-      if (cardObject.isRequired) {
+      // Add required class if needed
+      if (cardObject.isRequired || config.required) {
         card.classList.add("required-card");
       }
 
@@ -396,29 +405,28 @@ define([], function () {
       headerContainer.appendChild(header);
 
       // X button (hidden for required cards)
-      const removeCardBtn = document.createElement("button");
-      removeCardBtn.className = "card-remove-btn";
-      removeCardBtn.textContent = "×";
-      removeCardBtn.title = cardObject.isRequired ? "Required - cannot remove" : "Remove card";
+      if (!cardObject.isRequired && !config.required) {
+        const removeCardBtn = document.createElement("button");
+        removeCardBtn.className = "card-remove-btn";
+        removeCardBtn.textContent = "×";
+        removeCardBtn.title = "Remove card";
 
-      if (cardObject.isRequired) {
-        removeCardBtn.style.display = "none"; // Hide X button for required cards
+        removeCardBtn.addEventListener("click", () => {
+          console.log(`[RightPane] 🗑 Card remove button clicked for: ${config.label}`);
+          this.removeCard(cardObject);
+        });
+
+        headerContainer.appendChild(removeCardBtn);
       }
 
-      removeCardBtn.addEventListener("click", () => {
-        console.log(`[RightPane] 🗑 Card remove button clicked for: ${config.label}`);
-        this.removeCard(cardObject);
-      });
-
-      headerContainer.appendChild(removeCardBtn);
       card.appendChild(headerContainer);
 
       // Param info
       const paramInfo = document.createElement("div");
       paramInfo.className = "right-pane-card-param-info";
 
-      // Handle paramNames for dateFromTo type
-      if (config.type === "dateFromTo" && config.paramNames) {
+      // Handle paramNames for dateFromTo
+      if (promptType === "dateFromTo" && config.paramNames) {
         paramInfo.textContent = `Params: ${config.paramNames.from} / ${config.paramNames.to}`;
       } else {
         paramInfo.textContent = `Param: ${config.paramName || "MISSING!"}`;
@@ -442,13 +450,14 @@ define([], function () {
         card.appendChild(requiredDiv);
       }
 
-      // Render based on type
-      if (config.type === "dateRange" || config.type === "dateFromTo") {
-        // Both dateRange and dateFromTo use the same visual UI
+      // Render based on promptType
+      if (promptType === "dateRange" || promptType === "dateFromTo") {
+        // Both use same visual UI (FROM/TO inputs)
         this._renderDateRangeInput(card, cardObject);
-      } else if (config.type === "date") {
+      } else if (promptType === "date") {
         this._renderDateInput(card, cardObject);
       } else {
+        // Default: bubble input (value prompt or text)
         this._renderBubbleInput(card, cardObject);
       }
 
@@ -461,11 +470,9 @@ define([], function () {
   };
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // RENDER DATE RANGE INPUT (used for both dateRange and dateFromTo)
+  // RENDER DATE RANGE INPUT (used by both dateRange and dateFromTo)
   // ═══════════════════════════════════════════════════════════════════════════
   RightPane.prototype._renderDateRangeInput = function (card, cardObject) {
-    console.log("[RightPane] 📅 _renderDateRangeInput() for type:", cardObject.config.type);
-
     const container = document.createElement("div");
     container.className = "date-range-container";
 
@@ -557,10 +564,11 @@ define([], function () {
   RightPane.prototype._renderBubbleInput = function (card, cardObject) {
     const config = cardObject.config;
     const queryName = config.queryName;
+    const promptType = config.promptType || "";
     let datalistId = null;
 
     // Create datalist only if NOT text type and has queryName
-    if (config.type !== "text" && queryName && this.dataStores && this.dataStores[queryName]) {
+    if (promptType !== "text" && queryName && this.dataStores && this.dataStores[queryName]) {
       console.log(`[RightPane] ✅ Found DataStore for ${queryName}`);
 
       const dataStore = this.dataStores[queryName];
@@ -606,7 +614,7 @@ define([], function () {
 
       card.appendChild(datalist);
       console.log(`[RightPane] ✅ Created datalist with ID: ${datalistId}`);
-    } else if (config.type === "text") {
+    } else if (promptType === "text") {
       console.log(`[RightPane] 📝 Text-only input - no datalist`);
     } else {
       console.log(`[RightPane] ⚠️ No DataStore found for queryName: ${queryName}`);
@@ -625,7 +633,7 @@ define([], function () {
     const input = document.createElement("input");
     input.className = "right-pane-card-input";
     input.type = "text";
-    input.placeholder = config.type === "text" ? "Type value and press Enter..." : "Type or select value...";
+    input.placeholder = promptType === "text" ? "Type value and press Enter..." : "Type or select value...";
 
     if (datalistId) {
       input.setAttribute("list", datalistId);
@@ -781,11 +789,10 @@ define([], function () {
   RightPane.prototype._createBubble = function (cardObject, displayValue, useValue) {
     console.log(`[RightPane] 🫧 Creating bubble: display="${displayValue}", use="${useValue}"`);
 
-    // ✨ CHECK maxValues
+    // Check maxValues
     const maxValues = cardObject.config.maxValues;
     if (maxValues && cardObject.bubbledValues.length >= maxValues) {
       console.warn(`[RightPane] ⚠️ maxValues limit reached (${maxValues}) - clearing existing values`);
-      // Clear all existing bubbles
       cardObject.bubbledValues = [];
       if (cardObject.bubblesContainer) {
         cardObject.bubblesContainer.innerHTML = "";
@@ -860,7 +867,7 @@ define([], function () {
   };
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // GET PARAMETERS (Collects from all cards)
+  // GET PARAMETERS (Called by Cognos)
   // ═══════════════════════════════════════════════════════════════════════════
   RightPane.prototype.getParameters = function () {
     console.log("[RightPane] 📋 getParameters() called");
@@ -871,7 +878,7 @@ define([], function () {
 
       this.cards.forEach((cardObject, idx) => {
         console.log(`[RightPane] 🔍 Checking card ${idx}:`, cardObject.config.label);
-        console.log(`[RightPane] 🔍 Card ${idx} type:`, cardObject.config.type);
+        console.log(`[RightPane] 🔍 Card ${idx} bubbledValues:`, cardObject.bubbledValues);
 
         const cardParams = cardObject.getParameters();
 

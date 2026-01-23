@@ -420,7 +420,7 @@
 }
 
 .right-pane-card.required-card .right-pane-card-header {
-  color: #b50116;
+  color: #8b0000;
 }
 
 /* Hide X button for required cards (handled in JS, but backup CSS) */

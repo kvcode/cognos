@@ -33,99 +33,11 @@ define([], function () {
   };
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // HELPER: Find Button Config by ParamName
+  // HELPER: Check if item is a subgroup
   // ═══════════════════════════════════════════════════════════════════════════
-  LeftPane.prototype.findButtonByParamName = function (paramName) {
-    console.log(`[LeftPane] 🔍 findButtonByParamName("${paramName}")`);
-
-    if (!this.config || !Array.isArray(this.config)) {
-      console.warn("[LeftPane] ⚠️ No config available");
-      return null;
-    }
-
-    for (const group of this.config) {
-      if (!group.items || !Array.isArray(group.items)) continue;
-
-      for (const item of group.items) {
-        // Direct button in group
-        if (item.type === "button" && item.paramName === paramName) {
-          console.log(`[LeftPane] ✅ Found button in group: ${group.groupLabel}`);
-          return item;
-        }
-
-        // Button inside subgroup
-        if (item.type === "subgroup" && item.buttons && Array.isArray(item.buttons)) {
-          for (const btn of item.buttons) {
-            if (btn.paramName === paramName) {
-              console.log(`[LeftPane] ✅ Found button in subgroup: ${item.subgroupLabel}`);
-              return btn;
-            }
-          }
-        }
-      }
-    }
-
-    console.warn(`[LeftPane] ⚠️ Button not found for paramName: ${paramName}`);
-    return null;
-  };
-
-  // ═══════════════════════════════════════════════════════════════════════════
-  // HELPER: Get All Button Configs (for required cards scanning)
-  // ═══════════════════════════════════════════════════════════════════════════
-  LeftPane.prototype.getAllButtonConfigs = function () {
-    console.log("[LeftPane] 📋 getAllButtonConfigs()");
-    const allButtons = [];
-
-    if (!this.config || !Array.isArray(this.config)) {
-      return allButtons;
-    }
-
-    for (const group of this.config) {
-      if (!group.items || !Array.isArray(group.items)) continue;
-
-      for (const item of group.items) {
-        // Direct button in group
-        if (item.type === "button") {
-          allButtons.push(item);
-        }
-
-        // Buttons inside subgroup
-        if (item.type === "subgroup" && item.buttons && Array.isArray(item.buttons)) {
-          for (const btn of item.buttons) {
-            allButtons.push(btn);
-          }
-        }
-      }
-    }
-
-    console.log(`[LeftPane] 📋 Found ${allButtons.length} total buttons`);
-    return allButtons;
-  };
-
-  // ═══════════════════════════════════════════════════════════════════════════
-  // HELPER: Get Required Button Configs
-  // ═══════════════════════════════════════════════════════════════════════════
-  LeftPane.prototype.getRequiredButtonConfigs = function () {
-    console.log("[LeftPane] ⭐ getRequiredButtonConfigs()");
-    const allButtons = this.getAllButtonConfigs();
-    const requiredButtons = allButtons.filter((btn) => btn.required === true);
-    console.log(`[LeftPane] ⭐ Found ${requiredButtons.length} required buttons`);
-    return requiredButtons;
-  };
-
-  // ═══════════════════════════════════════════════════════════════════════════
-  // HELPER: Find DOM Button by ParamName (for disabling)
-  // ═══════════════════════════════════════════════════════════════════════════
-  LeftPane.prototype.findDOMButtonByParamName = function (paramName) {
-    if (!this.domNode) return null;
-
-    const buttons = this.domNode.querySelectorAll(".left-pane-button");
-    for (const btn of buttons) {
-      if (btn._buttonConfig && btn._buttonConfig.paramName === paramName) {
-        return btn;
-      }
-    }
-    return null;
+  LeftPane.prototype.isSubgroup = function (item) {
+    // Subgroup is detected by having subgroupLabel or buttons array
+    return item.subgroupLabel !== undefined || Array.isArray(item.buttons);
   };
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -154,10 +66,10 @@ define([], function () {
         const label = group.groupLabel || `Group ${idx}`;
         this.groupStates[label] = group.defaultExpanded !== false;
 
-        // Initialize subgroup states from items array
-        if (group.items && Array.isArray(group.items)) {
-          group.items.forEach((item, itemIdx) => {
-            if (item.type === "subgroup") {
+        // Initialize subgroup states from groupItems array
+        if (group.groupItems && Array.isArray(group.groupItems)) {
+          group.groupItems.forEach((item, itemIdx) => {
+            if (this.isSubgroup(item)) {
               const subLabel = `${label}_${item.subgroupLabel || itemIdx}`;
               this.subgroupStates[subLabel] = item.defaultExpanded !== false;
             }
@@ -315,19 +227,19 @@ define([], function () {
 
     groupContainer.appendChild(header);
 
-    // Render items in order from JSON
-    if (group.items && Array.isArray(group.items)) {
-      group.items.forEach((item, itemIdx) => {
-        if (item.type === "subgroup") {
+    // Render groupItems in order from JSON
+    if (group.groupItems && Array.isArray(group.groupItems)) {
+      group.groupItems.forEach((item, itemIdx) => {
+        if (this.isSubgroup(item)) {
+          // Has subgroupLabel or buttons array → render as subgroup
           this.renderSubgroup(item, itemIdx, label, buttonsContainer);
-        } else if (item.type === "button") {
-          this.renderButton(item, itemIdx, buttonsContainer);
         } else {
-          console.warn(`[LeftPane] ⚠️ Unknown item type: ${item.type}`);
+          // Everything else → render as button
+          this.renderButton(item, itemIdx, buttonsContainer);
         }
       });
     } else {
-      console.warn(`[LeftPane] ⚠️ Group "${label}" has no items array`);
+      console.warn(`[LeftPane] ⚠️ Group "${label}" has no groupItems array`);
     }
 
     buttonsContainer.style.display = isExpanded ? "flex" : "none";
@@ -407,6 +319,87 @@ define([], function () {
     container.appendChild(subButtonsContainer);
   };
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // HELPER: Get all button configs (flattened)
+  // ═══════════════════════════════════════════════════════════════════════════
+  LeftPane.prototype.getAllButtonConfigs = function () {
+    const allButtons = [];
+
+    if (!this.config) return allButtons;
+
+    this.config.forEach((group) => {
+      if (group.groupItems && Array.isArray(group.groupItems)) {
+        group.groupItems.forEach((item) => {
+          if (this.isSubgroup(item)) {
+            // It's a subgroup - get buttons from it
+            if (item.buttons && Array.isArray(item.buttons)) {
+              allButtons.push(...item.buttons);
+            }
+          } else {
+            // It's a direct button
+            allButtons.push(item);
+          }
+        });
+      }
+    });
+
+    return allButtons;
+  };
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // HELPER: Get required button configs
+  // ═══════════════════════════════════════════════════════════════════════════
+  LeftPane.prototype.getRequiredButtonConfigs = function () {
+    return this.getAllButtonConfigs().filter((btn) => btn.required === true);
+  };
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // HELPER: Find button config by paramName
+  // ═══════════════════════════════════════════════════════════════════════════
+  LeftPane.prototype.findButtonByParamName = function (paramName) {
+    const allButtons = this.getAllButtonConfigs();
+
+    // Check single paramName
+    let found = allButtons.find((btn) => btn.paramName === paramName);
+    if (found) return found;
+
+    // Check paramNames (for dateFromTo type)
+    found = allButtons.find(
+      (btn) => btn.paramNames && (btn.paramNames.from === paramName || btn.paramNames.to === paramName)
+    );
+
+    return found || null;
+  };
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // HELPER: Find DOM button by paramName
+  // ═══════════════════════════════════════════════════════════════════════════
+  LeftPane.prototype.findDOMButtonByParamName = function (paramName) {
+    if (!this.domNode) return null;
+
+    const buttons = this.domNode.querySelectorAll(".left-pane-button");
+
+    for (const btn of buttons) {
+      if (btn._buttonConfig) {
+        // Check single paramName
+        if (btn._buttonConfig.paramName === paramName) {
+          return btn;
+        }
+        // Check paramNames (for dateFromTo type)
+        if (btn._buttonConfig.paramNames) {
+          if (btn._buttonConfig.paramNames.from === paramName || btn._buttonConfig.paramNames.to === paramName) {
+            return btn;
+          }
+        }
+      }
+    }
+
+    return null;
+  };
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // DESTROY
+  // ═══════════════════════════════════════════════════════════════════════════
   LeftPane.prototype.destroy = function () {
     if (this.domNode && this.domNode.parentNode) {
       this.domNode.parentNode.removeChild(this.domNode);

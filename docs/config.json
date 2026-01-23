@@ -23,17 +23,16 @@
   "buttonGroups": [
     {
       "groupLabel": "Fahrzeug (FZ)",
-      "labels": {
+      "groupLabels": {
         "de": "Fahrzeug (FZ)",
         "en": "Vehicle (VH)"
       },
       "groupIcon": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M8.5 9L9.8 7.2C10.1 6.8 10.6 6.5 11.2 6.5H14.8C15.5 6.5 16.1 6.9 16.4 7.5L17.5 9.5H19C19.8 9.5 20.5 10.2 20.5 11V15C20.5 15.6 20 16 19.5 16H19.3C19.1 17.2 18.1 18 17 18C15.9 18 14.9 17.2 14.7 16H9.3C9.1 17.2 8.1 18 7 18C5.9 18 4.9 17.2 4.7 16H4.5C4 16 3.5 15.6 3.5 15V12C3.5 11.6 3.6 11.2 3.9 10.9L5.4 9.4C5.7 9.1 6.1 9 6.5 9H8.5ZM9.2 10L10.3 8.5C10.4 8.3 10.6 8.2 10.8 8.2H14.2C14.5 8.2 14.7 8.4 14.8 8.6L15.5 10H9.2ZM7 10H6.5C6.4 10 6.3 10.1 6.2 10.2L4.7 11.7C4.6 11.8 4.5 11.9 4.5 12V15H4.7C4.9 13.8 5.9 13 7 13C8.1 13 9.1 13.8 9.3 15H14.7C14.9 13.8 15.9 13 17 13C18.1 13 19.1 13.8 19.3 15H19.5V11C19.5 10.7 19.3 10.5 19 10.5H7V10ZM7 14C6.4 14 6 14.4 6 15C6 15.6 6.4 16 7 16C7.6 16 8 15.6 8 15C8 14.4 7.6 14 7 14ZM16 15C16 14.4 16.4 14 17 14C17.6 14 18 14.4 18 15C18 15.6 17.6 16 17 16C16.4 16 16 15.6 16 15Z\" fill=\"currentColor\"></path></svg>",
       "defaultExpanded": true,
-      "items": [
+      "groupItems": [
         {
-          "type": "subgroup",
           "subgroupLabel": "ZP8 Datum",
-          "labels": {
+          "subgroupLabels": {
             "de": "ZP8 Datum",
             "en": "ZP8 Date"
           },
@@ -51,7 +50,7 @@
                 "en": "Select ZP8 date range for production filtering - uses in_range()"
               },
               "paramName": "P_ZP8_DateRange",
-              "type": "dateRange",
+              "promptType": "dateRange",
               "dateFormat": "yyyy-MM-dd",
               "helpText": "Uses in_range() filter - single parameter with start/end dates",
               "helpTexts": {
@@ -70,7 +69,7 @@
                 "de": "ZP8-Datumsbereich auswählen - verwendet BETWEEN mit separaten VON/BIS Parametern",
                 "en": "Select ZP8 date range - uses BETWEEN with separate FROM/TO params"
               },
-              "type": "dateFromTo",
+              "promptType": "dateFromTo",
               "paramNames": {
                 "from": "P_ZP8_DateFrom",
                 "to": "P_ZP8_DateTo"
@@ -123,9 +122,8 @@
           ]
         },
         {
-          "type": "subgroup",
           "subgroupLabel": "V-Modell",
-          "labels": {
+          "subgroupLabels": {
             "de": "V-Modell",
             "en": "V-Model"
           },
@@ -185,7 +183,7 @@
                 "en": "Vehicle model 4-digit code - manual entry"
               },
               "paramName": "P_VModel4st",
-              "type": "text",
+              "promptType": "text",
               "helpText": "Manual entry - no autocomplete (too many values)",
               "helpTexts": {
                 "de": "Manuelle Eingabe - keine Autovervollständigung (zu viele Werte)",
@@ -204,7 +202,7 @@
                 "en": "Vehicle model 5-digit code - manual entry"
               },
               "paramName": "P_VModel5st",
-              "type": "text",
+              "promptType": "text",
               "helpText": "Manual entry - no autocomplete (too many values)",
               "helpTexts": {
                 "de": "Manuelle Eingabe - keine Autovervollständigung (zu viele Werte)",
@@ -223,7 +221,7 @@
                 "en": "Vehicle model 6-digit code - manual entry"
               },
               "paramName": "P_VModel6st",
-              "type": "text",
+              "promptType": "text",
               "helpText": "Manual entry - no autocomplete (too many values)",
               "helpTexts": {
                 "de": "Manuelle Eingabe - keine Autovervollständigung (zu viele Werte)",
@@ -233,7 +231,6 @@
           ]
         },
         {
-          "type": "button",
           "label": "Modelljahr (FZ)",
           "labels": {
             "de": "Modelljahr (FZ)",
@@ -253,7 +250,6 @@
           }
         },
         {
-          "type": "button",
           "label": "Marke (2-stellig) (FZ)",
           "labels": {
             "de": "Marke (2-stellig) (FZ)",
@@ -276,7 +272,6 @@
           }
         },
         {
-          "type": "button",
           "label": "ISO-Land (Auslieferung) (3-stellig) (FZ)",
           "labels": {
             "de": "ISO-Land (Auslieferung) (3-stellig) (FZ)",
@@ -302,15 +297,14 @@
 
     {
       "groupLabel": "DISS (DI)",
-      "labels": {
+      "groupLabels": {
         "de": "DISS (DI)",
         "en": "Complaint System (CS)"
       },
       "groupIcon": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M21 8.5C21 10.3365 19.3108 12 17 12H13.3507C13.8056 11.2953 13.7362 10.4133 13.3698 9.77232C13.1297 9.3523 13 8.94194 13 8.5C13 6.6635 14.6891 5 17 5C19.3108 5 21 6.6635 21 8.5ZM17 13C19.7614 13 22 10.9853 22 8.5C22 6.01472 19.7614 4 17 4C14.2385 4 12 6.01472 12 8.5C12 9.1541 12.1963 9.73435 12.5017 10.2686C12.7526 10.7075 12.7311 11.2688 12.3736 11.6263L11.8535 12.1464C11.5385 12.4614 11.7616 13 12.2071 13H17ZM8 12C9.10457 12 10 11.1046 10 10C10 8.89543 9.10457 8 8 8C6.89543 8 6 8.89543 6 10C6 11.1046 6.89543 12 8 12ZM8 13C9.65685 13 11 11.6569 11 10C11 8.34315 9.65685 7 8 7C6.34315 7 5 8.34315 5 10C5 11.6569 6.34315 13 8 13ZM11.0121 16H4.98825C4.54664 16 4.15732 16.2897 4.03042 16.7127L3.34422 19H12.6562L11.97 16.7127C11.8431 16.2897 11.4537 16 11.0121 16ZM4.98825 15C4.10503 15 3.32639 15.5793 3.0726 16.4253L2.19329 19.3563C2.09705 19.6771 2.33727 20 2.6722 20H13.3282C13.6631 20 13.9033 19.6771 13.8071 19.3563L12.9278 16.4253C12.674 15.5793 11.8953 15 11.0121 15H4.98825ZM19 8H15V7H19V8ZM15 10H18V9H15V10Z\" fill=\"currentColor\"></path></svg>",
       "defaultExpanded": false,
-      "items": [
+      "groupItems": [
         {
-          "type": "button",
           "label": "Beanstandungsstatus (DIB)",
           "labels": {
             "de": "Beanstandungsstatus (DIB)",
@@ -332,7 +326,6 @@
           }
         },
         {
-          "type": "button",
           "label": "Erfasst am (DIB) (Von/Bis)",
           "labels": {
             "de": "Erfasst am (DIB) (Von/Bis)",
@@ -343,7 +336,7 @@
             "de": "Datumsbereich für Beanstandungsaufzeichnungszeitraum - verwendet BETWEEN",
             "en": "Date range for complaint recording period - uses BETWEEN"
           },
-          "type": "dateFromTo",
+          "promptType": "dateFromTo",
           "paramNames": {
             "from": "P_Erf.DatFrom",
             "to": "P_Erf.DatTo"
