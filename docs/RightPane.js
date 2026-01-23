@@ -10,15 +10,43 @@ define([], function () {
     this.autocompleteData = {};
     this.m_oControlHost = null;
     this.cards = [];
-    this.dataStores = {}; // ✨ NEW: Store DataStores
-    console.log("[RightPane] 💾 Initialized cards array for structured cards");
+    this.dataStores = {};
+    this.locale = "en"; // Default locale
   }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // HELPER: Get Localized Text
+  // ═══════════════════════════════════════════════════════════════════════════
+  RightPane.prototype.getLocalizedText = function (config, property) {
+    const pluralProperty = property + "s";
+
+    if (config[pluralProperty] && typeof config[pluralProperty] === "object") {
+      if (config[pluralProperty][this.locale]) {
+        return config[pluralProperty][this.locale];
+      }
+      if (config[pluralProperty]["en"]) {
+        return config[pluralProperty]["en"];
+      }
+      const keys = Object.keys(config[pluralProperty]);
+      if (keys.length > 0) {
+        return config[pluralProperty][keys[0]];
+      }
+    }
+
+    return config[property] || "";
+  };
 
   RightPane.prototype.initialize = function (oControlHost, fnDoneInitializing) {
     console.log("[RightPane] 🔧 initialize() called");
 
     this.m_oControlHost = oControlHost;
     console.log("[RightPane] 💾 Stored oControlHost");
+
+    // Detect locale
+    if (oControlHost.locale) {
+      this.locale = oControlHost.locale.substring(0, 2);
+      console.log("[RightPane] 🌍 Detected locale:", this.locale);
+    }
 
     try {
       this.domNode = document.createElement("div");
@@ -64,27 +92,23 @@ define([], function () {
     }
   };
 
-  // ✨ NEW: Method to receive DataStores
   RightPane.prototype.setDataStores = function (dataStores) {
     console.log("[RightPane] 📦 setDataStores() called");
     this.dataStores = dataStores || {};
     console.log("[RightPane] 💾 Available DataStores:", Object.keys(this.dataStores));
 
-    // Log details about each DataStore
     Object.keys(this.dataStores).forEach((key) => {
       const ds = this.dataStores[key];
       console.log(`[RightPane] 📊 DataStore "${key}": ${ds.rowCount} rows`);
     });
   };
 
-  // ✨ NEW: Check if card with paramName already exists
   RightPane.prototype.hasCard = function (paramName) {
     const exists = this.cards.some((card) => card.config.paramName === paramName);
     console.log(`[RightPane] 🔍 hasCard(${paramName}):`, exists);
     return exists;
   };
 
-  //AddCard Method to create Cards
   RightPane.prototype.addCard = function (cardData) {
     console.log("[RightPane] ➕ addCard() called!");
     console.log("[RightPane] 📦 Received cardData:", JSON.stringify(cardData, null, 2));
@@ -92,7 +116,7 @@ define([], function () {
     try {
       if (!cardData.fullConfig) {
         console.error("[RightPane] ❌ cardData.fullConfig is missing! Cannot create card.");
-        console.log("[RightPane] ⏩ Aborting card creation");
+        console.log("[RightPane] ↩ Aborting card creation");
         return;
       }
 
@@ -130,11 +154,14 @@ define([], function () {
       bubblesContainer: null,
       bubbledValues: [],
       sourceButton: cardData.sourceButton || null,
+      dateFromInput: null, // For date ranges
+      dateToInput: null, // For date ranges
 
       getParameters: function () {
         console.log("[RightPane] 📋 Card getParameters() called for:", this.config.label);
         console.log("[RightPane] 🔍 Bubbled values:", this.bubbledValues);
         console.log("[RightPane] 🔍 paramName:", this.config.paramName);
+        console.log("[RightPane] 🔍 Card type:", this.config.type);
 
         if (!this.config.paramName) {
           console.error("[RightPane] ❌ paramName missing in config!");
@@ -142,11 +169,28 @@ define([], function () {
         }
 
         let values;
-        if (this.bubbledValues.length === 0) {
+
+        // Handle date range
+        if (this.config.type === "dateRange") {
+          const fromValue = this.dateFromInput ? this.dateFromInput.value : "";
+          const toValue = this.dateToInput ? this.dateToInput.value : "";
+
+          if (!fromValue || !toValue) {
+            console.log("[RightPane] ⚠️ Date range incomplete - returning empty");
+            values = [];
+          } else {
+            values = [
+              { use: fromValue, display: fromValue },
+              { use: toValue, display: toValue },
+            ];
+            console.log("[RightPane] 📅 Date range values:", values);
+          }
+        }
+        // Handle regular bubbles
+        else if (this.bubbledValues.length === 0) {
           console.log("[RightPane] ⚠️ No bubbled values - returning empty array");
           values = [];
         } else {
-          // ✨ Map to Cognos structure with use/display
           values = this.bubbledValues.map((val) => ({
             use: val.use,
             display: val.display,
@@ -169,16 +213,12 @@ define([], function () {
     return cardObject;
   };
 
-  // Remove card Method and re-enable source button
   RightPane.prototype.removeCard = function (cardObject) {
     console.log(`[RightPane] 🗑 removeCard() called for:`, cardObject.config.label);
 
-    // ✨ CRITICAL: Clear bubbled values BEFORE notifying Cognos
     console.log(`[RightPane] 🧹 Clearing bubbledValues before removal`);
     cardObject.bubbledValues = [];
 
-    // Notify Cognos FIRST (while card still in array)
-    // This triggers getParameters() which will return empty values for this param
     if (this.m_oControlHost) {
       try {
         this.m_oControlHost.valueChanged();
@@ -188,7 +228,6 @@ define([], function () {
       }
     }
 
-    // NOW remove from cards array
     const index = this.cards.indexOf(cardObject);
     if (index > -1) {
       this.cards.splice(index, 1);
@@ -198,13 +237,11 @@ define([], function () {
       console.warn(`[RightPane] ⚠️ Card not found in cards array!`);
     }
 
-    // Remove from DOM
     if (cardObject.domElement && cardObject.domElement.parentNode) {
       cardObject.domElement.parentNode.removeChild(cardObject.domElement);
       console.log(`[RightPane] ✅ Removed card DOM element`);
     }
 
-    // Re-enable source button in LeftPane
     if (cardObject.sourceButton) {
       cardObject.sourceButton.classList.remove("disabled");
       console.log(`[RightPane] 🎨 Re-enabled source button`);
@@ -222,20 +259,17 @@ define([], function () {
       const card = document.createElement("div");
       card.className = "right-pane-card";
 
-      // Header with X button
+      // Header container with X button
       const headerContainer = document.createElement("div");
-      headerContainer.style.display = "flex";
-      headerContainer.style.justifyContent = "space-between";
-      headerContainer.style.alignItems = "center";
-      headerContainer.style.marginBottom = "5px";
+      headerContainer.className = "card-header-container";
 
       const header = document.createElement("div");
       header.className = "right-pane-card-header";
-      header.textContent = config.label || config.optionName || "Unnamed Prompt";
-      header.style.flex = "1";
+      const headerText = this.getLocalizedText(config, "label") || config.optionName || "Unnamed Prompt";
+      header.textContent = headerText;
       headerContainer.appendChild(header);
 
-      // X button to remove card
+      // X button
       const removeCardBtn = document.createElement("button");
       removeCardBtn.className = "card-remove-btn";
       removeCardBtn.textContent = "×";
@@ -255,164 +289,289 @@ define([], function () {
       paramInfo.textContent = `Param: ${config.paramName || "MISSING!"}`;
       card.appendChild(paramInfo);
 
-      // ✨ Check if DataStore exists for this card's queryName
-      const queryName = config.queryName;
-      let datalistId = null;
+      // Help text (localized)
+      const helpText = this.getLocalizedText(config, "helpText");
+      if (helpText) {
+        const helpDiv = document.createElement("div");
+        helpDiv.className = "right-pane-card-help-text";
+        helpDiv.textContent = helpText;
+        card.appendChild(helpDiv);
+      }
 
-      if (queryName && this.dataStores && this.dataStores[queryName]) {
-        console.log(`[RightPane] ✅ Found DataStore for ${queryName}`);
+      // Required indicator
+      if (config.required) {
+        const requiredDiv = document.createElement("div");
+        requiredDiv.className = "right-pane-card-required";
+        requiredDiv.textContent = "★ Required";
+        card.appendChild(requiredDiv);
+      }
 
-        const dataStore = this.dataStores[queryName];
-
-        // Read from config or use defaults
-        let useCol = config.useColumn !== undefined ? config.useColumn : 0;
-        let displayCol = config.displayColumn !== undefined ? config.displayColumn : 1;
-
-        console.log(`[RightPane] 📋 Config requested useColumn: ${useCol}, displayColumn: ${displayCol}`);
-        console.log(`[RightPane] 📋 DataStore "${queryName}" has ${dataStore.columnCount} column(s)`);
-
-        // ✨ CRITICAL: Validate and fallback based on actual column count
-        if (useCol >= dataStore.columnCount) {
-          console.warn(
-            `[RightPane] ⚠️ useColumn ${useCol} out of bounds (only ${dataStore.columnCount} columns available)`
-          );
-          console.warn(`[RightPane] ⚠️ Falling back to column 0 for useColumn`);
-          useCol = 0;
-        }
-
-        if (displayCol >= dataStore.columnCount) {
-          console.warn(
-            `[RightPane] ⚠️ displayColumn ${displayCol} out of bounds (only ${dataStore.columnCount} columns available)`
-          );
-          console.warn(`[RightPane] ⚠️ Falling back to useColumn (${useCol}) for displayColumn`);
-          displayCol = useCol; // Use same column as useCol
-        }
-
-        console.log(`[RightPane] ✅ Final validated columns - useColumn: ${useCol}, displayColumn: ${displayCol}`);
-
-        // ✨ Store validated columns on cardObject for later use to avoid Cognos alert errors
-        cardObject.validatedUseCol = useCol;
-        cardObject.validatedDisplayCol = displayCol;
-
-        datalistId = `datalist-${queryName}-${Date.now()}`;
-        const datalist = document.createElement("datalist");
-        datalist.id = datalistId;
-
-        console.log(`[RightPane] 📋 Populating datalist with ${dataStore.rowCount} values`);
-        for (let i = 0; i < dataStore.rowCount; i++) {
-          const displayValue = dataStore.getCellValue(i, displayCol);
-          const useValue = dataStore.getCellValue(i, useCol);
-
-          const option = document.createElement("option");
-          option.value = displayValue;
-          option.setAttribute("data-use-value", useValue);
-          datalist.appendChild(option);
-
-          if (i < 3) {
-            console.log(`[RightPane] 📋 Row ${i}: display="${displayValue}", use="${useValue}"`);
-          }
-        }
-
-        card.appendChild(datalist);
-        console.log(`[RightPane] ✅ Created datalist with ID: ${datalistId}`);
+      // Render based on type
+      if (config.type === "dateRange") {
+        this._renderDateRangeInput(card, cardObject);
+      } else if (config.type === "date") {
+        this._renderDateInput(card, cardObject);
       } else {
-        console.log(`[RightPane] ⚠️ No DataStore found for queryName: ${queryName}`);
+        this._renderBubbleInput(card, cardObject);
       }
 
-      // Input wrapper (contains bubbles + input)
-      const inputWrapper = document.createElement("div");
-      inputWrapper.className = "input-wrapper";
-
-      // Bubbles container
-      const bubblesContainer = document.createElement("div");
-      bubblesContainer.className = "bubbles-container";
-      inputWrapper.appendChild(bubblesContainer);
-
-      // Input field
-      const input = document.createElement("input");
-      input.className = "right-pane-card-input";
-      input.type = "text";
-      input.placeholder = "Type value and press Enter...";
-
-      if (datalistId) {
-        input.setAttribute("list", datalistId);
-        console.log(`[RightPane] 🔗 Input linked to datalist: ${datalistId}`);
-      }
-
-      inputWrapper.appendChild(input);
-
-      inputWrapper.addEventListener("click", (e) => {
-        // If click was on wrapper/bubbles (not input itself), trigger input click
-        if (e.target !== input) {
-          input.focus();
-          input.click(); // ✅ Trigger click to show datalist
-        }
-      });
-
-      card.appendChild(inputWrapper);
-
-      // Store references
+      this.cardsContainer.appendChild(card);
       cardObject.domElement = card;
-      cardObject.inputElement = input;
-      cardObject.bubblesContainer = bubblesContainer;
+      console.log("[RightPane] ✅ Card rendered to DOM:", config.label);
+    } catch (err) {
+      console.error("[RightPane] ❌ _renderCard() failed:", err);
+    }
+  };
 
-      // ✨ Handle Enter/Tab to create bubble with use/display lookup
-      input.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === "Tab") {
-          e.preventDefault();
+  // ═══════════════════════════════════════════════════════════════════════════
+  // RENDER DATE RANGE INPUT
+  // ═══════════════════════════════════════════════════════════════════════════
+  RightPane.prototype._renderDateRangeInput = function (card, cardObject) {
+    const container = document.createElement("div");
+    container.className = "date-range-container";
 
-          const displayValue = input.value.trim();
-          if (displayValue) {
-            // Look up the corresponding use value from DataStore
-            let useValue = displayValue; // Default to same if not found
+    // FROM field
+    const fromField = document.createElement("div");
+    fromField.className = "date-range-field";
+    const fromLabel = document.createElement("label");
+    fromLabel.textContent = this.locale === "de" ? "VON" : "FROM";
+    fromField.appendChild(fromLabel);
 
-            if (datalistId && config.queryName && this.dataStores[config.queryName]) {
-              const dataStore = this.dataStores[config.queryName];
-              const useCol = cardObject.validatedUseCol; // ✨ Use validated values
-              const displayCol = cardObject.validatedDisplayCol; // ✨ Use validated values
+    const fromInput = document.createElement("input");
+    fromInput.type = "date";
+    fromInput.className = "date-input";
+    fromField.appendChild(fromInput);
 
-              // Find matching row
-              for (let i = 0; i < dataStore.rowCount; i++) {
-                const dsDisplay = dataStore.getCellValue(i, displayCol);
-                if (dsDisplay === displayValue) {
-                  useValue = dataStore.getCellValue(i, useCol);
-                  console.log(`[RightPane] 🔍 Mapped "${displayValue}" → use="${useValue}"`);
-                  break;
-                }
-              }
-            }
+    // TO field
+    const toField = document.createElement("div");
+    toField.className = "date-range-field";
+    const toLabel = document.createElement("label");
+    toLabel.textContent = this.locale === "de" ? "BIS" : "TO";
+    toField.appendChild(toLabel);
 
-            console.log(`[RightPane] 🎯 Creating bubble: display="${displayValue}", use="${useValue}"`);
-            this._createBubble(cardObject, displayValue, useValue);
-            input.value = "";
+    const toInput = document.createElement("input");
+    toInput.type = "date";
+    toInput.className = "date-input";
+    toField.appendChild(toInput);
 
-            if (this.m_oControlHost) {
-              try {
-                this.m_oControlHost.valueChanged();
-                console.log(`[RightPane] ✅ Cognos notified of value change`);
-              } catch (err) {
-                console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
-              }
+    container.appendChild(fromField);
+    container.appendChild(toField);
+    card.appendChild(container);
+
+    // Store references
+    cardObject.dateFromInput = fromInput;
+    cardObject.dateToInput = toInput;
+
+    // Notify on change
+    const notifyChange = () => {
+      if (this.m_oControlHost) {
+        try {
+          this.m_oControlHost.valueChanged();
+          console.log(`[RightPane] ✅ Date range changed - Cognos notified`);
+        } catch (err) {
+          console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
+        }
+      }
+    };
+
+    fromInput.addEventListener("change", notifyChange);
+    toInput.addEventListener("change", notifyChange);
+  };
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // RENDER SINGLE DATE INPUT
+  // ═══════════════════════════════════════════════════════════════════════════
+  RightPane.prototype._renderDateInput = function (card, cardObject) {
+    const input = document.createElement("input");
+    input.type = "date";
+    input.className = "date-input date-input-single";
+    card.appendChild(input);
+
+    cardObject.inputElement = input;
+
+    input.addEventListener("change", () => {
+      const dateValue = input.value;
+      if (dateValue) {
+        // Clear existing
+        cardObject.bubbledValues = [];
+        // Add as bubble
+        cardObject.bubbledValues.push({
+          use: dateValue,
+          display: dateValue,
+        });
+
+        if (this.m_oControlHost) {
+          try {
+            this.m_oControlHost.valueChanged();
+            console.log(`[RightPane] ✅ Date selected - Cognos notified`);
+          } catch (err) {
+            console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
+          }
+        }
+      }
+    });
+  };
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // RENDER BUBBLE INPUT (Regular/Text)
+  // ═══════════════════════════════════════════════════════════════════════════
+  RightPane.prototype._renderBubbleInput = function (card, cardObject) {
+    const config = cardObject.config;
+    const queryName = config.queryName;
+    let datalistId = null;
+
+    // Create datalist only if NOT text type and has queryName
+    if (config.type !== "text" && queryName && this.dataStores && this.dataStores[queryName]) {
+      console.log(`[RightPane] ✅ Found DataStore for ${queryName}`);
+
+      const dataStore = this.dataStores[queryName];
+      let useCol = config.useColumn !== undefined ? config.useColumn : 0;
+      let displayCol = config.displayColumn !== undefined ? config.displayColumn : 1;
+
+      console.log(`[RightPane] 📋 Config requested useColumn: ${useCol}, displayColumn: ${displayCol}`);
+      console.log(`[RightPane] 📋 DataStore "${queryName}" has ${dataStore.columnCount} column(s)`);
+
+      if (useCol >= dataStore.columnCount) {
+        console.warn(`[RightPane] ⚠️ useColumn ${useCol} out of bounds`);
+        useCol = 0;
+      }
+
+      if (displayCol >= dataStore.columnCount) {
+        console.warn(`[RightPane] ⚠️ displayColumn ${displayCol} out of bounds`);
+        displayCol = useCol;
+      }
+
+      console.log(`[RightPane] ✅ Final validated columns - useColumn: ${useCol}, displayColumn: ${displayCol}`);
+
+      cardObject.validatedUseCol = useCol;
+      cardObject.validatedDisplayCol = displayCol;
+
+      datalistId = `datalist-${queryName}-${Date.now()}`;
+      const datalist = document.createElement("datalist");
+      datalist.id = datalistId;
+
+      console.log(`[RightPane] 📋 Populating datalist with ${dataStore.rowCount} values`);
+      for (let i = 0; i < dataStore.rowCount; i++) {
+        const displayValue = dataStore.getCellValue(i, displayCol);
+        const useValue = dataStore.getCellValue(i, useCol);
+
+        const option = document.createElement("option");
+        option.value = displayValue;
+        option.setAttribute("data-use-value", useValue);
+        datalist.appendChild(option);
+
+        if (i < 3) {
+          console.log(`[RightPane] 📋 Row ${i}: display="${displayValue}", use="${useValue}"`);
+        }
+      }
+
+      card.appendChild(datalist);
+      console.log(`[RightPane] ✅ Created datalist with ID: ${datalistId}`);
+    } else if (config.type === "text") {
+      console.log(`[RightPane] 📝 Text-only input - no datalist`);
+    } else {
+      console.log(`[RightPane] ⚠️ No DataStore found for queryName: ${queryName}`);
+    }
+
+    // Input wrapper
+    const inputWrapper = document.createElement("div");
+    inputWrapper.className = "input-wrapper";
+
+    // Bubbles container
+    const bubblesContainer = document.createElement("div");
+    bubblesContainer.className = "bubbles-container";
+    inputWrapper.appendChild(bubblesContainer);
+
+    // Input field
+    const input = document.createElement("input");
+    input.className = "right-pane-card-input";
+    input.type = "text";
+    input.placeholder = config.type === "text" ? "Type value and press Enter..." : "Type or select value...";
+
+    if (datalistId) {
+      input.setAttribute("list", datalistId);
+      console.log(`[RightPane] 🔗 Input linked to datalist: ${datalistId}`);
+    }
+
+    inputWrapper.appendChild(input);
+
+    // Click wrapper to focus input
+    inputWrapper.addEventListener("click", (e) => {
+      if (e.target !== input) {
+        input.focus();
+        input.click();
+      }
+    });
+
+    // ✨ PASTE HANDLER
+    inputWrapper.addEventListener("paste", (e) => {
+      e.preventDefault();
+      const pastedText = e.clipboardData.getData("text");
+      console.log(`[RightPane] 📋 Paste detected:`, pastedText);
+
+      // Split by common delimiters
+      const values = pastedText
+        .split(/[\n\r\t,;]+/)
+        .map((v) => v.trim())
+        .filter((v) => v);
+      console.log(`[RightPane] 📋 Parsed ${values.length} values:`, values);
+
+      values.forEach((val) => {
+        let useValue = val;
+        let displayValue = val;
+
+        // Try to map from datalist
+        if (datalistId && config.queryName && this.dataStores[config.queryName]) {
+          const dataStore = this.dataStores[config.queryName];
+          const useCol = cardObject.validatedUseCol;
+          const displayCol = cardObject.validatedDisplayCol;
+
+          for (let i = 0; i < dataStore.rowCount; i++) {
+            const dsDisplay = dataStore.getCellValue(i, displayCol);
+            const dsUse = dataStore.getCellValue(i, useCol);
+
+            if (dsDisplay === val || dsUse === val) {
+              useValue = dsUse;
+              displayValue = dsDisplay;
+              break;
             }
           }
         }
+
+        this._createBubble(cardObject, displayValue, useValue);
       });
 
-      // ✨✨✨ ADD THIS NEW BLOCK RIGHT HERE (AFTER LINE 395) ✨✨✨
-      // Handle click/selection from datalist (auto-confirm)
-      input.addEventListener("change", (e) => {
+      if (this.m_oControlHost) {
+        try {
+          this.m_oControlHost.valueChanged();
+          console.log(`[RightPane] ✅ Paste complete - Cognos notified`);
+        } catch (err) {
+          console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
+        }
+      }
+    });
+
+    card.appendChild(inputWrapper);
+
+    // Store references
+    cardObject.inputElement = input;
+    cardObject.bubblesContainer = bubblesContainer;
+
+    // Enter/Tab handler
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === "Tab") {
+        e.preventDefault();
+
         const displayValue = input.value.trim();
+        if (displayValue) {
+          let useValue = displayValue;
 
-        if (displayValue && datalistId) {
-          // Look up the corresponding use value from DataStore
-          let useValue = displayValue; // Default to same if not found
-
-          if (config.queryName && this.dataStores[config.queryName]) {
+          // Map from datalist
+          if (datalistId && config.queryName && this.dataStores[config.queryName]) {
             const dataStore = this.dataStores[config.queryName];
             const useCol = cardObject.validatedUseCol;
             const displayCol = cardObject.validatedDisplayCol;
 
-            // Find matching row
             for (let i = 0; i < dataStore.rowCount; i++) {
               const dsDisplay = dataStore.getCellValue(i, displayCol);
               if (dsDisplay === displayValue) {
@@ -423,7 +582,7 @@ define([], function () {
             }
           }
 
-          console.log(`[RightPane] 🎯 Datalist selection confirmed: display="${displayValue}", use="${useValue}"`);
+          console.log(`[RightPane] 🎯 Creating bubble: display="${displayValue}", use="${useValue}"`);
           this._createBubble(cardObject, displayValue, useValue);
           input.value = "";
 
@@ -436,39 +595,84 @@ define([], function () {
             }
           }
         }
-      });
-      // ✨✨✨ END OF NEW BLOCK ✨✨✨
+      }
+    });
 
-      this.cardsContainer.appendChild(card);
-      console.log("[RightPane] ✅ Card rendered to DOM:", config.label);
-    } catch (err) {
-      console.error("[RightPane] ❌ _renderCard() failed:", err);
-    }
+    // Change event (datalist selection)
+    input.addEventListener("change", (e) => {
+      const displayValue = input.value.trim();
+
+      if (displayValue && datalistId) {
+        let useValue = displayValue;
+
+        if (config.queryName && this.dataStores[config.queryName]) {
+          const dataStore = this.dataStores[config.queryName];
+          const useCol = cardObject.validatedUseCol;
+          const displayCol = cardObject.validatedDisplayCol;
+
+          for (let i = 0; i < dataStore.rowCount; i++) {
+            const dsDisplay = dataStore.getCellValue(i, displayCol);
+            if (dsDisplay === displayValue) {
+              useValue = dataStore.getCellValue(i, useCol);
+              console.log(`[RightPane] 🔍 Mapped "${displayValue}" → use="${useValue}"`);
+              break;
+            }
+          }
+        }
+
+        console.log(`[RightPane] 🎯 Datalist selection confirmed: display="${displayValue}", use="${useValue}"`);
+        this._createBubble(cardObject, displayValue, useValue);
+        input.value = "";
+
+        if (this.m_oControlHost) {
+          try {
+            this.m_oControlHost.valueChanged();
+            console.log(`[RightPane] ✅ Cognos notified of value change`);
+          } catch (err) {
+            console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
+          }
+        }
+      }
+    });
   };
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // CREATE BUBBLE (with maxValues enforcement)
+  // ═══════════════════════════════════════════════════════════════════════════
   RightPane.prototype._createBubble = function (cardObject, displayValue, useValue) {
     console.log(`[RightPane] 🫧 Creating bubble: display="${displayValue}", use="${useValue}"`);
 
-    // Check for duplicate display values
+    // ✨ CHECK maxValues
+    const maxValues = cardObject.config.maxValues;
+    if (maxValues && cardObject.bubbledValues.length >= maxValues) {
+      console.warn(`[RightPane] ⚠️ maxValues limit reached (${maxValues}) - clearing existing values`);
+      // Clear all existing bubbles
+      cardObject.bubbledValues = [];
+      if (cardObject.bubblesContainer) {
+        cardObject.bubblesContainer.innerHTML = "";
+      }
+    }
+
+    // Check for duplicate
     if (cardObject.bubbledValues.some((v) => v.display === displayValue)) {
       console.warn(`[RightPane] ⚠️ Value "${displayValue}" already exists as bubble`);
       return;
     }
 
-    // Store both values as object
+    // Store value
     cardObject.bubbledValues.push({
       display: displayValue,
-      use: useValue || displayValue, // Fallback to display if use is missing
+      use: useValue || displayValue,
     });
     console.log(`[RightPane] 💾 Added to bubbledValues:`, cardObject.bubbledValues);
 
-    // Create bubble - show display value to user
+    // Create bubble DOM
     const bubble = document.createElement("span");
     bubble.className = "bubble";
     bubble.title = displayValue;
 
     const valueSpan = document.createElement("span");
-    valueSpan.textContent = displayValue; // User sees display value
+    valueSpan.textContent = displayValue;
     bubble.appendChild(valueSpan);
 
     const removeBtn = document.createElement("button");
@@ -489,7 +693,6 @@ define([], function () {
     console.log(`[RightPane] 🗑 Removing bubble: "${displayValue}"`);
     console.log(`[RightPane] 🔍 Before removal, bubbledValues:`, cardObject.bubbledValues);
 
-    // Find by display value
     const index = cardObject.bubbledValues.findIndex((v) => v.display === displayValue);
     if (index > -1) {
       cardObject.bubbledValues.splice(index, 1);
@@ -514,7 +717,6 @@ define([], function () {
     }
   };
 
-  // GetParameters Method
   RightPane.prototype.getParameters = function () {
     console.log("[RightPane] 📋 getParameters() called");
     console.log("[RightPane] 📊 Total cards to check:", this.cards.length);
@@ -532,7 +734,7 @@ define([], function () {
           allParams.push(...cardParams);
           console.log(`[RightPane] ✅ Card ${idx} returned parameters:`, JSON.stringify(cardParams, null, 2));
         } else {
-          console.log(`[RightPane] ⚠️ Card ${idx} has no parameters (no bubbled values)`);
+          console.log(`[RightPane] ⚠️ Card ${idx} has no parameters`);
         }
       });
 
@@ -565,7 +767,7 @@ define([], function () {
       this.m_oControlHost = null;
       this.dataStores = {};
 
-      console.log("[RightPane] ✅ destroy() complete — cleanup successful");
+      console.log("[RightPane] ✅ destroy() complete – cleanup successful");
     } catch (err) {
       console.error("[RightPane] ❌ destroy() failed:", err);
     }

@@ -338,3 +338,76 @@
   user-select: none;
   white-space: nowrap;
 }
+
+/* === Card Header Container === */
+.card-header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+/* === Help Text === */
+.right-pane-card-help-text {
+  font-size: 12px;
+  color: #555;
+  font-style: italic;
+  margin-bottom: 8px;
+  padding: 4px 8px;
+  background-color: #f0f8ff;
+  border-left: 3px solid #8cbee6;
+  border-radius: 2px;
+}
+
+/* === Required Indicator === */
+.right-pane-card-required {
+  font-size: 11px;
+  color: #b50116;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+/* === Date Range Container === */
+.date-range-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.date-range-field {
+  flex: 1;
+}
+
+.date-range-field label {
+  display: block;
+  font-weight: 600;
+  font-size: 12px;
+  margin-bottom: 4px;
+  color: #00141f;
+}
+
+.date-range-field input[type="date"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #00141f;
+  border-radius: 3px;
+}
+
+/* === Date Inputs === */
+.date-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #00141f;
+  border-radius: 3px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.date-input:focus {
+  outline: 2px solid #8cbee6;
+  border-color: #8cbee6;
+}
+
+.date-input-single {
+  margin-top: 8px;
+}
