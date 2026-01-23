@@ -18,6 +18,9 @@ define([], function () {
     // Bound functions for cleanup
     this.boundMouseMove = null;
     this.boundMouseUp = null;
+
+    // Track if required cards have been rendered
+    this.requiredCardsRendered = false;
   }
 
   // === Initialization ===
@@ -59,11 +62,183 @@ define([], function () {
       this.dropZone = this.rightPane.cardsContainer;
       console.log("[DragNDrop] 📍 Drop zone stored");
 
-      // Setup mouse-based drag handlers
+      // Setup mouse-based drag handlers for regular buttons
       this.setupDragHandlers();
+
+      // Setup preset button handlers
+      this.setupPresetHandlers();
+
+      // Auto-render required cards (only once)
+      if (!this.requiredCardsRendered) {
+        this.renderRequiredCards();
+        this.requiredCardsRendered = true;
+      }
+
       console.log("[DragNDrop] ✅ draw() complete");
     } catch (err) {
       console.error("[DragNDrop] ❌ Error during draw():", err);
+    }
+  };
+
+  // === Setup Preset Handlers ===
+  DragNDrop.prototype.setupPresetHandlers = function () {
+    console.log("[DragNDrop] ⚡ Setting up preset handlers");
+
+    try {
+      if (!this.leftPane || !this.leftPane.domNode) {
+        console.error("[DragNDrop] ❌ LeftPane domNode not available for presets");
+        return;
+      }
+
+      const presetButtons = this.leftPane.domNode.querySelectorAll(".left-pane-preset-button");
+      console.log("[DragNDrop] 📍 Found", presetButtons.length, "preset buttons");
+
+      if (presetButtons.length === 0) {
+        console.log("[DragNDrop] ℹ️ No preset buttons to setup");
+        return;
+      }
+
+      presetButtons.forEach((button, idx) => {
+        // Single click handler for presets
+        button.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          console.log(`[DragNDrop] ⚡ Preset clicked: ${button.textContent.trim()}`);
+
+          if (!button._presetConfig) {
+            console.warn("[DragNDrop] ⚠️ No _presetConfig found on preset button");
+            return;
+          }
+
+          this.applyPreset(button._presetConfig);
+        });
+
+        // Also support double-click for consistency
+        button.addEventListener("dblclick", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          // Single click already handles it
+        });
+      });
+
+      console.log("[DragNDrop] ✅ Preset handlers setup complete");
+    } catch (err) {
+      console.error("[DragNDrop] ❌ setupPresetHandlers error:", err);
+    }
+  };
+
+  // === Apply Preset ===
+  DragNDrop.prototype.applyPreset = function (presetConfig) {
+    console.log("[DragNDrop] ⚡ applyPreset() called");
+    console.log("[DragNDrop] 📦 Preset config:", JSON.stringify(presetConfig, null, 2));
+
+    if (!presetConfig.parameters || !Array.isArray(presetConfig.parameters)) {
+      console.warn("[DragNDrop] ⚠️ Preset has no parameters array");
+      return;
+    }
+
+    let cardsCreated = 0;
+
+    presetConfig.parameters.forEach((paramDef) => {
+      const paramName = paramDef.paramName;
+      console.log(`[DragNDrop] 🔍 Processing preset parameter: ${paramName}`);
+
+      // Check if card already exists
+      if (this.rightPane.hasCard(paramName)) {
+        console.log(`[DragNDrop] ℹ️ Card for ${paramName} already exists - skipping`);
+        return;
+      }
+
+      // Find the button config
+      const buttonConfig = this.leftPane.findButtonByParamName(paramName);
+      if (!buttonConfig) {
+        console.warn(`[DragNDrop] ⚠️ No button config found for ${paramName}`);
+        return;
+      }
+
+      // Create the card
+      const dragData = {
+        optionName: buttonConfig.label,
+        timestamp: Date.now(),
+        fullConfig: buttonConfig,
+        sourceButton: this.leftPane.findDOMButtonByParamName(paramName),
+        isFromPreset: true,
+      };
+
+      console.log(`[DragNDrop] 📞 Creating card for ${paramName}`);
+      this.rightPane.addCard(dragData);
+      cardsCreated++;
+
+      // Disable the source button
+      if (dragData.sourceButton) {
+        dragData.sourceButton.classList.add("disabled");
+        console.log(`[DragNDrop] 🎨 Disabled source button for ${paramName}`);
+      }
+
+      // If preset has pre-defined values, apply them
+      if (paramDef.values && Array.isArray(paramDef.values)) {
+        console.log(`[DragNDrop] 📝 Preset has pre-defined values for ${paramName}`);
+        // TODO: Apply pre-defined values to the card's bubbles
+        // This would require accessing the newly created card and adding bubbles
+      }
+    });
+
+    console.log(`[DragNDrop] ✅ Preset applied - ${cardsCreated} cards created`);
+  };
+
+  // === Render Required Cards ===
+  DragNDrop.prototype.renderRequiredCards = function () {
+    console.log("[DragNDrop] ⭐ renderRequiredCards() called");
+
+    try {
+      if (!this.leftPane || typeof this.leftPane.getRequiredButtonConfigs !== "function") {
+        console.warn("[DragNDrop] ⚠️ LeftPane.getRequiredButtonConfigs not available");
+        return;
+      }
+
+      const requiredButtons = this.leftPane.getRequiredButtonConfigs();
+      console.log(`[DragNDrop] ⭐ Found ${requiredButtons.length} required buttons`);
+
+      if (requiredButtons.length === 0) {
+        console.log("[DragNDrop] ℹ️ No required buttons to auto-render");
+        return;
+      }
+
+      let cardsCreated = 0;
+
+      requiredButtons.forEach((buttonConfig) => {
+        const paramName = buttonConfig.paramName;
+        console.log(`[DragNDrop] ⭐ Processing required parameter: ${paramName}`);
+
+        // Check if card already exists
+        if (this.rightPane.hasCard(paramName)) {
+          console.log(`[DragNDrop] ℹ️ Required card for ${paramName} already exists`);
+          return;
+        }
+
+        // Create the card
+        const dragData = {
+          optionName: buttonConfig.label,
+          timestamp: Date.now(),
+          fullConfig: buttonConfig,
+          sourceButton: this.leftPane.findDOMButtonByParamName(paramName),
+          isRequired: true,
+        };
+
+        console.log(`[DragNDrop] ⭐ Auto-creating required card for ${paramName}`);
+        this.rightPane.addCard(dragData);
+        cardsCreated++;
+
+        // Disable the source button
+        if (dragData.sourceButton) {
+          dragData.sourceButton.classList.add("disabled");
+          console.log(`[DragNDrop] 🎨 Disabled source button for required ${paramName}`);
+        }
+      });
+
+      console.log(`[DragNDrop] ✅ Required cards rendered - ${cardsCreated} cards created`);
+    } catch (err) {
+      console.error("[DragNDrop] ❌ renderRequiredCards error:", err);
     }
   };
 
@@ -83,8 +258,9 @@ define([], function () {
         return;
       }
 
-      const buttons = this.leftPane.domNode.querySelectorAll(".left-pane-button");
-      console.log("[DragNDrop] 🔍 Found", buttons.length, "buttons");
+      // Get all buttons EXCEPT preset buttons
+      const buttons = this.leftPane.domNode.querySelectorAll(".left-pane-button:not(.left-pane-preset-button)");
+      console.log("[DragNDrop] 📍 Found", buttons.length, "regular buttons");
 
       if (buttons.length === 0) {
         console.warn("[DragNDrop] ⚠️ No buttons found");
@@ -94,7 +270,7 @@ define([], function () {
       buttons.forEach((button, idx) => {
         button.style.cursor = "grab";
 
-        // ✨✨✨ ADD THIS ENTIRE BLOCK - DOUBLE-CLICK HANDLER ✨✨✨
+        // Double-click handler
         button.addEventListener("dblclick", (e) => {
           e.preventDefault();
           console.log(`[DragNDrop] 🖱️🖱️ Double-click on: ${button.textContent.trim()}`);
@@ -126,7 +302,6 @@ define([], function () {
           button.classList.add("disabled");
           console.log("[DragNDrop] 🎨 Disabled source button");
         });
-        // ✨✨✨ END OF NEW BLOCK ✨✨✨
 
         // Mouse down - start drag
         button.addEventListener("mousedown", (e) => {
@@ -143,7 +318,7 @@ define([], function () {
               sourceIndex: idx,
               timestamp: Date.now(),
               fullConfig: button._buttonConfig,
-              sourceButton: button, // ✨ NEW: Store button reference
+              sourceButton: button,
             };
 
             console.log("[DragNDrop] 💾 dragData created with fullConfig");
@@ -256,7 +431,7 @@ define([], function () {
     const rect = this.dropZone.getBoundingClientRect();
     const isOver = x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
 
-    console.log("[DragNDrop] 🔍 Is over drop zone:", isOver);
+    console.log("[DragNDrop] 📍 Is over drop zone:", isOver);
 
     if (isOver) {
       console.log("[DragNDrop] ✅ Dropped over target!");
@@ -265,7 +440,7 @@ define([], function () {
         if (this.dragData.fullConfig) {
           const paramName = this.dragData.fullConfig.paramName;
 
-          // ✨ NEW: Check for duplicate
+          // Check for duplicate
           if (this.rightPane.hasCard(paramName)) {
             console.warn(`[DragNDrop] ⚠️ Card with ${paramName} already exists - skipping`);
             this.cleanup();
@@ -276,7 +451,7 @@ define([], function () {
           this.rightPane.addCard(this.dragData);
           console.log("[DragNDrop] ✅ Card added to RightPane");
 
-          // ✨ NEW: Grey out source button
+          // Grey out source button
           if (this.dragData.sourceButton) {
             this.dragData.sourceButton.classList.add("disabled");
             console.log("[DragNDrop] 🎨 Disabled source button with CSS class");
@@ -352,6 +527,7 @@ define([], function () {
       this.floatingElement = null;
       this.boundMouseMove = null;
       this.boundMouseUp = null;
+      this.requiredCardsRendered = false;
 
       console.log("[DragNDrop] ✅ Destroyed");
     } catch (err) {

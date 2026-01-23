@@ -45,18 +45,41 @@
                 "de": "ZP8-Datum (Bereich)",
                 "en": "ZP8 Date (Range)"
               },
-              "tooltip": "Select ZP8 date range for production filtering",
+              "tooltip": "Select ZP8 date range for production filtering - uses in_range()",
               "tooltips": {
-                "de": "ZP8-Datumsbereich für Produktionsfilterung auswählen",
-                "en": "Select ZP8 date range for production filtering"
+                "de": "ZP8-Datumsbereich für Produktionsfilterung auswählen - verwendet in_range()",
+                "en": "Select ZP8 date range for production filtering - uses in_range()"
               },
               "paramName": "P_ZP8_DateRange",
               "type": "dateRange",
               "dateFormat": "yyyy-MM-dd",
-              "helpText": "Select start and end dates for ZP8 production period",
+              "helpText": "Uses in_range() filter - single parameter with start/end dates",
               "helpTexts": {
-                "de": "Start- und Enddatum für ZP8-Produktionszeitraum auswählen",
-                "en": "Select start and end dates for ZP8 production period"
+                "de": "Verwendet in_range() Filter - einzelner Parameter mit Start-/Enddatum",
+                "en": "Uses in_range() filter - single parameter with start/end dates"
+              }
+            },
+            {
+              "label": "ZP8-Datum (Von/Bis)",
+              "labels": {
+                "de": "ZP8-Datum (Von/Bis)",
+                "en": "ZP8 Date (From/To)"
+              },
+              "tooltip": "Select ZP8 date range - uses BETWEEN with separate FROM/TO params",
+              "tooltips": {
+                "de": "ZP8-Datumsbereich auswählen - verwendet BETWEEN mit separaten VON/BIS Parametern",
+                "en": "Select ZP8 date range - uses BETWEEN with separate FROM/TO params"
+              },
+              "type": "dateFromTo",
+              "paramNames": {
+                "from": "P_ZP8_DateFrom",
+                "to": "P_ZP8_DateTo"
+              },
+              "dateFormat": "yyyy-MM-dd",
+              "helpText": "Uses BETWEEN filter - two separate parameters for start and end",
+              "helpTexts": {
+                "de": "Verwendet BETWEEN Filter - zwei separate Parameter für Start und Ende",
+                "en": "Uses BETWEEN filter - two separate parameters for start and end"
               }
             },
             {
@@ -122,7 +145,12 @@
               "paramName": "P_VModel2st",
               "queryName": "qp_VModel2",
               "useColumn": 0,
-              "displayColumn": 1
+              "displayColumn": 1,
+              "helpText": "Select from dropdown or type to filter",
+              "helpTexts": {
+                "de": "Aus Dropdown wählen oder tippen zum Filtern",
+                "en": "Select from dropdown or type to filter"
+              }
             },
             {
               "label": "V-Modell 3-stellig (FZ)",
@@ -138,7 +166,12 @@
               "paramName": "P_VModel3st",
               "queryName": "qp_VModel3",
               "useColumn": 0,
-              "displayColumn": 1
+              "displayColumn": 1,
+              "helpText": "Select from dropdown or type to filter",
+              "helpTexts": {
+                "de": "Aus Dropdown wählen oder tippen zum Filtern",
+                "en": "Select from dropdown or type to filter"
+              }
             },
             {
               "label": "V-Modell 4-stellig (FZ)",
@@ -152,7 +185,12 @@
                 "en": "Vehicle model 4-digit code - manual entry"
               },
               "paramName": "P_VModel4st",
-              "type": "text"
+              "type": "text",
+              "helpText": "Manual entry - no autocomplete (too many values)",
+              "helpTexts": {
+                "de": "Manuelle Eingabe - keine Autovervollständigung (zu viele Werte)",
+                "en": "Manual entry - no autocomplete (too many values)"
+              }
             },
             {
               "label": "V-Modell 5-stellig (FZ)",
@@ -166,7 +204,12 @@
                 "en": "Vehicle model 5-digit code - manual entry"
               },
               "paramName": "P_VModel5st",
-              "type": "text"
+              "type": "text",
+              "helpText": "Manual entry - no autocomplete (too many values)",
+              "helpTexts": {
+                "de": "Manuelle Eingabe - keine Autovervollständigung (zu viele Werte)",
+                "en": "Manual entry - no autocomplete (too many values)"
+              }
             },
             {
               "label": "V-Modell 6-stellig (FZ)",
@@ -180,7 +223,12 @@
                 "en": "Vehicle model 6-digit code - manual entry"
               },
               "paramName": "P_VModel6st",
-              "type": "text"
+              "type": "text",
+              "helpText": "Manual entry - no autocomplete (too many values)",
+              "helpTexts": {
+                "de": "Manuelle Eingabe - keine Autovervollständigung (zu viele Werte)",
+                "en": "Manual entry - no autocomplete (too many values)"
+              }
             }
           ]
         },
@@ -197,7 +245,12 @@
             "en": "Filter by model year"
           },
           "paramName": "P_ModelYear",
-          "queryName": "qp_ModelYear"
+          "queryName": "qp_ModelYear",
+          "helpText": "Select vehicle model year(s)",
+          "helpTexts": {
+            "de": "Fahrzeug-Modelljahr(e) auswählen",
+            "en": "Select vehicle model year(s)"
+          }
         },
         {
           "type": "button",
@@ -215,7 +268,12 @@
           "queryName": "qp_Marke",
           "useColumn": 0,
           "displayColumn": 1,
-          "required": true
+          "required": true,
+          "helpText": "Required: Select at least one vehicle brand",
+          "helpTexts": {
+            "de": "Erforderlich: Mindestens eine Fahrzeugmarke auswählen",
+            "en": "Required: Select at least one vehicle brand"
+          }
         },
         {
           "type": "button",
@@ -232,7 +290,12 @@
           "paramName": "P_ISO-LandAus3st",
           "queryName": "qp_ISO-Land3stAus",
           "useColumn": 0,
-          "displayColumn": 1
+          "displayColumn": 1,
+          "helpText": "Filter by ISO country code (e.g. DEU, USA, CHN)",
+          "helpTexts": {
+            "de": "Nach ISO-Ländercode filtern (z.B. DEU, USA, CHN)",
+            "en": "Filter by ISO country code (e.g. DEU, USA, CHN)"
+          }
         }
       ]
     },
@@ -261,41 +324,36 @@
           "paramName": "P_BeanstandungsStatus",
           "queryName": "qp_BeanstandungsStatus",
           "useColumn": 0,
-          "displayColumn": 1
+          "displayColumn": 1,
+          "helpText": "Filter complaints by their current status",
+          "helpTexts": {
+            "de": "Beanstandungen nach aktuellem Status filtern",
+            "en": "Filter complaints by their current status"
+          }
         },
         {
           "type": "button",
-          "label": "Erfasst am (DIB) VON",
+          "label": "Erfasst am (DIB) (Von/Bis)",
           "labels": {
-            "de": "Erfasst am (DIB) VON",
-            "en": "Recorded on (CST) FROM"
+            "de": "Erfasst am (DIB) (Von/Bis)",
+            "en": "Recorded on (CST) (From/To)"
           },
-          "tooltip": "Start date for complaint recording period",
+          "tooltip": "Date range for complaint recording period - uses BETWEEN",
           "tooltips": {
-            "de": "Startdatum für Beanstandungsaufzeichnungszeitraum",
-            "en": "Start date for complaint recording period"
+            "de": "Datumsbereich für Beanstandungsaufzeichnungszeitraum - verwendet BETWEEN",
+            "en": "Date range for complaint recording period - uses BETWEEN"
           },
-          "paramName": "P_Erf.DatFrom",
-          "type": "date",
+          "type": "dateFromTo",
+          "paramNames": {
+            "from": "P_Erf.DatFrom",
+            "to": "P_Erf.DatTo"
+          },
           "dateFormat": "yyyy-MM-dd",
-          "maxValues": 1
-        },
-        {
-          "type": "button",
-          "label": "Erfasst am (DIB) BIS",
-          "labels": {
-            "de": "Erfasst am (DIB) BIS",
-            "en": "Recorded on (CST) TO"
-          },
-          "tooltip": "End date for complaint recording period",
-          "tooltips": {
-            "de": "Enddatum für Beanstandungsaufzeichnungszeitraum",
-            "en": "End date for complaint recording period"
-          },
-          "paramName": "P_Erf.DatTo",
-          "type": "date",
-          "dateFormat": "yyyy-MM-dd",
-          "maxValues": 1
+          "helpText": "Select date range when complaints were recorded",
+          "helpTexts": {
+            "de": "Datumsbereich auswählen, wann Beanstandungen erfasst wurden",
+            "en": "Select date range when complaints were recorded"
+          }
         }
       ]
     }

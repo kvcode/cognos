@@ -411,3 +411,19 @@
 .date-input-single {
   margin-top: 8px;
 }
+
+/* === Required Card Styling === */
+.right-pane-card.required-card {
+  border-color: #b50116;
+  border-width: 2px;
+  background-color: #fff5f5;
+}
+
+.right-pane-card.required-card .right-pane-card-header {
+  color: #b50116;
+}
+
+/* Hide X button for required cards (handled in JS, but backup CSS) */
+.right-pane-card.required-card .card-remove-btn {
+  display: none;
+}

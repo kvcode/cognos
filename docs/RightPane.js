@@ -104,7 +104,16 @@ define([], function () {
   };
 
   RightPane.prototype.hasCard = function (paramName) {
-    const exists = this.cards.some((card) => card.config.paramName === paramName);
+    const exists = this.cards.some((card) => {
+      // Check single paramName
+      if (card.config.paramName === paramName) return true;
+      // Check paramNames.from and paramNames.to for dateFromTo type
+      if (card.config.paramNames) {
+        if (card.config.paramNames.from === paramName) return true;
+        if (card.config.paramNames.to === paramName) return true;
+      }
+      return false;
+    });
     console.log(`[RightPane] 🔍 hasCard(${paramName}):`, exists);
     return exists;
   };
@@ -140,6 +149,9 @@ define([], function () {
     }
   };
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // CREATE CARD OBJECT
+  // ═══════════════════════════════════════════════════════════════════════════
   RightPane.prototype._createCardObject = function (cardData) {
     console.log("[RightPane] 🏗 _createCardObject() called");
     console.log("[RightPane] 📦 Input cardData:", JSON.stringify(cardData, null, 2));
@@ -156,46 +168,143 @@ define([], function () {
       sourceButton: cardData.sourceButton || null,
       dateFromInput: null, // For date ranges
       dateToInput: null, // For date ranges
+      isRequired: cardData.isRequired || config.required || false,
 
       getParameters: function () {
         console.log("[RightPane] 📋 Card getParameters() called for:", this.config.label);
         console.log("[RightPane] 🔍 Bubbled values:", this.bubbledValues);
-        console.log("[RightPane] 🔍 paramName:", this.config.paramName);
         console.log("[RightPane] 🔍 Card type:", this.config.type);
+
+        // ═══════════════════════════════════════════════════════════════════
+        // TYPE: dateRange - Single parameter with range format for in_range()
+        // ═══════════════════════════════════════════════════════════════════
+        if (this.config.type === "dateRange") {
+          console.log("[RightPane] 📅 Processing dateRange type");
+          console.log("[RightPane] 🔍 paramName:", this.config.paramName);
+
+          if (!this.config.paramName) {
+            console.error("[RightPane] ❌ paramName missing for dateRange!");
+            return [];
+          }
+
+          const fromValue = this.dateFromInput ? this.dateFromInput.value : "";
+          const toValue = this.dateToInput ? this.dateToInput.value : "";
+
+          if (!fromValue || !toValue) {
+            console.log("[RightPane] ⚠️ Date range incomplete - returning empty");
+            // Return empty parameter to clear any existing values
+            return [
+              {
+                parameter: this.config.paramName,
+                values: [],
+              },
+            ];
+          }
+
+          // ✨ CORRECT FORMAT for in_range() - uses "range" property
+          const result = [
+            {
+              parameter: this.config.paramName,
+              range: {
+                start: { use: fromValue },
+                end: { use: toValue },
+              },
+            },
+          ];
+
+          console.log("[RightPane] 📅 DateRange returning RangeParameter:", JSON.stringify(result, null, 2));
+          return result;
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // TYPE: dateFromTo - Two separate parameters (FROM and TO)
+        // ═══════════════════════════════════════════════════════════════════
+        if (this.config.type === "dateFromTo") {
+          console.log("[RightPane] 📅 Processing dateFromTo type");
+          console.log("[RightPane] 🔍 paramNames:", this.config.paramNames);
+
+          if (!this.config.paramNames || !this.config.paramNames.from || !this.config.paramNames.to) {
+            console.error("[RightPane] ❌ paramNames.from and paramNames.to required for dateFromTo!");
+            return [];
+          }
+
+          const fromValue = this.dateFromInput ? this.dateFromInput.value : "";
+          const toValue = this.dateToInput ? this.dateToInput.value : "";
+
+          const result = [];
+
+          // FROM parameter
+          if (fromValue) {
+            result.push({
+              parameter: this.config.paramNames.from,
+              values: [{ use: fromValue, display: fromValue }],
+            });
+          } else {
+            // Return empty to clear
+            result.push({
+              parameter: this.config.paramNames.from,
+              values: [],
+            });
+          }
+
+          // TO parameter
+          if (toValue) {
+            result.push({
+              parameter: this.config.paramNames.to,
+              values: [{ use: toValue, display: toValue }],
+            });
+          } else {
+            // Return empty to clear
+            result.push({
+              parameter: this.config.paramNames.to,
+              values: [],
+            });
+          }
+
+          console.log("[RightPane] 📅 DateFromTo returning two parameters:", JSON.stringify(result, null, 2));
+          return result;
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // TYPE: date - Single date value
+        // ═══════════════════════════════════════════════════════════════════
+        if (this.config.type === "date") {
+          console.log("[RightPane] 📅 Processing date type");
+          console.log("[RightPane] 🔍 paramName:", this.config.paramName);
+
+          if (!this.config.paramName) {
+            console.error("[RightPane] ❌ paramName missing for date!");
+            return [];
+          }
+
+          const values = this.bubbledValues.map((val) => ({
+            use: val.use,
+            display: val.display,
+          }));
+
+          return [
+            {
+              parameter: this.config.paramName,
+              values: values,
+            },
+          ];
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // DEFAULT: Regular bubbles (multi-select or text)
+        // ═══════════════════════════════════════════════════════════════════
+        console.log("[RightPane] 🔍 Processing regular bubble type");
+        console.log("[RightPane] 🔍 paramName:", this.config.paramName);
 
         if (!this.config.paramName) {
           console.error("[RightPane] ❌ paramName missing in config!");
           return [];
         }
 
-        let values;
-
-        // Handle date range
-        if (this.config.type === "dateRange") {
-          const fromValue = this.dateFromInput ? this.dateFromInput.value : "";
-          const toValue = this.dateToInput ? this.dateToInput.value : "";
-
-          if (!fromValue || !toValue) {
-            console.log("[RightPane] ⚠️ Date range incomplete - returning empty");
-            values = [];
-          } else {
-            values = [
-              { use: fromValue, display: fromValue },
-              { use: toValue, display: toValue },
-            ];
-            console.log("[RightPane] 📅 Date range values:", values);
-          }
-        }
-        // Handle regular bubbles
-        else if (this.bubbledValues.length === 0) {
-          console.log("[RightPane] ⚠️ No bubbled values - returning empty array");
-          values = [];
-        } else {
-          values = this.bubbledValues.map((val) => ({
-            use: val.use,
-            display: val.display,
-          }));
-        }
+        const values = this.bubbledValues.map((val) => ({
+          use: val.use,
+          display: val.display,
+        }));
 
         const result = [
           {
@@ -213,8 +322,17 @@ define([], function () {
     return cardObject;
   };
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // REMOVE CARD
+  // ═══════════════════════════════════════════════════════════════════════════
   RightPane.prototype.removeCard = function (cardObject) {
     console.log(`[RightPane] 🗑 removeCard() called for:`, cardObject.config.label);
+
+    // Don't allow removing required cards
+    if (cardObject.isRequired) {
+      console.warn(`[RightPane] ⚠️ Cannot remove required card: ${cardObject.config.label}`);
+      return;
+    }
 
     console.log(`[RightPane] 🧹 Clearing bubbledValues before removal`);
     cardObject.bubbledValues = [];
@@ -248,6 +366,9 @@ define([], function () {
     }
   };
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // RENDER CARD
+  // ═══════════════════════════════════════════════════════════════════════════
   RightPane.prototype._renderCard = function (cardObject) {
     console.log("[RightPane] 🛠 _renderCard() called");
     console.log("[RightPane] 📦 Card config:", JSON.stringify(cardObject.config, null, 2));
@@ -259,6 +380,11 @@ define([], function () {
       const card = document.createElement("div");
       card.className = "right-pane-card";
 
+      // Add required class if applicable
+      if (cardObject.isRequired) {
+        card.classList.add("required-card");
+      }
+
       // Header container with X button
       const headerContainer = document.createElement("div");
       headerContainer.className = "card-header-container";
@@ -269,11 +395,15 @@ define([], function () {
       header.textContent = headerText;
       headerContainer.appendChild(header);
 
-      // X button
+      // X button (hidden for required cards)
       const removeCardBtn = document.createElement("button");
       removeCardBtn.className = "card-remove-btn";
       removeCardBtn.textContent = "×";
-      removeCardBtn.title = "Remove card";
+      removeCardBtn.title = cardObject.isRequired ? "Required - cannot remove" : "Remove card";
+
+      if (cardObject.isRequired) {
+        removeCardBtn.style.display = "none"; // Hide X button for required cards
+      }
 
       removeCardBtn.addEventListener("click", () => {
         console.log(`[RightPane] 🗑 Card remove button clicked for: ${config.label}`);
@@ -286,7 +416,13 @@ define([], function () {
       // Param info
       const paramInfo = document.createElement("div");
       paramInfo.className = "right-pane-card-param-info";
-      paramInfo.textContent = `Param: ${config.paramName || "MISSING!"}`;
+
+      // Handle paramNames for dateFromTo type
+      if (config.type === "dateFromTo" && config.paramNames) {
+        paramInfo.textContent = `Params: ${config.paramNames.from} / ${config.paramNames.to}`;
+      } else {
+        paramInfo.textContent = `Param: ${config.paramName || "MISSING!"}`;
+      }
       card.appendChild(paramInfo);
 
       // Help text (localized)
@@ -299,7 +435,7 @@ define([], function () {
       }
 
       // Required indicator
-      if (config.required) {
+      if (config.required || cardObject.isRequired) {
         const requiredDiv = document.createElement("div");
         requiredDiv.className = "right-pane-card-required";
         requiredDiv.textContent = "★ Required";
@@ -307,7 +443,8 @@ define([], function () {
       }
 
       // Render based on type
-      if (config.type === "dateRange") {
+      if (config.type === "dateRange" || config.type === "dateFromTo") {
+        // Both dateRange and dateFromTo use the same visual UI
         this._renderDateRangeInput(card, cardObject);
       } else if (config.type === "date") {
         this._renderDateInput(card, cardObject);
@@ -324,9 +461,11 @@ define([], function () {
   };
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // RENDER DATE RANGE INPUT
+  // RENDER DATE RANGE INPUT (used for both dateRange and dateFromTo)
   // ═══════════════════════════════════════════════════════════════════════════
   RightPane.prototype._renderDateRangeInput = function (card, cardObject) {
+    console.log("[RightPane] 📅 _renderDateRangeInput() for type:", cardObject.config.type);
+
     const container = document.createElement("div");
     container.className = "date-range-container";
 
@@ -689,6 +828,9 @@ define([], function () {
     console.log(`[RightPane] ✅ Bubble added to DOM`);
   };
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // REMOVE BUBBLE
+  // ═══════════════════════════════════════════════════════════════════════════
   RightPane.prototype._removeBubble = function (cardObject, displayValue, bubbleElement) {
     console.log(`[RightPane] 🗑 Removing bubble: "${displayValue}"`);
     console.log(`[RightPane] 🔍 Before removal, bubbledValues:`, cardObject.bubbledValues);
@@ -717,6 +859,9 @@ define([], function () {
     }
   };
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // GET PARAMETERS (Collects from all cards)
+  // ═══════════════════════════════════════════════════════════════════════════
   RightPane.prototype.getParameters = function () {
     console.log("[RightPane] 📋 getParameters() called");
     console.log("[RightPane] 📊 Total cards to check:", this.cards.length);
@@ -726,7 +871,7 @@ define([], function () {
 
       this.cards.forEach((cardObject, idx) => {
         console.log(`[RightPane] 🔍 Checking card ${idx}:`, cardObject.config.label);
-        console.log(`[RightPane] 🔍 Card ${idx} bubbledValues:`, cardObject.bubbledValues);
+        console.log(`[RightPane] 🔍 Card ${idx} type:`, cardObject.config.type);
 
         const cardParams = cardObject.getParameters();
 
@@ -748,6 +893,9 @@ define([], function () {
     }
   };
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // DESTROY
+  // ═══════════════════════════════════════════════════════════════════════════
   RightPane.prototype.destroy = function () {
     console.log("[RightPane] 🧨 destroy() called");
 
