@@ -17,10 +17,19 @@
   overflow-y: auto;
 }
 
+/* === Presets Section === */
+.left-pane-presets-section {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #00141f;
+}
+
+/* === Group Container === */
 .left-pane-group {
   margin-bottom: 20px;
 }
 
+/* === Group Header === */
 .left-pane-group-header {
   display: flex;
   align-items: center;
@@ -31,51 +40,43 @@
   background-color: #1b3e4a;
   color: white;
   border-radius: 3px;
+  cursor: pointer;
 }
 
 .left-pane-group-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  line-height: 0; /* Removes extra space around SVG */
+  line-height: 0;
 }
 
 .left-pane-group-icon svg {
-  display: block; /* Removes inline spacing issues */
+  display: block;
 }
 
+.group-arrow {
+  margin-left: auto;
+  font-weight: bold;
+  user-select: none;
+  line-height: 1;
+}
+
+/* === Buttons Container === */
 .left-pane-buttons-container {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  margin-top: 8px;
 }
 
-/* Tooltip wrapper - maintains full width */
+/* === Button Wrapper (for tooltips) === */
 .left-pane-buttons-container > div {
   width: 100%;
   box-sizing: border-box;
+  position: relative;
 }
 
-.left-pane-buttons-container > div > button {
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.left-pane-subgroup-buttons {
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.left-pane-subgroup-buttons > div {
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.left-pane-subgroup-buttons > div > button {
-  width: 100%;
-  box-sizing: border-box;
-}
-
+/* === Buttons === */
 .left-pane-button {
   display: block;
   width: 100%;
@@ -89,6 +90,7 @@
   -webkit-user-select: none;
   transition: all 0.2s ease;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
 }
 
 .left-pane-button:active {
@@ -105,7 +107,13 @@
   background-color: #f0f2f4;
 }
 
-/* === Left Pane Button - Disabled State === */
+/* === Preset Buttons === */
+.left-pane-preset-button {
+  background-color: #8cbee6;
+  font-weight: 600;
+}
+
+/* === Disabled State === */
 .left-pane-button.disabled {
   opacity: 0.3;
   cursor: not-allowed;
@@ -119,11 +127,40 @@
   cursor: not-allowed;
 }
 
-.group-arrow {
-  margin-left: auto; /* Pushes to the right */
-  font-weight: bold;
-  user-select: none;
-  line-height: 1;
+/* === Subgroup Header === */
+.left-pane-subgroup-header {
+  cursor: pointer;
+  padding: 6px 12px;
+  margin-top: 8px;
+  margin-bottom: 4px;
+  background-color: #d0d4d8;
+  border-radius: 3px;
+  font-weight: 600;
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* === Subgroup Buttons Container === */
+.left-pane-subgroup-buttons {
+  margin-left: 12px;
+  padding-right: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.left-pane-subgroup-buttons > div {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.left-pane-subgroup-buttons > div > button {
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* === Right Pane === */
@@ -239,10 +276,9 @@
   font-weight: 500;
   max-width: 200px;
   white-space: nowrap;
-  line-height: 1.4; /* ✨ Add this for better vertical alignment */
+  line-height: 1.4;
 }
 
-/* ✨ NEW: Make the text inside bubble truncate */
 .bubble span:first-child {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -250,7 +286,7 @@
   flex: 1;
   min-width: 0;
   padding-top: 1px;
-  line-height: 1.4; /* ✨ Match parent line-height */
+  line-height: 1.4;
 }
 
 /* === Bubble Remove Button === */
@@ -258,7 +294,7 @@
   border: none;
   background: transparent;
   color: #000;
-  font-size: 16px; /* ✨ Reduced from 18px */
+  font-size: 16px;
   font-weight: bold;
   line-height: 1;
   cursor: pointer;
@@ -266,8 +302,8 @@
   margin: 0;
   width: 16px;
   height: 16px;
-  flex-shrink: 0; /* ✨ Prevent button from being squeezed */
-  display: flex; /* ✨ Center the X properly */
+  flex-shrink: 0;
+  display: flex;
   align-items: center;
   justify-content: center;
 }
@@ -283,7 +319,7 @@
   flex: 1;
   min-width: 120px;
   padding: 6px;
-  font-size: 16px; /* ✅ Standard input size - fixes datalist suggestions */
+  font-size: 16px;
   line-height: 1.5;
 }
 

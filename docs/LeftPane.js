@@ -116,9 +116,6 @@ define([], function () {
 
     const presetsContainer = document.createElement("div");
     presetsContainer.className = "left-pane-presets-section";
-    presetsContainer.style.marginBottom = "20px";
-    presetsContainer.style.paddingBottom = "15px";
-    presetsContainer.style.borderBottom = "2px solid #00141f";
 
     if (this.groupStates["__PRESETS__"] === undefined) {
       this.groupStates["__PRESETS__"] = true;
@@ -126,7 +123,6 @@ define([], function () {
 
     const header = document.createElement("div");
     header.className = "left-pane-group-header";
-    header.style.cursor = "pointer";
     header.title = "Quick-load common parameter combinations";
 
     const labelSpan = document.createElement("span");
@@ -139,6 +135,9 @@ define([], function () {
     arrowSpan.textContent = isExpanded ? "▲" : "▼";
     header.appendChild(arrowSpan);
 
+    const buttonsContainer = document.createElement("div");
+    buttonsContainer.className = "left-pane-buttons-container";
+
     header.addEventListener("click", () => {
       this.groupStates["__PRESETS__"] = !this.groupStates["__PRESETS__"];
       const newState = this.groupStates["__PRESETS__"];
@@ -148,11 +147,9 @@ define([], function () {
 
     presetsContainer.appendChild(header);
 
-    const buttonsContainer = document.createElement("div");
-    buttonsContainer.className = "left-pane-buttons-container";
-    buttonsContainer.style.marginTop = "8px";
-
     this.presets.forEach((preset) => {
+      const wrapper = document.createElement("div");
+
       const button = document.createElement("button");
       button.className = "left-pane-button left-pane-preset-button";
 
@@ -160,17 +157,11 @@ define([], function () {
       button.textContent = label;
 
       const tooltip = preset.description || this.getLocalizedText(preset, "description");
-
-      const wrapper = document.createElement("div");
-      wrapper.style.position = "relative";
       if (tooltip) {
         wrapper.title = tooltip;
       }
 
       button._presetConfig = preset;
-
-      button.style.backgroundColor = "#8cbee6";
-      button.style.fontWeight = "600";
 
       wrapper.appendChild(button);
       buttonsContainer.appendChild(wrapper);
@@ -193,7 +184,6 @@ define([], function () {
     // Header
     const header = document.createElement("div");
     header.className = "left-pane-group-header";
-    header.style.cursor = "pointer";
 
     const groupTooltip = this.getLocalizedText(group, "tooltip") || this.getLocalizedText(group, "description");
     if (groupTooltip) {
@@ -217,6 +207,9 @@ define([], function () {
     arrowSpan.textContent = isExpanded ? "▲" : "▼";
     header.appendChild(arrowSpan);
 
+    const buttonsContainer = document.createElement("div");
+    buttonsContainer.className = "left-pane-buttons-container";
+
     header.addEventListener("click", () => {
       this.groupStates[label] = !this.groupStates[label];
       const newState = this.groupStates[label];
@@ -226,11 +219,7 @@ define([], function () {
 
     groupContainer.appendChild(header);
 
-    // Items container
-    const buttonsContainer = document.createElement("div");
-    buttonsContainer.className = "left-pane-buttons-container";
-
-    // ✨ NEW: Render items in order from JSON
+    // Render items in order from JSON
     if (group.items && Array.isArray(group.items)) {
       group.items.forEach((item, itemIdx) => {
         if (item.type === "subgroup") {
@@ -256,14 +245,13 @@ define([], function () {
   LeftPane.prototype.renderButton = function (btn, bIdx, container) {
     const label = this.getLocalizedText(btn, "label") || `Button ${bIdx}`;
 
+    const wrapper = document.createElement("div");
+
     const button = document.createElement("button");
     button.className = "left-pane-button";
     button.textContent = label;
 
     const tooltip = this.getLocalizedText(btn, "tooltip");
-
-    const wrapper = document.createElement("div");
-    wrapper.style.position = "relative";
     if (tooltip) {
       wrapper.title = tooltip;
     }
@@ -284,16 +272,6 @@ define([], function () {
     // Subgroup header
     const subHeader = document.createElement("div");
     subHeader.className = "left-pane-subgroup-header";
-    subHeader.style.cursor = "pointer";
-    subHeader.style.padding = "6px 12px";
-    subHeader.style.marginTop = "8px";
-    subHeader.style.marginBottom = "4px";
-    subHeader.style.backgroundColor = "#d0d4d8";
-    subHeader.style.borderRadius = "3px";
-    subHeader.style.fontWeight = "600";
-    subHeader.style.fontSize = "13px";
-    subHeader.style.display = "flex";
-    subHeader.style.justifyContent = "space-between";
 
     const subTooltip = this.getLocalizedText(subgroup, "tooltip") || this.getLocalizedText(subgroup, "description");
     if (subTooltip) {
@@ -314,12 +292,6 @@ define([], function () {
     // Subgroup buttons
     const subButtonsContainer = document.createElement("div");
     subButtonsContainer.className = "left-pane-subgroup-buttons";
-    subButtonsContainer.style.marginLeft = "12px";
-    subButtonsContainer.style.paddingRight = "12px";
-    subButtonsContainer.style.display = "flex";
-    subButtonsContainer.style.flexDirection = "column";
-    subButtonsContainer.style.gap = "5px";
-    subButtonsContainer.style.boxSizing = "border-box";
 
     if (subgroup.buttons && Array.isArray(subgroup.buttons)) {
       subgroup.buttons.forEach((btn, bIdx) => {
