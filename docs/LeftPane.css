@@ -107,12 +107,6 @@
   background-color: #f0f2f4;
 }
 
-/* === Preset Buttons === */
-.left-pane-preset-button {
-  background-color: #8cbee6;
-  font-weight: 600;
-}
-
 /* === Disabled State === */
 .left-pane-button.disabled {
   opacity: 0.3;
@@ -412,18 +406,14 @@
   margin-top: 8px;
 }
 
-/* === Required Card Styling === */
-.right-pane-card.required-card {
-  border-color: #b50116;
-  border-width: 2px;
-  background-color: #fff5f5;
+/* === Required Indicator === */
+.right-pane-card-required {
+  font-size: 11px;
+  color: #b50116;
+  font-weight: 600;
+  margin-bottom: 8px;
 }
 
-.right-pane-card.required-card .right-pane-card-header {
-  color: #8b0000;
-}
-
-/* Hide X button for required cards (handled in JS, but backup CSS) */
-.right-pane-card.required-card .card-remove-btn {
-  display: none;
+.right-pane-card-required.filled {
+  color: #28a745; /* Green */
 }

@@ -448,6 +448,9 @@ define([], function () {
         requiredDiv.className = "right-pane-card-required";
         requiredDiv.textContent = "★ Required";
         card.appendChild(requiredDiv);
+
+        // Store reference for updating
+        cardObject.requiredIndicator = requiredDiv;
       }
 
       // Render based on promptType
@@ -518,6 +521,7 @@ define([], function () {
           console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
         }
       }
+      this._updateRequiredIndicator(cardObject);
     };
 
     fromInput.addEventListener("change", notifyChange);
@@ -554,6 +558,7 @@ define([], function () {
             console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
           }
         }
+        this._updateRequiredIndicator(cardObject);
       }
     });
   };
@@ -833,6 +838,8 @@ define([], function () {
     bubble.appendChild(removeBtn);
     cardObject.bubblesContainer.appendChild(bubble);
     console.log(`[RightPane] ✅ Bubble added to DOM`);
+
+    this._updateRequiredIndicator(cardObject);
   };
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -863,6 +870,39 @@ define([], function () {
       } catch (err) {
         console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
       }
+    }
+    this._updateRequiredIndicator(cardObject);
+  };
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // UPDATE REQUIRED INDICATOR
+  // ═══════════════════════════════════════════════════════════════════════════
+  RightPane.prototype._updateRequiredIndicator = function (cardObject) {
+    if (!cardObject.requiredIndicator) return;
+
+    const config = cardObject.config;
+    let hasFilled = false;
+
+    // Check if card has values based on type
+    if (config.promptType === "dateRange" || config.promptType === "dateFromTo") {
+      hasFilled =
+        cardObject.dateFromInput &&
+        cardObject.dateFromInput.value &&
+        cardObject.dateToInput &&
+        cardObject.dateToInput.value;
+    } else if (config.promptType === "date") {
+      hasFilled = cardObject.inputElement && cardObject.inputElement.value;
+    } else {
+      hasFilled = cardObject.bubbledValues && cardObject.bubbledValues.length > 0;
+    }
+
+    // Update indicator
+    if (hasFilled) {
+      cardObject.requiredIndicator.textContent = "✓ Required";
+      cardObject.requiredIndicator.classList.add("filled");
+    } else {
+      cardObject.requiredIndicator.textContent = "★ Required";
+      cardObject.requiredIndicator.classList.remove("filled");
     }
   };
 

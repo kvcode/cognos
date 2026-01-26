@@ -192,9 +192,8 @@ define([], function () {
       console.error("[DragNDrop] ❌ setupDragHandlers error:", err);
     }
   };
-
   // ═══════════════════════════════════════════════════════════════════════════
-  // SETUP PRESET HANDLERS
+  // SETUP PRESET HANDLERS (Drag & Double-Click like regular buttons)
   // ═══════════════════════════════════════════════════════════════════════════
   DragNDrop.prototype.setupPresetHandlers = function () {
     console.log("[DragNDrop] ⚡ Setting up preset handlers");
@@ -208,10 +207,11 @@ define([], function () {
       const presetButtons = this.leftPane.domNode.querySelectorAll(".left-pane-preset-button");
       console.log("[DragNDrop] 📍 Found", presetButtons.length, "preset buttons");
 
-      presetButtons.forEach((button) => {
-        button.addEventListener("click", (e) => {
+      presetButtons.forEach((button, idx) => {
+        // Double-click handler
+        button.addEventListener("dblclick", (e) => {
           e.preventDefault();
-          console.log(`[DragNDrop] ⚡ Preset button clicked: ${button.textContent.trim()}`);
+          console.log(`[DragNDrop] 🖱️🖱️ Double-click on preset: ${button.textContent.trim()}`);
 
           if (!button._presetConfig) {
             console.warn("[DragNDrop] ⚠️ No _presetConfig found on button");
@@ -219,6 +219,35 @@ define([], function () {
           }
 
           this.applyPreset(button._presetConfig);
+        });
+
+        // Mouse down - start drag
+        button.addEventListener("mousedown", (e) => {
+          e.preventDefault();
+          console.log(`[DragNDrop] 🖱 Mouse down on preset: ${button.textContent.trim()}`);
+
+          if (button._presetConfig) {
+            this.dragData = {
+              optionName: button.textContent.trim(),
+              sourceIndex: idx,
+              timestamp: Date.now(),
+              isPreset: true,
+              presetConfig: button._presetConfig,
+              sourceButton: button,
+            };
+            console.log("[DragNDrop] 💾 Preset dragData created");
+          }
+
+          // Create floating element
+          this.createFloatingElement(button.textContent.trim(), e.clientX, e.clientY);
+
+          // Visual feedback
+          button.style.opacity = "0.5";
+
+          // Start tracking
+          this.startDrag();
+
+          console.log("[DragNDrop] 🚀 Preset drag started");
         });
       });
 
@@ -423,6 +452,12 @@ define([], function () {
       console.log("[DragNDrop] ✅ Dropped over target!");
 
       if (this.rightPane && typeof this.rightPane.addCard === "function") {
+        if (this.dragData.isPreset) {
+          console.log("[DragNDrop] ⚡ Applying preset from drag-and-drop");
+          this.applyPreset(this.dragData.presetConfig);
+          this.cleanup();
+          return;
+        }
         if (this.dragData.fullConfig) {
           const paramName = this.dragData.fullConfig.paramName;
           const paramNames = this.dragData.fullConfig.paramNames;
