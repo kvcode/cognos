@@ -217,14 +217,22 @@ define([], function () {
             ];
           }
 
-          // RangeParameter format for in_range()
+          // RangeParameter format for in_range() matching documentation
           const result = [
             {
               parameter: this.config.paramName,
-              range: {
-                start: { use: fromValue },
-                end: { use: toValue },
-              },
+              values: [
+                {
+                  start: {
+                    use: fromValue,
+                    display: fromValue,
+                  },
+                  end: {
+                    use: toValue,
+                    display: toValue,
+                  },
+                },
+              ],
             },
           ];
 
