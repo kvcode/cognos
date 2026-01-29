@@ -525,6 +525,12 @@ define([], function () {
         try {
           this.m_oControlHost.valueChanged();
           console.log(`[RightPane] ✅ Date range changed - Cognos notified`);
+
+          // Check validation for required cards
+          if (cardObject.isRequired || cardObject.config.required) {
+            this.m_oControlHost.validStateChanged();
+            console.log(`[RightPane] ✅ Cognos notified of valid state change (required card)`);
+          }
         } catch (err) {
           console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
         }
@@ -562,6 +568,12 @@ define([], function () {
           try {
             this.m_oControlHost.valueChanged();
             console.log(`[RightPane] ✅ Date selected - Cognos notified`);
+
+            // Check validation for required cards
+            if (cardObject.isRequired || cardObject.config.required) {
+              this.m_oControlHost.validStateChanged();
+              console.log(`[RightPane] ✅ Cognos notified of valid state change (required card)`);
+            }
           } catch (err) {
             console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
           }
@@ -705,6 +717,12 @@ define([], function () {
         try {
           this.m_oControlHost.valueChanged();
           console.log(`[RightPane] ✅ Paste complete - Cognos notified`);
+
+          // ✨ NEW: Check validation for required cards
+          if (cardObject.isRequired || cardObject.config.required) {
+            this.m_oControlHost.validStateChanged();
+            console.log(`[RightPane] ✅ Cognos notified of valid state change (required card)`);
+          }
         } catch (err) {
           console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
         }
@@ -750,6 +768,12 @@ define([], function () {
             try {
               this.m_oControlHost.valueChanged();
               console.log(`[RightPane] ✅ Cognos notified of value change`);
+
+              // ✨ NEW: Check validation for required cards
+              if (cardObject.isRequired || cardObject.config.required) {
+                this.m_oControlHost.validStateChanged();
+                console.log(`[RightPane] ✅ Cognos notified of valid state change (required card)`);
+              }
             } catch (err) {
               console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
             }
@@ -788,6 +812,12 @@ define([], function () {
           try {
             this.m_oControlHost.valueChanged();
             console.log(`[RightPane] ✅ Cognos notified of value change`);
+
+            // ✨ NEW: Check validation for required cards
+            if (cardObject.isRequired || cardObject.config.required) {
+              this.m_oControlHost.validStateChanged();
+              console.log(`[RightPane] ✅ Cognos notified of valid state change (required card)`);
+            }
           } catch (err) {
             console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
           }
@@ -875,6 +905,12 @@ define([], function () {
       try {
         this.m_oControlHost.valueChanged();
         console.log(`[RightPane] ✅ Cognos notified of value removal`);
+
+        // Check validation for required cards
+        if (cardObject.isRequired || cardObject.config.required) {
+          this.m_oControlHost.validStateChanged();
+          console.log(`[RightPane] ✅ Cognos notified of valid state change (required card)`);
+        }
       } catch (err) {
         console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
       }
@@ -912,6 +948,48 @@ define([], function () {
       cardObject.requiredIndicator.textContent = "★ Required";
       cardObject.requiredIndicator.classList.remove("filled");
     }
+  };
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // CHECK IF ALL REQUIRED CARDS ARE FILLED
+  // ═══════════════════════════════════════════════════════════════════════════
+  RightPane.prototype.areRequiredCardsFilled = function () {
+    console.log("[RightPane] 🔍 Checking if all required cards are filled");
+
+    const requiredCards = this.cards.filter((card) => card.isRequired || card.config.required);
+    console.log(`[RightPane] 📋 Found ${requiredCards.length} required cards`);
+
+    if (requiredCards.length === 0) {
+      console.log("[RightPane] ✅ No required cards - validation passes");
+      return true;
+    }
+
+    for (const card of requiredCards) {
+      const config = card.config;
+      const promptType = config.promptType || "";
+      let isFilled = false;
+
+      if (promptType === "dateRange" || promptType === "dateFromTo") {
+        isFilled = card.dateFromInput && card.dateFromInput.value && card.dateToInput && card.dateToInput.value;
+        console.log(`[RightPane] 📅 Date card "${config.label}": filled=${isFilled}`);
+      } else if (promptType === "date") {
+        isFilled = card.inputElement && card.inputElement.value;
+        console.log(`[RightPane] 📅 Single date card "${config.label}": filled=${isFilled}`);
+      } else {
+        isFilled = card.bubbledValues && card.bubbledValues.length > 0;
+        console.log(
+          `[RightPane] 🫧 Bubble card "${config.label}": filled=${isFilled} (${card.bubbledValues.length} values)`,
+        );
+      }
+
+      if (!isFilled) {
+        console.log(`[RightPane] ❌ Required card "${config.label}" is NOT filled`);
+        return false;
+      }
+    }
+
+    console.log("[RightPane] ✅ All required cards are filled");
+    return true;
   };
 
   // ═══════════════════════════════════════════════════════════════════════════

@@ -138,7 +138,7 @@ define([], function () {
       console.log("[CustomPromptPage] 🔍 this.m_oDataStores exists:", !!this.m_oDataStores);
       console.log(
         "[CustomPromptPage] 🔍 DataStores count:",
-        this.m_oDataStores ? Object.keys(this.m_oDataStores).length : 0
+        this.m_oDataStores ? Object.keys(this.m_oDataStores).length : 0,
       );
     }
 
@@ -204,7 +204,7 @@ define([], function () {
       console.log("[CustomPromptPage] 🔍   this.rightPane exists:", !!this.rightPane);
       console.log(
         "[CustomPromptPage] 🔍   this.rightPane.getParameters exists:",
-        !!(this.rightPane && typeof this.rightPane.getParameters === "function")
+        !!(this.rightPane && typeof this.rightPane.getParameters === "function"),
       );
     } catch (err) {
       console.error("[CustomPromptPage] ❌ Error during draw():", err);
@@ -238,7 +238,7 @@ define([], function () {
     console.log("[CustomPromptPage] 🔍 this.rightPane exists:", !!this.rightPane);
     console.log(
       "[CustomPromptPage] 🔍 this.rightPane.getParameters exists:",
-      !!(this.rightPane && typeof this.rightPane.getParameters === "function")
+      !!(this.rightPane && typeof this.rightPane.getParameters === "function"),
     );
 
     try {
@@ -288,7 +288,7 @@ define([], function () {
         console.log("[CustomPromptPage] 🔍 this.rightPane:", this.rightPane);
         console.log(
           "[CustomPromptPage] 🔍 Available methods on this.rightPane:",
-          this.rightPane ? Object.keys(this.rightPane) : "N/A"
+          this.rightPane ? Object.keys(this.rightPane) : "N/A",
         );
       }
     } catch (err) {
@@ -307,14 +307,18 @@ define([], function () {
   // IS IN VALID STATE
   // ═══════════════════════════════════════════════════════════════════════════
   CustomPromptPage.prototype.isInValidState = function (oControlHost) {
-    // console.log("[CustomPromptPage] 🔍 isInValidState() called");
-    // console.log("[CustomPromptPage] 🔍 oControlHost:", oControlHost);
+    console.log("[CustomPromptPage] 🔍 isInValidState() called");
 
-    // You can add validation logic here
-    // For now, always return true (control is valid)
-    return true;
+    if (!this.rightPane || typeof this.rightPane.areRequiredCardsFilled !== "function") {
+      console.warn("[CustomPromptPage] ⚠️ RightPane not ready or missing validation method");
+      return true;
+    }
+
+    const isValid = this.rightPane.areRequiredCardsFilled();
+    console.log(`[CustomPromptPage] ${isValid ? "✅" : "❌"} Valid state: ${isValid}`);
+
+    return isValid;
   };
-
   // ═══════════════════════════════════════════════════════════════════════════
   // SET DATA START
   // ═══════════════════════════════════════════════════════════════════════════
