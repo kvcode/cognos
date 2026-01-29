@@ -27,7 +27,7 @@
         "displayName": "Button Groups Config",
         "type": "json",
         "defaultValue": "[]",
-        "description": "JSON array defining grouped buttons (labels, icons, queries, etc.) for the left pane"
+        "description": "JSON array defining grouped buttons with support for subgroups, labels, icons, tooltips, and multilingual text"
       }
     ]
   }
