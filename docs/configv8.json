@@ -1,5 +1,12 @@
 {
     "BaseScriptPath": "/cognos4/samples/javascript/CustomPromptPage/",
+    "BaseScriptPaths": {
+        "CustomPromptPage": "https://kvcode.github.io/cognos/CustomPromptPage.js?v=1234567",
+        "LeftPaneCSS": "https://kvcode.github.io/cognos/LeftPane.css?v=12557",
+        "LeftPane": "https://kvcode.github.io/cognos/LeftPane.js?v=122356",
+        "RightPane": "https://kvcode.github.io/cognos/RightPane.js?v=1253457",
+        "DragDrop": "https://kvcode.github.io/cognos/DragNDrop.js?v=123456"
+    },
     "selectFirstGroupExpanded": true,
     "buttonGroups": [
         {
