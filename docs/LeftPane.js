@@ -55,18 +55,19 @@ define([], function () {
 
       const controlConfig = oControlHost.configuration || {};
 
+      // ✨ Store FULL config (not just presets/buttonGroups)
+      this.config = controlConfig;
       this.presets = controlConfig.presets || [];
-      this.config = controlConfig.buttonGroups || [];
+      this.buttonGroups = controlConfig.buttonGroups || [];
 
       console.log("[LeftPane] ✅ Presets loaded:", this.presets.length);
-      console.log("[LeftPane] ✅ Button groups loaded:", this.config.length);
+      console.log("[LeftPane] ✅ Button groups loaded:", this.buttonGroups.length);
 
       // Initialize group states
-      this.config.forEach((group, idx) => {
+      this.buttonGroups.forEach((group, idx) => {
         const label = group.groupLabel || `Group ${idx}`;
         this.groupStates[label] = group.defaultExpanded !== false;
 
-        // Initialize subgroup states from groupItems array
         if (group.groupItems && Array.isArray(group.groupItems)) {
           group.groupItems.forEach((item, itemIdx) => {
             if (this.isSubgroup(item)) {
@@ -102,12 +103,12 @@ define([], function () {
       }
 
       // Render button groups
-      if (!this.config || this.config.length === 0) {
+      if (!this.buttonGroups || this.buttonGroups.length === 0) {
         const msg = document.createElement("p");
         msg.textContent = "No button groups configured.";
         this.domNode.appendChild(msg);
       } else {
-        this.config.forEach((group, idx) => {
+        this.buttonGroups.forEach((group, idx) => {
           this.renderButtonGroup(group, idx);
         });
       }
@@ -134,7 +135,11 @@ define([], function () {
     header.title = "Quick-load common parameter combinations";
 
     const labelSpan = document.createElement("span");
-    labelSpan.textContent = "⚡ Presets";
+
+    // ✨ NEW: Use configurable label instead of hardcoded "⚡ Presets"
+    const presetLabel = this.getLocalizedText(this.config, "presetsLabel") || "Presets";
+    labelSpan.textContent = `⚡ ${presetLabel}`;
+
     header.appendChild(labelSpan);
 
     const arrowSpan = document.createElement("span");
@@ -325,18 +330,16 @@ define([], function () {
   LeftPane.prototype.getAllButtonConfigs = function () {
     const allButtons = [];
 
-    if (!this.config) return allButtons;
+    if (!this.buttonGroups) return allButtons;
 
-    this.config.forEach((group) => {
+    this.buttonGroups.forEach((group) => {
       if (group.groupItems && Array.isArray(group.groupItems)) {
         group.groupItems.forEach((item) => {
           if (this.isSubgroup(item)) {
-            // It's a subgroup - get buttons from it
             if (item.buttons && Array.isArray(item.buttons)) {
               allButtons.push(...item.buttons);
             }
           } else {
-            // It's a direct button
             allButtons.push(item);
           }
         });
@@ -365,7 +368,7 @@ define([], function () {
 
     // Check paramNames (for dateFromTo type)
     found = allButtons.find(
-      (btn) => btn.paramNames && (btn.paramNames.from === paramName || btn.paramNames.to === paramName)
+      (btn) => btn.paramNames && (btn.paramNames.from === paramName || btn.paramNames.to === paramName),
     );
 
     return found || null;
