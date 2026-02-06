@@ -592,8 +592,7 @@ define([], function () {
     const input = document.createElement("input");
     input.className = "right-pane-card-input ss-search-input";
     input.type = "text";
-    input.placeholder =
-      this.locale === "de" ? "Tippen und ENTER drücken zum Suchen..." : "Type and press ENTER to search...";
+    input.placeholder = this.locale === "de" ? "Tippen und ENTER drücken zum Suchen..." : "Type and press ENTER to search...";
 
     inputWrapper.appendChild(input);
 
@@ -669,20 +668,19 @@ define([], function () {
 
     const elements = {
       block: block,
-      searchInput: block.querySelector(".clsSelectWithSearchSearchText") || block.querySelector('[id$="_searchText"]'),
-      searchButton:
-        block.querySelector(".clsSelectWithSearchSearchButton") || block.querySelector('[id$="_searchButton"]'),
-      resultsList: block.querySelector(".clsListViewCheckboxView"),
-      selectAllCheckbox: block.querySelector(".clsSelectWithSearchSelectAll"),
-      addButton: block.querySelector(".clsPromptInsertButton"),
-      selectedList: block.querySelector(".clsListViewReportView"),
+      searchInput: block.querySelector('.clsSelectWithSearchSearchText') || block.querySelector('[id$="_searchText"]'),
+      searchButton: block.querySelector('.clsSelectWithSearchSearchButton') || block.querySelector('[id$="_searchButton"]'),
+      resultsList: block.querySelector('.clsListViewCheckboxView'),
+      selectAllCheckbox: block.querySelector('.clsSelectWithSearchSelectAll'),
+      addButton: block.querySelector('.clsPromptInsertButton'),
+      selectedList: block.querySelector('.clsListViewReportView')
     };
 
     console.log(`[RightPane] ✅ Found SS prompt elements:`, {
       block: !!elements.block,
       searchInput: !!elements.searchInput,
       searchButton: !!elements.searchButton,
-      resultsList: !!elements.resultsList,
+      resultsList: !!elements.resultsList
     });
 
     return elements;
@@ -703,7 +701,7 @@ define([], function () {
       const parsed = this._parseSSResultValue(searchTerm, config);
       this._createBubble(cardObject, parsed.display, parsed.use);
       cardObject.inputElement.value = "";
-
+      
       if (this.m_oControlHost) {
         this.m_oControlHost.valueChanged();
       }
@@ -723,7 +721,7 @@ define([], function () {
     const observer = new MutationObserver((mutations) => {
       const resultsList = elements.resultsList;
       if (resultsList) {
-        const rows = resultsList.querySelectorAll("tr");
+        const rows = resultsList.querySelectorAll('tr');
         if (rows.length > 0) {
           console.log(`[RightPane] 📋 Found ${rows.length} search results`);
           observer.disconnect();
@@ -740,7 +738,7 @@ define([], function () {
     setTimeout(() => {
       observer.disconnect();
       if (elements.resultsList) {
-        const rows = elements.resultsList.querySelectorAll("tr");
+        const rows = elements.resultsList.querySelectorAll('tr');
         if (rows.length > 0) {
           console.log(`[RightPane] ⏰ Timeout: Found ${rows.length} results`);
           self._extractAndDisplayResults(cardObject, elements);
@@ -758,11 +756,11 @@ define([], function () {
     const config = cardObject.config;
     const results = [];
 
-    const rows = elements.resultsList.querySelectorAll("tr");
+    const rows = elements.resultsList.querySelectorAll('tr');
     console.log(`[RightPane] 📋 Extracting ${rows.length} results`);
 
     rows.forEach((row, idx) => {
-      const label = row.querySelector(".clsListItemLabel") || row.querySelector("td");
+      const label = row.querySelector('.clsListItemLabel') || row.querySelector('td');
       if (label) {
         const resultText = label.textContent.trim();
         const parsed = this._parseSSResultValue(resultText, config);

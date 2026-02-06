@@ -178,6 +178,7 @@
   flex: 1 1 calc(50% - 10px);
   min-width: 380px;
   max-width: 720px;
+  position: relative; /* For suggestion box positioning */
 }
 
 .right-pane-cards {
@@ -361,6 +362,10 @@
   margin-bottom: 8px;
 }
 
+.right-pane-card-required.filled {
+  color: #28a745;
+}
+
 /* === Date Range Container === */
 .date-range-container {
   display: flex;
@@ -406,14 +411,185 @@
   margin-top: 8px;
 }
 
-/* === Required Indicator === */
-.right-pane-card-required {
-  font-size: 11px;
-  color: #b50116;
-  font-weight: 600;
-  margin-bottom: 8px;
+/* ═══════════════════════════════════════════════════════════════════════════
+   ✨ SEARCH & SELECT STYLES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* === Search Select Input Wrapper === */
+.ss-input-wrapper {
+  border-color: #6c5ce7;
 }
 
-.right-pane-card-required.filled {
-  color: #28a745; /* Green */
+.ss-search-input::placeholder {
+  color: #888;
+  font-style: italic;
+}
+
+/* === Suggestion Box Container === */
+.ss-suggestion-box {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  left: 10px;
+  right: 10px;
+  margin-top: 4px;
+  background: white;
+  border: 2px solid #6c5ce7;
+  border-radius: 6px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  max-height: 350px;
+  overflow: hidden;
+}
+
+/* === Suggestion Box Header === */
+.ss-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e1e5eb;
+}
+
+.ss-result-count {
+  font-size: 13px;
+  color: #666;
+  font-weight: 500;
+}
+
+.ss-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.ss-select-all,
+.ss-deselect-all {
+  padding: 4px 10px;
+  font-size: 12px;
+  border: 1px solid #6c5ce7;
+  border-radius: 3px;
+  cursor: pointer;
+  background: white;
+  color: #6c5ce7;
+  transition: all 0.2s ease;
+}
+
+.ss-select-all:hover,
+.ss-deselect-all:hover {
+  background: #6c5ce7;
+  color: white;
+}
+
+/* === Results List === */
+.ss-results-list {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 220px;
+  padding: 8px 0;
+}
+
+/* === Individual Result Item === */
+.ss-result-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.ss-result-item:last-child {
+  border-bottom: none;
+}
+
+.ss-result-item:hover {
+  background-color: #f0f8ff;
+}
+
+.ss-result-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #6c5ce7;
+  flex-shrink: 0;
+}
+
+.ss-result-text {
+  flex: 1;
+  font-size: 14px;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* === Selected Item Highlight === */
+.ss-result-item:has(input:checked) {
+  background-color: #e8e4ff;
+}
+
+.ss-result-item:has(input:checked) .ss-result-text {
+  font-weight: 500;
+  color: #6c5ce7;
+}
+
+/* === Suggestion Box Footer === */
+.ss-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  background: #f8f9fa;
+  border-top: 1px solid #e1e5eb;
+  gap: 10px;
+}
+
+.ss-selected-count {
+  font-size: 13px;
+  color: #666;
+  font-weight: 500;
+}
+
+.ss-confirm,
+.ss-cancel {
+  padding: 6px 14px;
+  font-size: 13px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ss-confirm {
+  background: #6c5ce7;
+  color: white;
+  border: 1px solid #6c5ce7;
+  font-weight: 600;
+}
+
+.ss-confirm:hover {
+  background: #5649c0;
+  border-color: #5649c0;
+}
+
+.ss-cancel {
+  background: white;
+  color: #666;
+  border: 1px solid #ccc;
+}
+
+.ss-cancel:hover {
+  background: #f5f5f5;
+  border-color: #999;
+}
+
+/* === Search Select Card Indicator === */
+.right-pane-card:has(.ss-input-wrapper) {
+  border-color: #6c5ce7;
+}
+
+.right-pane-card:has(.ss-input-wrapper) .right-pane-card-header::after {
+  content: " 🔍";
 }

@@ -1,0 +1,596 @@
+/* === Container === */
+.custom-prompt-page-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+
+/* === Left Pane === */
+.left-pane-container {
+  width: 250px;
+  background-color: #fafbfc;
+  border: 1px solid #e1e5eb;
+  padding: 10px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+/* === Presets Section === */
+.left-pane-presets-section {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #00141f;
+}
+
+/* === Group Container === */
+.left-pane-group {
+  margin-bottom: 20px;
+}
+
+/* === Group Header === */
+.left-pane-group-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  padding: 5px;
+  background-color: #1b3e4a;
+  color: white;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.left-pane-group-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+.left-pane-group-icon svg {
+  display: block;
+}
+
+.group-arrow {
+  margin-left: auto;
+  font-weight: bold;
+  user-select: none;
+  line-height: 1;
+}
+
+/* === Buttons Container === */
+.left-pane-buttons-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 8px;
+}
+
+/* === Button Wrapper (for tooltips) === */
+.left-pane-buttons-container > div {
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* === Buttons === */
+.left-pane-button {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  text-align: left;
+  cursor: grab;
+  background-color: #e5e9eb;
+  border: 1px solid #00141f;
+  border-radius: 3px;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+.left-pane-button:active {
+  cursor: grabbing;
+}
+
+.left-pane-button[draggable="true"] {
+  cursor: grab;
+}
+
+.left-pane-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+  background-color: #f0f2f4;
+}
+
+/* === Disabled State === */
+.left-pane-button.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  pointer-events: none;
+  background-color: #e5e9eb;
+  color: #809399;
+  border: 1px dashed #00141f;
+}
+
+.left-pane-button.disabled:active {
+  cursor: not-allowed;
+}
+
+/* === Subgroup Header === */
+.left-pane-subgroup-header {
+  cursor: pointer;
+  padding: 6px 12px;
+  margin-top: 8px;
+  margin-bottom: 4px;
+  background-color: #d0d4d8;
+  border-radius: 3px;
+  font-weight: 600;
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* === Subgroup Buttons Container === */
+.left-pane-subgroup-buttons {
+  margin-left: 12px;
+  padding-right: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.left-pane-subgroup-buttons > div {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.left-pane-subgroup-buttons > div > button {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* === Right Pane === */
+.right-pane {
+  flex: 1;
+  padding: 8px;
+  background-color: #fafbfc;
+  border: 1px solid #e1e5eb;
+  overflow-y: auto;
+  position: relative;
+  min-width: 300px;
+}
+
+.right-pane-card {
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #e5e9eb;
+  border: 2px solid #00141f;
+  border-radius: 4px;
+  box-sizing: border-box;
+  flex: 1 1 calc(50% - 10px);
+  min-width: 380px;
+  max-width: 720px;
+  position: relative; /* For suggestion box positioning */
+}
+
+.right-pane-cards {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 10px;
+  min-height: 200px;
+  padding-top: 4px;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-bottom: 24px;
+}
+
+.right-pane-card-header {
+  font-weight: bold;
+  margin-bottom: 5px;
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.right-pane-card-param-info {
+  font-size: 11px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.right-pane.drop-hover,
+.right-pane-cards.drop-hover {
+  outline: 2px dashed #8cbee6;
+  background-color: #f0f8ff;
+}
+
+/* === Card Remove Button (X in top-right) === */
+.card-remove-btn {
+  background: transparent;
+  border: none;
+  color: #00141f;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-remove-btn:hover {
+  color: #b50116;
+  border-radius: 50%;
+}
+
+/* === Input Wrapper (contains bubbles + input) === */
+.input-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  padding: 5px;
+  border: 1px solid #28a745;
+  border-radius: 3px;
+  background-color: #fff;
+  min-height: 32px;
+  cursor: text;
+  box-sizing: border-box;
+}
+
+/* === Bubbles Container === */
+.bubbles-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+/* === Individual Bubble === */
+.bubble {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 5px;
+  padding: 4px 8px;
+  background-color: #8cbee6;
+  color: #000;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  max-width: 200px;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+
+.bubble span:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+  padding-top: 1px;
+  line-height: 1.4;
+}
+
+/* === Bubble Remove Button === */
+.bubble-remove {
+  border: none;
+  background: transparent;
+  color: #000;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bubble-remove:hover {
+  color: #b50116;
+}
+
+/* === Input Field (inside wrapper) === */
+.right-pane-card-input {
+  border: none;
+  outline: none;
+  flex: 1;
+  min-width: 120px;
+  padding: 6px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* === Floating Drag Element === */
+.drag-floating {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  padding: 8px 12px;
+  background: #e1e1e1;
+  border: 1px solid #999;
+  border-radius: 3px;
+  opacity: 0.8;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+  cursor: grabbing;
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* === Card Header Container === */
+.card-header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+/* === Help Text === */
+.right-pane-card-help-text {
+  font-size: 12px;
+  color: #555;
+  font-style: italic;
+  margin-bottom: 8px;
+  padding: 4px 8px;
+  background-color: #f0f8ff;
+  border-left: 3px solid #8cbee6;
+  border-radius: 2px;
+}
+
+/* === Required Indicator === */
+.right-pane-card-required {
+  font-size: 11px;
+  color: #b50116;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.right-pane-card-required.filled {
+  color: #28a745;
+}
+
+/* === Date Range Container === */
+.date-range-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.date-range-field {
+  flex: 1;
+}
+
+.date-range-field label {
+  display: block;
+  font-weight: 600;
+  font-size: 12px;
+  margin-bottom: 4px;
+  color: #00141f;
+}
+
+.date-range-field input[type="date"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #00141f;
+  border-radius: 3px;
+}
+
+/* === Date Inputs === */
+.date-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #00141f;
+  border-radius: 3px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.date-input:focus {
+  outline: 2px solid #8cbee6;
+  border-color: #8cbee6;
+}
+
+.date-input-single {
+  margin-top: 8px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ✨ SEARCH & SELECT STYLES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* === Search Select Input Wrapper === */
+.ss-input-wrapper {
+  border-color: #6c5ce7;
+}
+
+.ss-search-input::placeholder {
+  color: #888;
+  font-style: italic;
+}
+
+/* === Suggestion Box Container === */
+.ss-suggestion-box {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  left: 10px;
+  right: 10px;
+  margin-top: 4px;
+  background: white;
+  border: 2px solid #6c5ce7;
+  border-radius: 6px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  max-height: 350px;
+  overflow: hidden;
+}
+
+/* === Suggestion Box Header === */
+.ss-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e1e5eb;
+}
+
+.ss-result-count {
+  font-size: 13px;
+  color: #666;
+  font-weight: 500;
+}
+
+.ss-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.ss-select-all,
+.ss-deselect-all {
+  padding: 4px 10px;
+  font-size: 12px;
+  border: 1px solid #6c5ce7;
+  border-radius: 3px;
+  cursor: pointer;
+  background: white;
+  color: #6c5ce7;
+  transition: all 0.2s ease;
+}
+
+.ss-select-all:hover,
+.ss-deselect-all:hover {
+  background: #6c5ce7;
+  color: white;
+}
+
+/* === Results List === */
+.ss-results-list {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 220px;
+  padding: 8px 0;
+}
+
+/* === Individual Result Item === */
+.ss-result-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.ss-result-item:last-child {
+  border-bottom: none;
+}
+
+.ss-result-item:hover {
+  background-color: #f0f8ff;
+}
+
+.ss-result-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #6c5ce7;
+  flex-shrink: 0;
+}
+
+.ss-result-text {
+  flex: 1;
+  font-size: 14px;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* === Selected Item Highlight === */
+.ss-result-item:has(input:checked) {
+  background-color: #e8e4ff;
+}
+
+.ss-result-item:has(input:checked) .ss-result-text {
+  font-weight: 500;
+  color: #6c5ce7;
+}
+
+/* === Suggestion Box Footer === */
+.ss-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  background: #f8f9fa;
+  border-top: 1px solid #e1e5eb;
+  gap: 10px;
+}
+
+.ss-selected-count {
+  font-size: 13px;
+  color: #666;
+  font-weight: 500;
+}
+
+.ss-confirm,
+.ss-cancel {
+  padding: 6px 14px;
+  font-size: 13px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ss-confirm {
+  background: #6c5ce7;
+  color: white;
+  border: 1px solid #6c5ce7;
+  font-weight: 600;
+}
+
+.ss-confirm:hover {
+  background: #5649c0;
+  border-color: #5649c0;
+}
+
+.ss-cancel {
+  background: white;
+  color: #666;
+  border: 1px solid #ccc;
+}
+
+.ss-cancel:hover {
+  background: #f5f5f5;
+  border-color: #999;
+}
+
+/* === Search Select Card Indicator === */
+.right-pane-card:has(.ss-input-wrapper) {
+  border-color: #6c5ce7;
+}
+
+.right-pane-card:has(.ss-input-wrapper) .right-pane-card-header::after {
+  content: " 🔍";
+}
