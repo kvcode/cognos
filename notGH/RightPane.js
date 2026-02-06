@@ -14,9 +14,9 @@ define([], function () {
     this.locale = "en";
   }
 
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // HELPER: Get Localized Text
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   RightPane.prototype.getLocalizedText = function (config, property) {
     const pluralProperty = property + "s";
 
@@ -36,9 +36,9 @@ define([], function () {
     return config[property] || "";
   };
 
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // INITIALIZE
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   RightPane.prototype.initialize = function (oControlHost, fnDoneInitializing) {
     console.log("[RightPane] ðŸ”§ initialize() called");
 
@@ -73,9 +73,9 @@ define([], function () {
     }
   };
 
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // DRAW
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   RightPane.prototype.draw = function (oControlHost) {
     console.log("[RightPane] ðŸ–¼ draw() called");
 
@@ -97,9 +97,9 @@ define([], function () {
     }
   };
 
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // SET DATA STORES
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   RightPane.prototype.setDataStores = function (dataStores) {
     console.log("[RightPane] ðŸ“¦ setDataStores() called");
     this.dataStores = dataStores || {};
@@ -111,9 +111,9 @@ define([], function () {
     });
   };
 
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // HAS CARD - Check if card exists for paramName
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   RightPane.prototype.hasCard = function (paramName) {
     const exists = this.cards.some((card) => {
       if (card.config.paramName === paramName) {
@@ -128,9 +128,9 @@ define([], function () {
     return exists;
   };
 
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // ADD CARD
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   RightPane.prototype.addCard = function (cardData) {
     console.log("[RightPane] âž• addCard() called!");
     console.log("[RightPane] ðŸ“¦ Received cardData:", JSON.stringify(cardData, null, 2));
@@ -162,9 +162,9 @@ define([], function () {
     }
   };
 
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // CREATE CARD OBJECT
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   RightPane.prototype._createCardObject = function (cardData) {
     console.log("[RightPane] ðŸ— _createCardObject() called");
 
@@ -334,9 +334,9 @@ define([], function () {
     return cardObject;
   };
 
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // REMOVE CARD
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   RightPane.prototype.removeCard = function (cardObject) {
     console.log(`[RightPane] ðŸ—‘ removeCard() called for:`, cardObject.config.label);
 
@@ -377,9 +377,9 @@ define([], function () {
     }
   };
 
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // RENDER CARD
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   RightPane.prototype._renderCard = function (cardObject) {
     console.log("[RightPane] ðŸ›  _renderCard() called");
     console.log("[RightPane] ðŸ“¦ Card config:", JSON.stringify(cardObject.config, null, 2));
@@ -472,9 +472,9 @@ define([], function () {
     }
   };
 
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // RENDER DATE RANGE INPUT (used by both dateRange and dateFromTo)
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   RightPane.prototype._renderDateRangeInput = function (card, cardObject) {
     const container = document.createElement("div");
     container.className = "date-range-container";
@@ -529,9 +529,9 @@ define([], function () {
     toInput.addEventListener("change", notifyChange);
   };
 
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // RENDER SINGLE DATE INPUT
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   RightPane.prototype._renderDateInput = function (card, cardObject) {
     const input = document.createElement("input");
     input.type = "date";
@@ -567,9 +567,9 @@ define([], function () {
     });
   };
 
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // âœ¨ NEW: RENDER SEARCH & SELECT INPUT
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   RightPane.prototype._renderSearchSelectInput = function (card, cardObject) {
     const config = cardObject.config;
     console.log("[RightPane] ðŸ” Rendering searchSelect input for:", config.label);
@@ -592,8 +592,7 @@ define([], function () {
     const input = document.createElement("input");
     input.className = "right-pane-card-input ss-search-input";
     input.type = "text";
-    input.placeholder =
-      this.locale === "de" ? "Tippen und ENTER drÃ¼cken zum Suchen..." : "Type and press ENTER to search...";
+    input.placeholder = this.locale === "de" ? "Tippen und ENTER drÃ¼cken zum Suchen..." : "Type and press ENTER to search...";
 
     inputWrapper.appendChild(input);
 
@@ -630,9 +629,7 @@ define([], function () {
         if (suggestionBox && suggestionBox.style.display !== "none") {
           const selectedCheckboxes = suggestionBox.querySelectorAll('input[type="checkbox"]:checked');
           if (selectedCheckboxes.length > 0) {
-            console.log(
-              "[RightPane] ✅ TAB confirming " + selectedCheckboxes.length + " selections from suggestion box",
-            );
+            console.log("[RightPane] ✅ TAB confirming " + selectedCheckboxes.length + " selections from suggestion box");
             selectedCheckboxes.forEach((cb) => {
               const useValue = cb.value;
               const displayValue = cb.dataset.display;
@@ -714,9 +711,9 @@ define([], function () {
     });
   };
 
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // âœ¨ NEW: GET SS PROMPT ELEMENTS
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   RightPane.prototype._getSSPromptElements = function (sspBlockName) {
     console.log(`[RightPane] ðŸ” Looking for SS prompt block: ${sspBlockName}`);
 
@@ -729,20 +726,19 @@ define([], function () {
 
     const elements = {
       block: block,
-      searchInput: block.querySelector(".clsSelectWithSearchSearchText") || block.querySelector('[id$="_searchText"]'),
-      searchButton:
-        block.querySelector(".clsSelectWithSearchSearchButton") || block.querySelector('[id$="_searchButton"]'),
-      resultsList: block.querySelector(".clsListViewCheckboxView"),
-      selectAllCheckbox: block.querySelector(".clsSelectWithSearchSelectAll"),
-      addButton: block.querySelector(".clsPromptInsertButton"),
-      selectedList: block.querySelector(".clsListViewReportView"),
+      searchInput: block.querySelector('.clsSelectWithSearchSearchText') || block.querySelector('[id$="_searchText"]'),
+      searchButton: block.querySelector('.clsSelectWithSearchSearchButton') || block.querySelector('[id$="_searchButton"]'),
+      resultsList: block.querySelector('.clsListViewCheckboxView'),
+      selectAllCheckbox: block.querySelector('.clsSelectWithSearchSelectAll'),
+      addButton: block.querySelector('.clsPromptInsertButton'),
+      selectedList: block.querySelector('.clsListViewReportView')
     };
 
     console.log(`[RightPane] âœ… Found SS prompt elements:`, {
       block: !!elements.block,
       searchInput: !!elements.searchInput,
       searchButton: !!elements.searchButton,
-      resultsList: !!elements.resultsList,
+      resultsList: !!elements.resultsList
     });
 
     return elements;
@@ -752,9 +748,7 @@ define([], function () {
   // ═══════════════════════════════════════════════════════════════════════════
   RightPane.prototype._triggerSearchAndSelect = function (cardObject, searchTerm) {
     const config = cardObject.config;
-    console.log(
-      '[RightPane] 🔍 _triggerSearchAndSelect() for "' + searchTerm + '" using block: ' + config.sspBlockName,
-    );
+    console.log("[RightPane] 🔍 _triggerSearchAndSelect() for \"" + searchTerm + "\" using block: " + config.sspBlockName);
 
     const elements = this._getSSPromptElements(config.sspBlockName);
 
@@ -764,7 +758,7 @@ define([], function () {
       const parsed = this._parseSSResultValue(searchTerm, config);
       this._createBubble(cardObject, parsed.display, parsed.use);
       cardObject.inputElement.value = "";
-
+      
       if (this.m_oControlHost) {
         this.m_oControlHost.valueChanged();
       }
@@ -790,7 +784,9 @@ define([], function () {
     var spinnerSpan = document.createElement("span");
     spinnerSpan.className = "ss-spinner";
     loadingDiv.appendChild(spinnerSpan);
-    loadingDiv.appendChild(document.createTextNode(" " + (this.locale === "de" ? "Suche läuft..." : "Searching...")));
+    loadingDiv.appendChild(document.createTextNode(
+      " " + (this.locale === "de" ? "Suche läuft..." : "Searching...")
+    ));
     resultsList.appendChild(loadingDiv);
 
     suggestionBox.style.display = "flex";
@@ -798,7 +794,7 @@ define([], function () {
 
     // Set search value
     elements.searchInput.value = searchTerm;
-    console.log('[RightPane] ✅ Set search input to: "' + searchTerm + '"');
+    console.log("[RightPane] ✅ Set search input to: \"" + searchTerm + "\"");
 
     // ✨ BUGFIX #1: Remove disabled attribute before clicking search button
     if (elements.searchButton.hasAttribute("disabled")) {
@@ -844,7 +840,9 @@ define([], function () {
           resultsList.innerHTML = "";
           var noResults = document.createElement("div");
           noResults.className = "ss-no-results";
-          noResults.textContent = self.locale === "de" ? "Suche ergab keine Treffer" : "Search Returned No Values";
+          noResults.textContent = self.locale === "de"
+            ? "Suche ergab keine Treffer"
+            : "Search Returned No Values";
           resultsList.appendChild(noResults);
           suggestionBox.querySelector(".ss-result-count").textContent =
             "0 " + (self.locale === "de" ? "Ergebnisse gefunden" : "results found");
@@ -853,18 +851,19 @@ define([], function () {
     }, 2000);
   };
 
-  //
+
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // âœ¨ NEW: EXTRACT AND DISPLAY RESULTS
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   RightPane.prototype._extractAndDisplayResults = function (cardObject, elements) {
     const config = cardObject.config;
     const results = [];
 
-    const rows = elements.resultsList.querySelectorAll("tr");
+    const rows = elements.resultsList.querySelectorAll('tr');
     console.log(`[RightPane] ðŸ“‹ Extracting ${rows.length} results`);
 
     rows.forEach((row, idx) => {
-      const label = row.querySelector(".clsListItemLabel") || row.querySelector("td");
+      const label = row.querySelector('.clsListItemLabel') || row.querySelector('td');
       if (label) {
         const resultText = label.textContent.trim();
         const parsed = this._parseSSResultValue(resultText, config);
@@ -880,9 +879,9 @@ define([], function () {
     this._displaySearchResults(cardObject, results);
   };
 
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // âœ¨ NEW: PARSE SS RESULT VALUE
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   RightPane.prototype._parseSSResultValue = function (resultText, config) {
     let useValue, displayValue;
 
@@ -904,9 +903,9 @@ define([], function () {
     return { use: useValue, display: displayValue };
   };
 
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // âœ¨ NEW: CREATE SUGGESTION BOX
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   RightPane.prototype._createSuggestionBox = function (cardObject) {
     console.log(`[RightPane] ðŸ”¨ Creating suggestion box`);
 
@@ -1028,9 +1027,9 @@ define([], function () {
     return suggestionBox;
   };
 
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // âœ¨ NEW: DISPLAY SEARCH RESULTS
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   RightPane.prototype._displaySearchResults = function (cardObject, results) {
     console.log(`[RightPane] ðŸ“‹ Displaying ${results.length} search results`);
 
@@ -1096,9 +1095,9 @@ define([], function () {
     this._updateSelectedCount(suggestionBox);
   };
 
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // âœ¨ NEW: UPDATE SELECTED COUNT
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   RightPane.prototype._updateSelectedCount = function (suggestionBox) {
     const selectedCount = suggestionBox.querySelectorAll('input[type="checkbox"]:checked').length;
     const countSpan = suggestionBox.querySelector(".ss-selected-count");
@@ -1203,9 +1202,11 @@ define([], function () {
     }
   };
 
-  //
+
+
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // RENDER BUBBLE INPUT (Regular/Text)
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   RightPane.prototype._renderBubbleInput = function (card, cardObject) {
     const config = cardObject.config;
     const queryName = config.queryName;
@@ -1440,9 +1441,9 @@ define([], function () {
     });
   };
 
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // CREATE BUBBLE (with maxValues enforcement)
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   RightPane.prototype._createBubble = function (cardObject, displayValue, useValue) {
     console.log(`[RightPane] ðŸ«§ Creating bubble: display="${displayValue}", use="${useValue}"`);
 
@@ -1498,20 +1499,18 @@ define([], function () {
   // REMOVE BUBBLE
   // ═══════════════════════════════════════════════════════════════════════════
   RightPane.prototype._removeBubble = function (cardObject, displayValue, bubbleElement) {
-    console.log('[RightPane] 🗑 Removing bubble: "' + displayValue + '"');
+    console.log("[RightPane] 🗑 Removing bubble: \"" + displayValue + "\"");
     console.log("[RightPane] 🔍 Before removal, bubbledValues:", cardObject.bubbledValues);
 
     var removedEntry = null;
-    var index = cardObject.bubbledValues.findIndex(function (v) {
-      return v.display === displayValue;
-    });
+    var index = cardObject.bubbledValues.findIndex(function (v) { return v.display === displayValue; });
     if (index > -1) {
       removedEntry = cardObject.bubbledValues[index];
       cardObject.bubbledValues.splice(index, 1);
       console.log("[RightPane] 💾 Removed from bubbledValues at index " + index);
       console.log("[RightPane] 💾 After removal, bubbledValues:", cardObject.bubbledValues);
     } else {
-      console.warn('[RightPane] ⚠️ Value "' + displayValue + '" not found in bubbledValues!');
+      console.warn("[RightPane] ⚠️ Value \"" + displayValue + "\" not found in bubbledValues!");
     }
 
     if (bubbleElement && bubbleElement.parentNode) {
@@ -1540,9 +1539,9 @@ define([], function () {
     this._updateRequiredIndicator(cardObject);
   };
 
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // UPDATE REQUIRED INDICATOR
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   RightPane.prototype._updateRequiredIndicator = function (cardObject) {
     if (!cardObject.requiredIndicator) return;
 
@@ -1570,9 +1569,9 @@ define([], function () {
     }
   };
 
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // CHECK IF ALL REQUIRED CARDS ARE FILLED
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   RightPane.prototype.areRequiredCardsFilled = function () {
     console.log("[RightPane] ðŸ” Checking if all required cards are filled");
 
@@ -1612,9 +1611,9 @@ define([], function () {
     return true;
   };
 
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // GET PARAMETERS (Called by Cognos)
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   RightPane.prototype.getParameters = function () {
     console.log("[RightPane] ðŸ“‹ getParameters() called");
     console.log("[RightPane] ðŸ“Š Total cards to check:", this.cards.length);
@@ -1646,9 +1645,9 @@ define([], function () {
     }
   };
 
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // DESTROY
-  //
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   RightPane.prototype.destroy = function () {
     console.log("[RightPane] ðŸ§¨ destroy() called");
 
