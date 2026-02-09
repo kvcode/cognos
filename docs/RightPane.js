@@ -446,7 +446,7 @@ define([], function () {
       if (config.required || cardObject.isRequired) {
         const requiredDiv = document.createElement("div");
         requiredDiv.className = "right-pane-card-required";
-        requiredDiv.textContent = "☆ Required";
+        requiredDiv.textContent = "â˜† Required";
         card.appendChild(requiredDiv);
         cardObject.requiredIndicator = requiredDiv;
       }
@@ -722,7 +722,7 @@ define([], function () {
           btn.setAttribute("hal_disabled", "false");
         }
       });
-      console.log("[RightPane] ✅ Force-enabled all native SS buttons");
+      console.log("[RightPane] âœ… Force-enabled all native SS buttons");
     }
   };
 
@@ -940,13 +940,13 @@ define([], function () {
       // Extract first N characters as USE value
       useValue = resultText.substring(0, config.useValueLength).trim();
 
-      console.log(`[RightPane]  Parsed with length=${config.useValueLength}:`);
-      console.log(`  Display: "${displayValue}"`);
-      console.log(`  Use: "${useValue}"`);
+      // console.log(`[RightPane] Parsed with length=${config.useValueLength}:`);
+      // console.log(`  Display: "${displayValue}"`);
+      // console.log(`  Use: "${useValue}"`);
     } else {
       // Use full string for both
       useValue = displayValue;
-      console.log(`[RightPane]  Using full value: "${useValue}"`);
+      // console.log(`[RightPane] Using full value: "${useValue}"`);
     }
 
     return { use: useValue, display: displayValue };
@@ -1034,32 +1034,9 @@ define([], function () {
     });
 
     confirmBtn.addEventListener("click", () => {
-      const selectedCheckboxes = resultsList.querySelectorAll('input[type="checkbox"]:checked');
-      console.log(`[RightPane]  Confirming ${selectedCheckboxes.length} selections`);
-
-      selectedCheckboxes.forEach((cb) => {
-        const useValue = cb.value;
-        const displayValue = cb.dataset.display;
-        self._createBubble(cardObject, displayValue, useValue);
-        self._mirrorToNativeSSPrompt(cardObject, displayValue, useValue);
-      });
-
-      // Clear input and hide suggestion box
-      cardObject.inputElement.value = "";
-      suggestionBox.style.display = "none";
-
-      if (self.m_oControlHost) {
-        try {
-          self.m_oControlHost.valueChanged();
-          console.log(`[RightPane]  Cognos notified of value change`);
-
-          if (cardObject.isRequired || cardObject.config.required) {
-            self.m_oControlHost.validStateChanged();
-          }
-        } catch (err) {
-          console.error(`[RightPane]  Error notifying Cognos:`, err);
-        }
-      }
+      // TEMP DIAGNOSTIC - testing which click target works
+      console.log("[DIAG] confirmBtn clicked - running click test instead of normal flow");
+      self._diagClickTest(cardObject);
     });
 
     cancelBtn.addEventListener("click", () => {
@@ -1169,6 +1146,76 @@ define([], function () {
   };
 
   // ===========================================================================
+  //  TEMP DIAGNOSTIC: CLICK TEST - find what Cognos listens on
+  // ===========================================================================
+  RightPane.prototype._diagClickTest = function (cardObject) {
+    var elements = this._getSSPromptElements(cardObject.config.sspBlockName);
+    if (!elements || !elements.resultsList) {
+      console.log("[DIAG] No resultsList found");
+      return;
+    }
+
+    var firstRow = elements.resultsList.querySelector("tr");
+    if (!firstRow) {
+      console.log("[DIAG] No rows found");
+      return;
+    }
+
+    var tr = firstRow;
+    var td = firstRow.querySelector("td");
+    var div = firstRow.querySelector("div");
+    var img = firstRow.querySelector("img");
+    var span = firstRow.querySelector("span");
+    var label = firstRow.querySelector(".clsListItemLabel");
+
+    console.log("[DIAG] ===== CLICK TEST ON FIRST ROW =====");
+    console.log("[DIAG] Label text:", label ? label.textContent.trim() : "N/A");
+    console.log("[DIAG] TR:", tr);
+    console.log("[DIAG] TD:", td);
+    console.log("[DIAG] DIV:", div);
+    console.log("[DIAG] IMG:", img);
+    console.log("[DIAG] SPAN:", span);
+
+    setTimeout(function () {
+      console.log("[DIAG] >>> 1s - Clicking TR");
+      tr.click();
+    }, 1000);
+
+    setTimeout(function () {
+      console.log("[DIAG] >>> 3s - Clicking TD");
+      td.click();
+    }, 3000);
+
+    setTimeout(function () {
+      console.log("[DIAG] >>> 5s - Clicking DIV");
+      div.click();
+    }, 5000);
+
+    setTimeout(function () {
+      console.log("[DIAG] >>> 7s - Clicking IMG");
+      img.click();
+    }, 7000);
+
+    setTimeout(function () {
+      console.log("[DIAG] >>> 9s - Clicking SPAN");
+      span.click();
+    }, 9000);
+
+    setTimeout(function () {
+      console.log("[DIAG] >>> 11s - Clicking Add button");
+      if (elements.addButton) {
+        elements.addButton.removeAttribute("disabled");
+        elements.addButton.disabled = false;
+        elements.addButton.setAttribute("hal_disabled", "false");
+        elements.addButton.click();
+        console.log("[DIAG] >>> Add button clicked");
+      }
+    }, 11000);
+
+    console.log("[DIAG] Clicks fire at 1s, 3s, 5s, 7s, 9s, 11s(Add) - WATCH the native prompt");
+  };
+
+  // ===========================================================================
   //  BugFix #5: MIRROR TO NATIVE SS PROMPT
   // ===========================================================================
   RightPane.prototype._mirrorToNativeSSPrompt = function (cardObject, displayValue, useValue) {
@@ -1206,9 +1253,9 @@ define([], function () {
       const checkboxImg = foundRow.querySelector(".clsListViewCheckboxImg");
       if (checkboxImg && !checkboxImg.classList.contains("clsLVCheckbox_checked")) {
         listItem.click();
-        console.log(`[RightPane] ✅ Clicked native row to select: "${displayValue}"`);
+        console.log(`[RightPane] âœ… Clicked native row to select: "${displayValue}"`);
       } else {
-        console.log(`[RightPane] ℹ️ Row already checked: "${displayValue}"`);
+        console.log(`[RightPane] â„¹ï¸ Row already checked: "${displayValue}"`);
       }
 
       // Click native Add button ONCE after all rows are checked
@@ -1220,7 +1267,7 @@ define([], function () {
           elements.addButton.removeAttribute("hal_disabled");
           elements.addButton.setAttribute("hal_disabled", "false");
           elements.addButton.click();
-          console.log("[RightPane] ✅ Clicked native Add button ONCE for all selections");
+          console.log("[RightPane] âœ… Clicked native Add button ONCE for all selections");
         }
       }, 200);
     } else {
@@ -1564,7 +1611,7 @@ define([], function () {
 
     const removeBtn = document.createElement("button");
     removeBtn.className = "bubble-remove";
-    removeBtn.textContent = "×";
+    removeBtn.textContent = "Ã—";
 
     const self = this;
     removeBtn.addEventListener("click", () => {
@@ -1650,10 +1697,10 @@ define([], function () {
     }
 
     if (hasFilled) {
-      cardObject.requiredIndicator.textContent = "✓ Required";
+      cardObject.requiredIndicator.textContent = "âœ“ Required";
       cardObject.requiredIndicator.classList.add("filled");
     } else {
-      cardObject.requiredIndicator.textContent = "☆ Required";
+      cardObject.requiredIndicator.textContent = "â˜† Required";
       cardObject.requiredIndicator.classList.remove("filled");
     }
   };
