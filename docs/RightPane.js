@@ -820,67 +820,35 @@ define([], function () {
     elements.searchButton.click();
     console.log(`[RightPane] Clicked search button`);
 
-    // ========================================================================
-    // BugFix #7: DEBOUNCED MutationObserver - wait for mutations to settle
-    // ========================================================================
-    let debounceTimer;
-    let mutationCount = 0;
-    const observer = new MutationObserver((mutations) => {
-      mutationCount++;
-      console.log(`[RightPane] Mutation #${mutationCount} detected - resetting timer`);
+    // Polling approach: Check every 200ms if results have loaded
+    let pollCount = 0;
+    const maxPolls = 150; // 150 * 200ms = 30 seconds max
 
-      // Clear previous timer
-      clearTimeout(debounceTimer);
+    const pollInterval = setInterval(() => {
+      pollCount++;
+      const rows = elements.resultsList.querySelectorAll("tr");
 
-      // Wait 400ms after LAST mutation before extracting
-      debounceTimer = setTimeout(() => {
-        const rows = elements.resultsList.querySelectorAll("tr");
-        if (rows.length > 0) {
-          console.log(`[RightPane] Mutations settled after ${mutationCount} changes - extracting ${rows.length} rows`);
-          observer.disconnect();
-          self._extractAndDisplayResults(cardObject, elements);
-        } else {
-          console.log(`[RightPane] Mutations settled but no rows found`);
-        }
-      }, 400); // 400ms after last change = Cognos is done
-    });
+      if (rows.length > 0) {
+        console.log(`[RightPane] Found ${rows.length} rows after ${pollCount * 200}ms`);
+        clearInterval(pollInterval);
+        self._extractAndDisplayResults(cardObject, elements);
+      } else if (pollCount >= maxPolls) {
+        console.log(`[RightPane] Timeout after ${pollCount * 200}ms - no results`);
+        clearInterval(pollInterval);
 
-    if (elements.resultsList) {
-      observer.observe(elements.resultsList, { childList: true, subtree: true });
-      console.log(`[RightPane] MutationObserver started - watching for DOM changes`);
-    }
-
-    // ========================================================================
-    // BugFix #4: Timeout fallback - show "no results" message (extended for large datasets)
-    // ========================================================================
-    setTimeout(() => {
-      clearTimeout(debounceTimer);
-      observer.disconnect();
-      console.log(`[RightPane] Timeout reached after 30 seconds`);
-
-      if (elements.resultsList) {
-        const rows = elements.resultsList.querySelectorAll("tr");
-        if (rows.length > 0) {
-          console.log(`[RightPane] Timeout: Found ${rows.length} results after long wait`);
-          self._extractAndDisplayResults(cardObject, elements);
-        } else {
-          console.log(`[RightPane] No results found after 30 second timeout`);
-          // Show no results message
-          resultsList.innerHTML = "";
-          const noResultsDiv = document.createElement("div");
-          noResultsDiv.className = "ss-no-results";
-          noResultsDiv.textContent =
-            self.locale === "de"
-              ? `Keine Ergebnisse für "${searchTerm}" gefunden`
-              : `No results found for "${searchTerm}"`;
-          resultsList.appendChild(noResultsDiv);
-          suggestionBox.querySelector(".ss-result-count").textContent =
-            self.locale === "de" ? "0 Ergebnisse gefunden" : "0 results found";
-        }
+        resultsList.innerHTML = "";
+        const noResultsDiv = document.createElement("div");
+        noResultsDiv.className = "ss-no-results";
+        noResultsDiv.textContent =
+          self.locale === "de"
+            ? `Keine Ergebnisse für "${searchTerm}" gefunden`
+            : `No results found for "${searchTerm}"`;
+        resultsList.appendChild(noResultsDiv);
+        suggestionBox.querySelector(".ss-result-count").textContent =
+          self.locale === "de" ? "0 Ergebnisse gefunden" : "0 results found";
       }
-    }, 30000); // 30 second timeout for very large datasets
+    }, 200);
   };
-
   // ===========================================================================
   //  EXTRACT AND DISPLAY RESULTS
   // ===========================================================================
@@ -920,13 +888,13 @@ define([], function () {
       // Extract first N characters as USE value
       useValue = resultText.substring(0, config.useValueLength).trim();
 
-      console.log(`[RightPane]  Parsed with length=${config.useValueLength}:`);
+      // console.log(`[RightPane] Parsed with length=${config.useValueLength}:`);
       // console.log(`  Display: "${displayValue}"`);
       // console.log(`  Use: "${useValue}"`);
     } else {
       // Use full string for both
       useValue = displayValue;
-      console.log(`[RightPane]  Using full value: "${useValue}"`);
+      // console.log(`[RightPane] Using full value: "${useValue}"`);
     }
 
     return { use: useValue, display: displayValue };
