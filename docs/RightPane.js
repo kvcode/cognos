@@ -446,7 +446,7 @@ define([], function () {
       if (config.required || cardObject.isRequired) {
         const requiredDiv = document.createElement("div");
         requiredDiv.className = "right-pane-card-required";
-        requiredDiv.textContent = " Required";
+        requiredDiv.textContent = "☆ Required";
         card.appendChild(requiredDiv);
         cardObject.requiredIndicator = requiredDiv;
       }
@@ -1544,7 +1544,7 @@ define([], function () {
 
     const removeBtn = document.createElement("button");
     removeBtn.className = "bubble-remove";
-    removeBtn.textContent = "";
+    removeBtn.textContent = "×";
 
     const self = this;
     removeBtn.addEventListener("click", () => {
@@ -1625,10 +1625,10 @@ define([], function () {
     }
 
     if (hasFilled) {
-      cardObject.requiredIndicator.textContent = " Required";
+      cardObject.requiredIndicator.textContent = "✓ Required";
       cardObject.requiredIndicator.classList.add("filled");
     } else {
-      cardObject.requiredIndicator.textContent = " Required";
+      cardObject.requiredIndicator.textContent = "☆ Required";
       cardObject.requiredIndicator.classList.remove("filled");
     }
   };
