@@ -712,6 +712,18 @@ define([], function () {
         }
       }
     });
+    // Force-enable all native SS prompt buttons permanently
+    var ssElements = this._getSSPromptElements(config.sspBlockName);
+    if (ssElements) {
+      [ssElements.searchButton, ssElements.addButton, ssElements.removeButton].forEach(function (btn) {
+        if (btn) {
+          btn.removeAttribute("disabled");
+          btn.disabled = false;
+          btn.setAttribute("hal_disabled", "false");
+        }
+      });
+      console.log("[RightPane] ✅ Force-enabled all native SS buttons");
+    }
   };
 
   // ===========================================================================
