@@ -1206,6 +1206,13 @@ define([], function () {
       // Click the native Add button after a short delay
       setTimeout(() => {
         if (elements.addButton) {
+          // Enable the button first (remove disabled state)
+          elements.addButton.removeAttribute("disabled");
+          elements.addButton.disabled = false;
+          elements.addButton.removeAttribute("hal_disabled");
+          elements.addButton.setAttribute("hal_disabled", "false");
+          console.log(`[RightPane]  Enabled Add button`);
+
           elements.addButton.click();
           console.log(`[RightPane]  Clicked native Add button`);
         }
@@ -1258,6 +1265,13 @@ define([], function () {
       // Click the native Remove button after a short delay
       setTimeout(() => {
         if (elements.removeButton) {
+          // Enable the button first (remove disabled state)
+          elements.removeButton.removeAttribute("disabled");
+          elements.removeButton.disabled = false;
+          elements.removeButton.removeAttribute("hal_disabled");
+          elements.removeButton.setAttribute("hal_disabled", "false");
+          console.log(`[RightPane]  Enabled Remove button`);
+
           elements.removeButton.click();
           console.log(`[RightPane]  Clicked native Remove button`);
         }
@@ -1555,6 +1569,11 @@ define([], function () {
     bubble.appendChild(removeBtn);
     cardObject.bubblesContainer.appendChild(bubble);
     console.log(`[RightPane]  Bubble added to DOM`);
+
+    // BugFix #5: Mirror to native SS prompt if searchSelect type
+    if (cardObject.config.promptType === "searchSelect") {
+      this._mirrorToNativeSSPrompt(cardObject, displayValue, useValue);
+    }
 
     this._updateRequiredIndicator(cardObject);
   };
