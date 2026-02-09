@@ -446,7 +446,7 @@ define([], function () {
       if (config.required || cardObject.isRequired) {
         const requiredDiv = document.createElement("div");
         requiredDiv.className = "right-pane-card-required";
-        requiredDiv.textContent = "â˜† Required";
+        requiredDiv.textContent = "☆ Required";
         card.appendChild(requiredDiv);
         cardObject.requiredIndicator = requiredDiv;
       }
@@ -722,7 +722,7 @@ define([], function () {
           btn.setAttribute("hal_disabled", "false");
         }
       });
-      console.log("[RightPane] âœ… Force-enabled all native SS buttons");
+      console.log("[RightPane] ✅ Force-enabled all native SS buttons");
     }
   };
 
@@ -1231,9 +1231,9 @@ define([], function () {
       const checkboxImg = foundRow.querySelector(".clsListViewCheckboxImg");
       if (checkboxImg && !checkboxImg.classList.contains("clsLVCheckbox_checked")) {
         listItem.click();
-        console.log(`[RightPane] âœ… Clicked native row to select: "${displayValue}"`);
+        console.log(`[RightPane] ✅ Clicked native row to select: "${displayValue}"`);
       } else {
-        console.log(`[RightPane] â„¹ï¸ Row already checked: "${displayValue}"`);
+        console.log(`[RightPane] ℹ️ Row already checked: "${displayValue}"`);
       }
 
       // Click native Add button ONCE after all rows are checked
@@ -1245,7 +1245,7 @@ define([], function () {
           elements.addButton.removeAttribute("hal_disabled");
           elements.addButton.setAttribute("hal_disabled", "false");
           elements.addButton.click();
-          console.log("[RightPane] âœ… Clicked native Add button ONCE for all selections");
+          console.log("[RightPane] ✅ Clicked native Add button ONCE for all selections");
         }
       }, 200);
     } else {
@@ -1589,7 +1589,7 @@ define([], function () {
 
     const removeBtn = document.createElement("button");
     removeBtn.className = "bubble-remove";
-    removeBtn.textContent = "Ã—";
+    removeBtn.textContent = "×";
 
     const self = this;
     removeBtn.addEventListener("click", () => {
@@ -1675,10 +1675,10 @@ define([], function () {
     }
 
     if (hasFilled) {
-      cardObject.requiredIndicator.textContent = "âœ“ Required";
+      cardObject.requiredIndicator.textContent = "✓ Required";
       cardObject.requiredIndicator.classList.add("filled");
     } else {
-      cardObject.requiredIndicator.textContent = "â˜† Required";
+      cardObject.requiredIndicator.textContent = "☆ Required";
       cardObject.requiredIndicator.classList.remove("filled");
     }
   };
