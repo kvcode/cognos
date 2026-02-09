@@ -1161,58 +1161,36 @@ define([], function () {
       return;
     }
 
-    var tr = firstRow;
-    var td = firstRow.querySelector("td");
-    var div = firstRow.querySelector("div");
-    var img = firstRow.querySelector("img");
-    var span = firstRow.querySelector("span");
+    var img = firstRow.querySelector(".clsListViewCheckboxImg");
     var label = firstRow.querySelector(".clsListItemLabel");
 
-    console.log("[DIAG] ===== CLICK TEST ON FIRST ROW =====");
-    console.log("[DIAG] Label text:", label ? label.textContent.trim() : "N/A");
-    console.log("[DIAG] TR:", tr);
-    console.log("[DIAG] TD:", td);
-    console.log("[DIAG] DIV:", div);
-    console.log("[DIAG] IMG:", img);
-    console.log("[DIAG] SPAN:", span);
+    console.log("[DIAG] ===== IMG CLASS SWAP TEST ON FIRST ROW =====");
+    console.log("[DIAG] Label:", label ? label.textContent.trim() : "N/A");
+    console.log("[DIAG] IMG before:", img ? img.className : "N/A");
+    console.log("[DIAG] IMG src before:", img ? img.src : "N/A");
 
-    setTimeout(function () {
-      console.log("[DIAG] >>> 1s - Clicking TR");
-      tr.click();
-    }, 1000);
+    // Step 1: Swap img to checked state
+    if (img) {
+      img.classList.remove("clsLVCheckbox");
+      img.classList.add("clsLVCheckbox_checked");
+      img.src = img.src.replace("lv_checkbox.svg", "lv_checkbox_checked.svg");
+      console.log("[DIAG] IMG after swap:", img.className);
+      console.log("[DIAG] IMG src after swap:", img.src);
+    }
 
+    // Step 2: Click Add button after 2s
     setTimeout(function () {
-      console.log("[DIAG] >>> 3s - Clicking TD");
-      td.click();
-    }, 3000);
-
-    setTimeout(function () {
-      console.log("[DIAG] >>> 5s - Clicking DIV");
-      div.click();
-    }, 5000);
-
-    setTimeout(function () {
-      console.log("[DIAG] >>> 7s - Clicking IMG");
-      img.click();
-    }, 7000);
-
-    setTimeout(function () {
-      console.log("[DIAG] >>> 9s - Clicking SPAN");
-      span.click();
-    }, 9000);
-
-    setTimeout(function () {
-      console.log("[DIAG] >>> 11s - Clicking Add button");
+      console.log("[DIAG] >>> 2s - Clicking Add button");
       if (elements.addButton) {
         elements.addButton.removeAttribute("disabled");
         elements.addButton.disabled = false;
         elements.addButton.setAttribute("hal_disabled", "false");
         elements.addButton.click();
-        console.log("[DIAG] >>> Add button clicked");
+        console.log("[DIAG] >>> Add button clicked - check Choices box!");
       }
-    }, 11000);
+    }, 2000);
 
-    console.log("[DIAG] Clicks fire at 1s, 3s, 5s, 7s, 9s, 11s(Add) - WATCH the native prompt");
+    console.log("[DIAG] Img swapped now, Add clicks in 2s - WATCH the native prompt");
   };
 
   // ===========================================================================
