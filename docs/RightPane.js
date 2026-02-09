@@ -572,6 +572,7 @@ define([], function () {
   // ===========================================================================
   RightPane.prototype._renderSearchSelectInput = function (card, cardObject) {
     const config = cardObject.config;
+    const self = this;
     console.log("[RightPane]  Rendering searchSelect input for:", config.label);
 
     // Validate required config
@@ -756,6 +757,7 @@ define([], function () {
   // ===========================================================================
   RightPane.prototype._triggerSearchAndSelect = function (cardObject, searchTerm) {
     const config = cardObject.config;
+    const self = this;
     console.log(`[RightPane]  _triggerSearchAndSelect() for "${searchTerm}" using block: ${config.sspBlockName}`);
 
     const elements = this._getSSPromptElements(config.sspBlockName);
@@ -816,71 +818,75 @@ define([], function () {
 
     // Click search button
     elements.searchButton.click();
-    console.log(`[RightPane] Clicked search button`);
+    console.log(`[RightPane]  Clicked search button`);
 
-    // ========================================================================
-    // Monitor Cognos's progress.gif spinner for loading state
-    // ========================================================================
+    // Monitor Cognos progress.gif spinner
     let spinnerAppeared = false;
     let checkCount = 0;
-    const maxChecks = 600; // 600 * 50ms = 30 seconds max
+    const maxChecks = 600; // 30 seconds max
 
     const checkSpinner = setInterval(() => {
       checkCount++;
-
-      // Look for the progress spinner in the SS block
       const spinner = elements.block.querySelector('img[src*="progress.gif"]');
 
       if (!spinnerAppeared && spinner) {
-        // Spinner appeared - Cognos started loading
         spinnerAppeared = true;
-        console.log(`[RightPane] Loading spinner detected - query running...`);
+        console.log(`[RightPane] Spinner appeared - loading...`);
       } else if (spinnerAppeared && !spinner) {
-        // Spinner disappeared - Cognos finished loading!
         clearInterval(checkSpinner);
-        console.log(`[RightPane] Spinner gone - extracting results`);
+        console.log(`[RightPane] Spinner gone - extracting`);
 
-        const rows = elements.resultsList.querySelectorAll("tr");
-        if (rows.length > 0) {
-          console.log(`[RightPane] Found ${rows.length} results`);
-          self._extractAndDisplayResults(cardObject, elements);
+        // Re-fetch elements in case Cognos recreated DOM
+        const freshElements = self._getSSPromptElements(config.sspBlockName);
+        if (freshElements && freshElements.resultsList) {
+          const rows = freshElements.resultsList.querySelectorAll("tr");
+          if (rows.length > 0) {
+            console.log(`[RightPane] Found ${rows.length} results`);
+            self._extractAndDisplayResults(cardObject, freshElements);
+          } else {
+            console.log(`[RightPane] No results`);
+            resultsList.innerHTML = "";
+            const noResultsDiv = document.createElement("div");
+            noResultsDiv.className = "ss-no-results";
+            noResultsDiv.textContent =
+              self.locale === "de"
+                ? `Keine Ergebnisse fuer "${searchTerm}" gefunden`
+                : `No results found for "${searchTerm}"`;
+            resultsList.appendChild(noResultsDiv);
+            suggestionBox.querySelector(".ss-result-count").textContent =
+              self.locale === "de" ? "0 Ergebnisse gefunden" : "0 results found";
+          }
         } else {
-          console.log(`[RightPane] No results found`);
-          resultsList.innerHTML = "";
-          const noResultsDiv = document.createElement("div");
-          noResultsDiv.className = "ss-no-results";
-          noResultsDiv.textContent =
-            self.locale === "de"
-              ? `Keine Ergebnisse fuer "${searchTerm}" gefunden`
-              : `No results found for "${searchTerm}"`;
-          resultsList.appendChild(noResultsDiv);
-          suggestionBox.querySelector(".ss-result-count").textContent =
-            self.locale === "de" ? "0 Ergebnisse gefunden" : "0 results found";
+          console.error(`[RightPane] Could not re-fetch elements`);
         }
       } else if (checkCount >= maxChecks) {
-        // Timeout after 30 seconds
         clearInterval(checkSpinner);
-        console.log(`[RightPane] Timeout after 30 seconds`);
+        console.log(`[RightPane] Timeout`);
 
-        const rows = elements.resultsList.querySelectorAll("tr");
-        if (rows.length > 0) {
-          console.log(`[RightPane] Timeout: Found ${rows.length} results anyway`);
-          self._extractAndDisplayResults(cardObject, elements);
+        // Re-fetch elements
+        const freshElements = self._getSSPromptElements(config.sspBlockName);
+        if (freshElements && freshElements.resultsList) {
+          const rows = freshElements.resultsList.querySelectorAll("tr");
+          if (rows.length > 0) {
+            console.log(`[RightPane] Timeout: ${rows.length} results`);
+            self._extractAndDisplayResults(cardObject, freshElements);
+          } else {
+            resultsList.innerHTML = "";
+            const noResultsDiv = document.createElement("div");
+            noResultsDiv.className = "ss-no-results";
+            noResultsDiv.textContent =
+              self.locale === "de"
+                ? `Keine Ergebnisse fuer "${searchTerm}" gefunden`
+                : `No results found for "${searchTerm}"`;
+            resultsList.appendChild(noResultsDiv);
+            suggestionBox.querySelector(".ss-result-count").textContent =
+              self.locale === "de" ? "0 Ergebnisse gefunden" : "0 results found";
+          }
         } else {
-          console.log(`[RightPane] Timeout: No results`);
-          resultsList.innerHTML = "";
-          const noResultsDiv = document.createElement("div");
-          noResultsDiv.className = "ss-no-results";
-          noResultsDiv.textContent =
-            self.locale === "de"
-              ? `Keine Ergebnisse fuer "${searchTerm}" gefunden`
-              : `No results found for "${searchTerm}"`;
-          resultsList.appendChild(noResultsDiv);
-          suggestionBox.querySelector(".ss-result-count").textContent =
-            self.locale === "de" ? "0 Ergebnisse gefunden" : "0 results found";
+          console.error(`[RightPane] Timeout: Could not fetch elements`);
         }
       }
-    }, 50); // Check every 50ms
+    }, 50);
   };
 
   // ===========================================================================
@@ -923,8 +929,8 @@ define([], function () {
       useValue = resultText.substring(0, config.useValueLength).trim();
 
       console.log(`[RightPane]  Parsed with length=${config.useValueLength}:`);
-      // console.log(`  Display: "${displayValue}"`);
-      // console.log(`  Use: "${useValue}"`);
+      console.log(`  Display: "${displayValue}"`);
+      console.log(`  Use: "${useValue}"`);
     } else {
       // Use full string for both
       useValue = displayValue;
@@ -939,6 +945,7 @@ define([], function () {
   // ===========================================================================
   RightPane.prototype._createSuggestionBox = function (cardObject) {
     console.log(`[RightPane]  Creating suggestion box`);
+    const self = this;
 
     const suggestionBox = document.createElement("div");
     suggestionBox.className = "ss-suggestion-box";
@@ -1096,6 +1103,7 @@ define([], function () {
       `${results.length} ${this.locale === "de" ? "Ergebnisse gefunden" : "results found"}`;
 
     // Populate with new results
+    const self = this;
     results.forEach((result, idx) => {
       const item = document.createElement("label");
       item.className = "ss-result-item";
@@ -1538,6 +1546,7 @@ define([], function () {
     removeBtn.className = "bubble-remove";
     removeBtn.textContent = "";
 
+    const self = this;
     removeBtn.addEventListener("click", () => {
       console.log(`[RightPane]  Remove button clicked for: "${displayValue}"`);
       self._removeBubble(cardObject, displayValue, bubble, useValue);
