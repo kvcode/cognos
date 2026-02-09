@@ -47,7 +47,7 @@ define([], function () {
 
     if (oControlHost.locale) {
       this.locale = oControlHost.locale.substring(0, 2);
-      console.log("[RightPane] 🌍 Detected locale:", this.locale);
+      console.log("[RightPane] 🌐 Detected locale:", this.locale);
     }
 
     try {
@@ -181,7 +181,7 @@ define([], function () {
       isRequired: cardData.isRequired || false,
       dateFromInput: null,
       dateToInput: null,
-      suggestionBox: null, // ✨ NEW: For searchSelect
+      suggestionBox: null, // ✨ For searchSelect
 
       // ═══════════════════════════════════════════════════════════════════════
       // GET PARAMETERS - Called by Cognos on finish
@@ -446,7 +446,7 @@ define([], function () {
       if (config.required || cardObject.isRequired) {
         const requiredDiv = document.createElement("div");
         requiredDiv.className = "right-pane-card-required";
-        requiredDiv.textContent = "★ Required";
+        requiredDiv.textContent = "☆ Required";
         card.appendChild(requiredDiv);
         cardObject.requiredIndicator = requiredDiv;
       }
@@ -457,7 +457,7 @@ define([], function () {
       } else if (promptType === "date") {
         this._renderDateInput(card, cardObject);
       } else if (promptType === "searchSelect") {
-        // ✨ NEW: Search & Select type
+        // ✨ Search & Select type
         this._renderSearchSelectInput(card, cardObject);
       } else {
         // Default: bubble input (value prompt or text)
@@ -568,10 +568,11 @@ define([], function () {
   };
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // ✨ NEW: RENDER SEARCH & SELECT INPUT
+  // ✨ RENDER SEARCH & SELECT INPUT
   // ═══════════════════════════════════════════════════════════════════════════
   RightPane.prototype._renderSearchSelectInput = function (card, cardObject) {
     const config = cardObject.config;
+    const self = this;
     console.log("[RightPane] 🔍 Rendering searchSelect input for:", config.label);
 
     // Validate required config
@@ -620,6 +621,63 @@ define([], function () {
           this._triggerSearchAndSelect(cardObject, searchTerm);
         }
       }
+      // ═══════════════════════════════════════════════════════════════════════
+      // 🐛 BugFix #3: TAB key in input field - confirm checked items or create free bubble
+      // ═══════════════════════════════════════════════════════════════════════
+      if (e.key === "Tab") {
+        const suggestionBox = cardObject.suggestionBox;
+        if (suggestionBox && suggestionBox.style.display !== "none") {
+          const checkedBoxes = suggestionBox.querySelectorAll('input[type="checkbox"]:checked');
+          if (checkedBoxes.length > 0) {
+            e.preventDefault();
+            console.log(`[RightPane] ⌨️ Tab pressed with ${checkedBoxes.length} checked items - confirming`);
+            // Confirm checked items and mirror to native
+            checkedBoxes.forEach((cb) => {
+              const useValue = cb.value;
+              const displayValue = cb.dataset.display;
+              self._createBubble(cardObject, displayValue, useValue);
+              // 🐛 BugFix #5: Mirror to native SS prompt
+              self._mirrorToNativeSSPrompt(cardObject, displayValue, useValue);
+            });
+            input.value = "";
+            suggestionBox.style.display = "none";
+
+            if (self.m_oControlHost) {
+              try {
+                self.m_oControlHost.valueChanged();
+                if (cardObject.isRequired || cardObject.config.required) {
+                  self.m_oControlHost.validStateChanged();
+                }
+              } catch (err) {
+                console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
+              }
+            }
+          } else {
+            // No checked items - create free input bubble if there's text
+            const inputValue = input.value.trim();
+            if (inputValue) {
+              e.preventDefault();
+              console.log(`[RightPane] ⌨️ Tab pressed with text but no selections - creating free bubble`);
+              const parsed = self._parseSSResultValue(inputValue, config);
+              self._createBubble(cardObject, parsed.display, parsed.use);
+              self._mirrorToNativeSSPrompt(cardObject, parsed.display, parsed.use);
+              input.value = "";
+              suggestionBox.style.display = "none";
+
+              if (self.m_oControlHost) {
+                try {
+                  self.m_oControlHost.valueChanged();
+                  if (cardObject.isRequired || cardObject.config.required) {
+                    self.m_oControlHost.validStateChanged();
+                  }
+                } catch (err) {
+                  console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
+                }
+              }
+            }
+          }
+        }
+      }
     });
 
     // ✨ PASTE handler for searchSelect
@@ -637,6 +695,8 @@ define([], function () {
       values.forEach((val) => {
         const parsed = this._parseSSResultValue(val, config);
         this._createBubble(cardObject, parsed.display, parsed.use);
+        // 🐛 BugFix #5: Mirror pasted values to native SS prompt
+        this._mirrorToNativeSSPrompt(cardObject, parsed.display, parsed.use);
       });
 
       if (this.m_oControlHost) {
@@ -655,7 +715,7 @@ define([], function () {
   };
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // ✨ NEW: GET SS PROMPT ELEMENTS
+  // ✨ GET SS PROMPT ELEMENTS
   // ═══════════════════════════════════════════════════════════════════════════
   RightPane.prototype._getSSPromptElements = function (sspBlockName) {
     console.log(`[RightPane] 🔍 Looking for SS prompt block: ${sspBlockName}`);
@@ -675,6 +735,7 @@ define([], function () {
       resultsList: block.querySelector(".clsListViewCheckboxView"),
       selectAllCheckbox: block.querySelector(".clsSelectWithSearchSelectAll"),
       addButton: block.querySelector(".clsPromptInsertButton"),
+      removeButton: block.querySelector(".clsPromptRemoveButton"),
       selectedList: block.querySelector(".clsListViewReportView"),
     };
 
@@ -683,16 +744,20 @@ define([], function () {
       searchInput: !!elements.searchInput,
       searchButton: !!elements.searchButton,
       resultsList: !!elements.resultsList,
+      addButton: !!elements.addButton,
+      removeButton: !!elements.removeButton,
+      selectedList: !!elements.selectedList,
     });
 
     return elements;
   };
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // ✨ NEW: TRIGGER SEARCH AND SELECT
+  // ✨ TRIGGER SEARCH AND SELECT
   // ═══════════════════════════════════════════════════════════════════════════
   RightPane.prototype._triggerSearchAndSelect = function (cardObject, searchTerm) {
     const config = cardObject.config;
+    const self = this;
     console.log(`[RightPane] 🔍 _triggerSearchAndSelect() for "${searchTerm}" using block: ${config.sspBlockName}`);
 
     const elements = this._getSSPromptElements(config.sspBlockName);
@@ -710,20 +775,56 @@ define([], function () {
       return;
     }
 
-    // Set search value and trigger search
+    // ═══════════════════════════════════════════════════════════════════════════
+    // 🐛 BugFix #2 & #4: Show loading spinner IMMEDIATELY before search
+    // ═══════════════════════════════════════════════════════════════════════════
+    let suggestionBox = cardObject.suggestionBox;
+    if (!suggestionBox) {
+      suggestionBox = this._createSuggestionBox(cardObject);
+    }
+
+    // Clear previous results and show loading state
+    const resultsList = suggestionBox.querySelector(".ss-results-list");
+    resultsList.innerHTML = "";
+
+    // Show loading spinner
+    const loadingDiv = document.createElement("div");
+    loadingDiv.className = "ss-loading";
+    loadingDiv.innerHTML = `
+      <div class="ss-spinner"></div>
+      <span>${this.locale === "de" ? "Suche nach" : "Searching for"} "${searchTerm}"...</span>
+    `;
+    resultsList.appendChild(loadingDiv);
+
+    // Update header to show searching
+    suggestionBox.querySelector(".ss-result-count").textContent =
+      this.locale === "de" ? "Suche läuft..." : "Searching...";
+
+    // Show the suggestion box immediately with loading state
+    suggestionBox.style.display = "flex";
+    console.log(`[RightPane] ⏳ Showing loading spinner`);
+
+    // Set search value
     elements.searchInput.value = searchTerm;
     console.log(`[RightPane] ✅ Set search input to: "${searchTerm}"`);
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // 🐛 BugFix #1: Remove disabled attribute before clicking search button
+    // ═══════════════════════════════════════════════════════════════════════════
+    elements.searchButton.removeAttribute("disabled");
+    elements.searchButton.disabled = false;
+    elements.searchButton.style.pointerEvents = "auto";
+    console.log(`[RightPane] 🔓 Removed disabled from search button`);
 
     // Click search button
     elements.searchButton.click();
     console.log(`[RightPane] ✅ Clicked search button`);
 
     // Wait for results using MutationObserver
-    const self = this;
     const observer = new MutationObserver((mutations) => {
-      const resultsList = elements.resultsList;
-      if (resultsList) {
-        const rows = resultsList.querySelectorAll("tr");
+      const nativeResultsList = elements.resultsList;
+      if (nativeResultsList) {
+        const rows = nativeResultsList.querySelectorAll("tr");
         if (rows.length > 0) {
           console.log(`[RightPane] 📋 Found ${rows.length} search results`);
           observer.disconnect();
@@ -736,7 +837,9 @@ define([], function () {
       observer.observe(elements.resultsList, { childList: true, subtree: true });
     }
 
-    // Timeout fallback
+    // ═══════════════════════════════════════════════════════════════════════════
+    // 🐛 BugFix #4: Timeout fallback - show "no results" message
+    // ═══════════════════════════════════════════════════════════════════════════
     setTimeout(() => {
       observer.disconnect();
       if (elements.resultsList) {
@@ -746,13 +849,24 @@ define([], function () {
           self._extractAndDisplayResults(cardObject, elements);
         } else {
           console.log(`[RightPane] ⚠️ No results found after timeout`);
+          // Show no results message
+          resultsList.innerHTML = "";
+          const noResultsDiv = document.createElement("div");
+          noResultsDiv.className = "ss-no-results";
+          noResultsDiv.textContent =
+            self.locale === "de"
+              ? `Keine Ergebnisse für "${searchTerm}" gefunden`
+              : `No results found for "${searchTerm}"`;
+          resultsList.appendChild(noResultsDiv);
+          suggestionBox.querySelector(".ss-result-count").textContent =
+            self.locale === "de" ? "0 Ergebnisse gefunden" : "0 results found";
         }
       }
-    }, 2000);
+    }, 3000);
   };
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // ✨ NEW: EXTRACT AND DISPLAY RESULTS
+  // ✨ EXTRACT AND DISPLAY RESULTS
   // ═══════════════════════════════════════════════════════════════════════════
   RightPane.prototype._extractAndDisplayResults = function (cardObject, elements) {
     const config = cardObject.config;
@@ -779,7 +893,7 @@ define([], function () {
   };
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // ✨ NEW: PARSE SS RESULT VALUE
+  // ✨ PARSE SS RESULT VALUE
   // ═══════════════════════════════════════════════════════════════════════════
   RightPane.prototype._parseSSResultValue = function (resultText, config) {
     let useValue, displayValue;
@@ -790,26 +904,28 @@ define([], function () {
       // Extract first N characters as USE value
       useValue = resultText.substring(0, config.useValueLength).trim();
 
-      console.log(`[RightPane] 📏 Parsed with length=${config.useValueLength}:`);
+      console.log(`[RightPane] 🔍 Parsed with length=${config.useValueLength}:`);
       console.log(`  Display: "${displayValue}"`);
       console.log(`  Use: "${useValue}"`);
     } else {
       // Use full string for both
       useValue = displayValue;
-      console.log(`[RightPane] 📄 Using full value: "${useValue}"`);
+      console.log(`[RightPane] 🔄 Using full value: "${useValue}"`);
     }
 
     return { use: useValue, display: displayValue };
   };
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // ✨ NEW: CREATE SUGGESTION BOX
+  // ✨ CREATE SUGGESTION BOX
   // ═══════════════════════════════════════════════════════════════════════════
   RightPane.prototype._createSuggestionBox = function (cardObject) {
     console.log(`[RightPane] 🔨 Creating suggestion box`);
+    const self = this;
 
     const suggestionBox = document.createElement("div");
     suggestionBox.className = "ss-suggestion-box";
+    suggestionBox.setAttribute("tabindex", "-1"); // Make focusable for keyboard events
 
     // Header
     const header = document.createElement("div");
@@ -867,8 +983,6 @@ define([], function () {
     suggestionBox.appendChild(footer);
 
     // Event handlers
-    const self = this;
-
     selectAllBtn.addEventListener("click", () => {
       resultsList.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
         cb.checked = true;
@@ -891,6 +1005,10 @@ define([], function () {
         const useValue = cb.value;
         const displayValue = cb.dataset.display;
         self._createBubble(cardObject, displayValue, useValue);
+        // ═══════════════════════════════════════════════════════════════════════
+        // 🐛 BugFix #5: Mirror selection to native SS prompt
+        // ═══════════════════════════════════════════════════════════════════════
+        self._mirrorToNativeSSPrompt(cardObject, displayValue, useValue);
       });
 
       // Clear input and hide suggestion box
@@ -915,6 +1033,24 @@ define([], function () {
       suggestionBox.style.display = "none";
     });
 
+    // ═══════════════════════════════════════════════════════════════════════════
+    // 🐛 BugFix #3: TAB key handler on suggestion box
+    // ═══════════════════════════════════════════════════════════════════════════
+    suggestionBox.addEventListener("keydown", (e) => {
+      if (e.key === "Tab") {
+        const checkedBoxes = resultsList.querySelectorAll('input[type="checkbox"]:checked');
+        if (checkedBoxes.length > 0) {
+          e.preventDefault();
+          console.log(`[RightPane] ⌨️ Tab on suggestion box - confirming ${checkedBoxes.length} selections`);
+          confirmBtn.click();
+        }
+      }
+      if (e.key === "Escape") {
+        suggestionBox.style.display = "none";
+        cardObject.inputElement.focus();
+      }
+    });
+
     // Append to card
     cardObject.domElement.appendChild(suggestionBox);
     cardObject.suggestionBox = suggestionBox;
@@ -923,7 +1059,7 @@ define([], function () {
   };
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // ✨ NEW: DISPLAY SEARCH RESULTS
+  // ✨ DISPLAY SEARCH RESULTS
   // ═══════════════════════════════════════════════════════════════════════════
   RightPane.prototype._displaySearchResults = function (cardObject, results) {
     console.log(`[RightPane] 📋 Displaying ${results.length} search results`);
@@ -934,7 +1070,7 @@ define([], function () {
       suggestionBox = this._createSuggestionBox(cardObject);
     }
 
-    // Clear previous results
+    // Clear previous results (including loading state)
     const resultsList = suggestionBox.querySelector(".ss-results-list");
     resultsList.innerHTML = "";
 
@@ -991,12 +1127,120 @@ define([], function () {
   };
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // ✨ NEW: UPDATE SELECTED COUNT
+  // ✨ UPDATE SELECTED COUNT
   // ═══════════════════════════════════════════════════════════════════════════
   RightPane.prototype._updateSelectedCount = function (suggestionBox) {
     const selectedCount = suggestionBox.querySelectorAll('input[type="checkbox"]:checked').length;
     const countSpan = suggestionBox.querySelector(".ss-selected-count");
     countSpan.textContent = `${selectedCount} ${this.locale === "de" ? "ausgewählt" : "selected"}`;
+  };
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // 🐛 BugFix #5: MIRROR TO NATIVE SS PROMPT
+  // ═══════════════════════════════════════════════════════════════════════════
+  RightPane.prototype._mirrorToNativeSSPrompt = function (cardObject, displayValue, useValue) {
+    const config = cardObject.config;
+    console.log(`[RightPane] 🔄 Mirroring to native SS prompt: "${displayValue}" (use: "${useValue}")`);
+
+    if (!config.sspBlockName) {
+      console.warn(`[RightPane] ⚠️ No sspBlockName configured - cannot mirror to native prompt`);
+      return;
+    }
+
+    const elements = this._getSSPromptElements(config.sspBlockName);
+    if (!elements || !elements.resultsList || !elements.addButton) {
+      console.warn(`[RightPane] ⚠️ Cannot find native SS prompt elements for mirroring`);
+      return;
+    }
+
+    // Find the matching row in native results list and check it
+    const rows = elements.resultsList.querySelectorAll("tr");
+    let foundRow = null;
+
+    rows.forEach((row) => {
+      const label = row.querySelector(".clsListItemLabel") || row.querySelector("td");
+      if (label) {
+        const rowText = label.textContent.trim();
+        // Match by display value or use value
+        if (rowText === displayValue || rowText.startsWith(useValue)) {
+          foundRow = row;
+        }
+      }
+    });
+
+    if (foundRow) {
+      // Check the checkbox in native prompt
+      const checkbox = foundRow.querySelector('input[type="checkbox"]');
+      if (checkbox && !checkbox.checked) {
+        checkbox.checked = true;
+        // Trigger change event
+        const event = new Event("change", { bubbles: true });
+        checkbox.dispatchEvent(event);
+        console.log(`[RightPane] ✅ Checked native row for: "${displayValue}"`);
+      }
+
+      // Click the native Add button after a short delay
+      setTimeout(() => {
+        if (elements.addButton) {
+          elements.addButton.click();
+          console.log(`[RightPane] ✅ Clicked native Add button`);
+        }
+      }, 100);
+    } else {
+      console.warn(`[RightPane] ⚠️ Could not find matching row in native prompt for: "${displayValue}"`);
+      // Even if not found, try to add by manipulating the prompt differently
+      // This handles cases where the search results have changed
+    }
+  };
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // 🐛 BugFix #6: REMOVE FROM NATIVE SS PROMPT
+  // ═══════════════════════════════════════════════════════════════════════════
+  RightPane.prototype._removeFromNativeSSPrompt = function (cardObject, displayValue, useValue) {
+    const config = cardObject.config;
+    console.log(`[RightPane] 🔄 Removing from native SS prompt: "${displayValue}"`);
+
+    if (!config.sspBlockName) {
+      console.warn(`[RightPane] ⚠️ No sspBlockName configured - cannot remove from native prompt`);
+      return;
+    }
+
+    const elements = this._getSSPromptElements(config.sspBlockName);
+    if (!elements || !elements.selectedList || !elements.removeButton) {
+      console.warn(`[RightPane] ⚠️ Cannot find native SS prompt elements for removal`);
+      return;
+    }
+
+    // Find the matching row in native selected list
+    const rows = elements.selectedList.querySelectorAll("tr");
+    let foundRow = null;
+
+    rows.forEach((row) => {
+      const label = row.querySelector(".clsListItemLabel") || row.querySelector("td");
+      if (label) {
+        const rowText = label.textContent.trim();
+        // Match by display value or use value
+        if (rowText === displayValue || rowText.startsWith(useValue)) {
+          foundRow = row;
+        }
+      }
+    });
+
+    if (foundRow) {
+      // Click the row to select it (native SS uses click to select for removal)
+      foundRow.click();
+      console.log(`[RightPane] ✅ Clicked native selected row for: "${displayValue}"`);
+
+      // Click the native Remove button after a short delay
+      setTimeout(() => {
+        if (elements.removeButton) {
+          elements.removeButton.click();
+          console.log(`[RightPane] ✅ Clicked native Remove button`);
+        }
+      }, 100);
+    } else {
+      console.warn(`[RightPane] ⚠️ Could not find matching row in native selected list for: "${displayValue}"`);
+    }
   };
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -1056,7 +1300,7 @@ define([], function () {
       card.appendChild(datalist);
       console.log(`[RightPane] ✅ Created datalist with ID: ${datalistId}`);
     } else if (promptType === "text") {
-      console.log(`[RightPane] 📝 Text-only input - no datalist`);
+      console.log(`[RightPane] 🔍 Text-only input - no datalist`);
     } else {
       console.log(`[RightPane] ⚠️ No DataStore found for queryName: ${queryName}`);
     }
@@ -1278,9 +1522,10 @@ define([], function () {
     removeBtn.className = "bubble-remove";
     removeBtn.textContent = "×";
 
+    const self = this;
     removeBtn.addEventListener("click", () => {
       console.log(`[RightPane] 🗑 Remove button clicked for: "${displayValue}"`);
-      this._removeBubble(cardObject, displayValue, bubble);
+      self._removeBubble(cardObject, displayValue, bubble, useValue);
     });
 
     bubble.appendChild(removeBtn);
@@ -1293,7 +1538,7 @@ define([], function () {
   // ═══════════════════════════════════════════════════════════════════════════
   // REMOVE BUBBLE
   // ═══════════════════════════════════════════════════════════════════════════
-  RightPane.prototype._removeBubble = function (cardObject, displayValue, bubbleElement) {
+  RightPane.prototype._removeBubble = function (cardObject, displayValue, bubbleElement, useValue) {
     console.log(`[RightPane] 🗑 Removing bubble: "${displayValue}"`);
     console.log(`[RightPane] 🔍 Before removal, bubbledValues:`, cardObject.bubbledValues);
 
@@ -1309,6 +1554,13 @@ define([], function () {
     if (bubbleElement && bubbleElement.parentNode) {
       bubbleElement.parentNode.removeChild(bubbleElement);
       console.log(`[RightPane] ✅ Bubble removed from DOM`);
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // 🐛 BugFix #6: Sync removal to native SS prompt
+    // ═══════════════════════════════════════════════════════════════════════════
+    if (cardObject.config.promptType === "searchSelect") {
+      this._removeFromNativeSSPrompt(cardObject, displayValue, useValue);
     }
 
     if (this.m_oControlHost) {
@@ -1352,7 +1604,7 @@ define([], function () {
       cardObject.requiredIndicator.textContent = "✓ Required";
       cardObject.requiredIndicator.classList.add("filled");
     } else {
-      cardObject.requiredIndicator.textContent = "★ Required";
+      cardObject.requiredIndicator.textContent = "☆ Required";
       cardObject.requiredIndicator.classList.remove("filled");
     }
   };
