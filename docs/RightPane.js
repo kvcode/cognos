@@ -572,7 +572,6 @@ define([], function () {
   // ===========================================================================
   RightPane.prototype._renderSearchSelectInput = function (card, cardObject) {
     const config = cardObject.config;
-    const self = this;
     console.log("[RightPane]  Rendering searchSelect input for:", config.label);
 
     // Validate required config
@@ -757,7 +756,6 @@ define([], function () {
   // ===========================================================================
   RightPane.prototype._triggerSearchAndSelect = function (cardObject, searchTerm) {
     const config = cardObject.config;
-    const self = this;
     console.log(`[RightPane]  _triggerSearchAndSelect() for "${searchTerm}" using block: ${config.sspBlockName}`);
 
     const elements = this._getSSPromptElements(config.sspBlockName);
@@ -821,64 +819,68 @@ define([], function () {
     console.log(`[RightPane] Clicked search button`);
 
     // ========================================================================
-    // BugFix #7: DEBOUNCED MutationObserver - wait for mutations to settle
+    // Monitor Cognos's progress.gif spinner for loading state
     // ========================================================================
-    let debounceTimer;
-    let mutationCount = 0;
-    const observer = new MutationObserver((mutations) => {
-      mutationCount++;
-      console.log(`[RightPane] Mutation #${mutationCount} detected - resetting timer`);
+    let spinnerAppeared = false;
+    let checkCount = 0;
+    const maxChecks = 600; // 600 * 50ms = 30 seconds max
 
-      // Clear previous timer
-      clearTimeout(debounceTimer);
+    const checkSpinner = setInterval(() => {
+      checkCount++;
 
-      // Wait 400ms after LAST mutation before extracting
-      debounceTimer = setTimeout(() => {
+      // Look for the progress spinner in the SS block
+      const spinner = elements.block.querySelector('img[src*="progress.gif"]');
+
+      if (!spinnerAppeared && spinner) {
+        // Spinner appeared - Cognos started loading
+        spinnerAppeared = true;
+        console.log(`[RightPane] Loading spinner detected - query running...`);
+      } else if (spinnerAppeared && !spinner) {
+        // Spinner disappeared - Cognos finished loading!
+        clearInterval(checkSpinner);
+        console.log(`[RightPane] Spinner gone - extracting results`);
+
         const rows = elements.resultsList.querySelectorAll("tr");
         if (rows.length > 0) {
-          console.log(`[RightPane] Mutations settled after ${mutationCount} changes - extracting ${rows.length} rows`);
-          observer.disconnect();
+          console.log(`[RightPane] Found ${rows.length} results`);
           self._extractAndDisplayResults(cardObject, elements);
         } else {
-          console.log(`[RightPane] Mutations settled but no rows found`);
-        }
-      }, 400); // 400ms after last change = Cognos is done
-    });
-
-    if (elements.resultsList) {
-      observer.observe(elements.resultsList, { childList: true, subtree: true });
-      console.log(`[RightPane] MutationObserver started - watching for DOM changes`);
-    }
-
-    // ========================================================================
-    // BugFix #4: Timeout fallback - show "no results" message (extended for large datasets)
-    // ========================================================================
-    setTimeout(() => {
-      clearTimeout(debounceTimer);
-      observer.disconnect();
-      console.log(`[RightPane] Timeout reached after 30 seconds`);
-
-      if (elements.resultsList) {
-        const rows = elements.resultsList.querySelectorAll("tr");
-        if (rows.length > 0) {
-          console.log(`[RightPane] Timeout: Found ${rows.length} results after long wait`);
-          self._extractAndDisplayResults(cardObject, elements);
-        } else {
-          console.log(`[RightPane] No results found after 30 second timeout`);
-          // Show no results message
+          console.log(`[RightPane] No results found`);
           resultsList.innerHTML = "";
           const noResultsDiv = document.createElement("div");
           noResultsDiv.className = "ss-no-results";
           noResultsDiv.textContent =
             self.locale === "de"
-              ? `Keine Ergebnisse für "${searchTerm}" gefunden`
+              ? `Keine Ergebnisse fuer "${searchTerm}" gefunden`
+              : `No results found for "${searchTerm}"`;
+          resultsList.appendChild(noResultsDiv);
+          suggestionBox.querySelector(".ss-result-count").textContent =
+            self.locale === "de" ? "0 Ergebnisse gefunden" : "0 results found";
+        }
+      } else if (checkCount >= maxChecks) {
+        // Timeout after 30 seconds
+        clearInterval(checkSpinner);
+        console.log(`[RightPane] Timeout after 30 seconds`);
+
+        const rows = elements.resultsList.querySelectorAll("tr");
+        if (rows.length > 0) {
+          console.log(`[RightPane] Timeout: Found ${rows.length} results anyway`);
+          self._extractAndDisplayResults(cardObject, elements);
+        } else {
+          console.log(`[RightPane] Timeout: No results`);
+          resultsList.innerHTML = "";
+          const noResultsDiv = document.createElement("div");
+          noResultsDiv.className = "ss-no-results";
+          noResultsDiv.textContent =
+            self.locale === "de"
+              ? `Keine Ergebnisse fuer "${searchTerm}" gefunden`
               : `No results found for "${searchTerm}"`;
           resultsList.appendChild(noResultsDiv);
           suggestionBox.querySelector(".ss-result-count").textContent =
             self.locale === "de" ? "0 Ergebnisse gefunden" : "0 results found";
         }
       }
-    }, 30000); // 30 second timeout for very large datasets
+    }, 50); // Check every 50ms
   };
 
   // ===========================================================================
@@ -937,7 +939,6 @@ define([], function () {
   // ===========================================================================
   RightPane.prototype._createSuggestionBox = function (cardObject) {
     console.log(`[RightPane]  Creating suggestion box`);
-    const self = this;
 
     const suggestionBox = document.createElement("div");
     suggestionBox.className = "ss-suggestion-box";
@@ -1095,7 +1096,6 @@ define([], function () {
       `${results.length} ${this.locale === "de" ? "Ergebnisse gefunden" : "results found"}`;
 
     // Populate with new results
-    const self = this;
     results.forEach((result, idx) => {
       const item = document.createElement("label");
       item.className = "ss-result-item";
@@ -1538,7 +1538,6 @@ define([], function () {
     removeBtn.className = "bubble-remove";
     removeBtn.textContent = "";
 
-    const self = this;
     removeBtn.addEventListener("click", () => {
       console.log(`[RightPane]  Remove button clicked for: "${displayValue}"`);
       self._removeBubble(cardObject, displayValue, bubble, useValue);
