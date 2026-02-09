@@ -4,7 +4,7 @@ define([], function () {
   console.log("[RightPane] === Module Loaded ===");
 
   function RightPane() {
-    console.log("[RightPane] 🏗 Constructor called");
+    console.log("[RightPane]  Constructor called");
     this.domNode = null;
     this.cardsContainer = null;
     this.autocompleteData = {};
@@ -14,9 +14,9 @@ define([], function () {
     this.locale = "en";
   }
 
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   // HELPER: Get Localized Text
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   RightPane.prototype.getLocalizedText = function (config, property) {
     const pluralProperty = property + "s";
 
@@ -36,18 +36,18 @@ define([], function () {
     return config[property] || "";
   };
 
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   // INITIALIZE
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   RightPane.prototype.initialize = function (oControlHost, fnDoneInitializing) {
-    console.log("[RightPane] 🔧 initialize() called");
+    console.log("[RightPane]  initialize() called");
 
     this.m_oControlHost = oControlHost;
-    console.log("[RightPane] 💾 Stored oControlHost");
+    console.log("[RightPane]  Stored oControlHost");
 
     if (oControlHost.locale) {
       this.locale = oControlHost.locale.substring(0, 2);
-      console.log("[RightPane] 🌐 Detected locale:", this.locale);
+      console.log("[RightPane]  Detected locale:", this.locale);
     }
 
     try {
@@ -60,60 +60,60 @@ define([], function () {
       this.domNode.appendChild(this.cardsContainer);
 
       const config = oControlHost.configuration || {};
-      console.log("[RightPane] ⚙️ Configuration received:", config);
+      console.log("[RightPane]  Configuration received:", config);
 
       this.autocompleteData = config.autocompleteTags || {};
-      console.log("[RightPane] 🧩 Autocomplete data loaded:", this.autocompleteData);
+      console.log("[RightPane]  Autocomplete data loaded:", this.autocompleteData);
 
-      console.log("[RightPane] ✅ Initialization complete");
+      console.log("[RightPane]  Initialization complete");
       fnDoneInitializing();
     } catch (err) {
-      console.error("[RightPane] ❌ initialize() failed:", err);
+      console.error("[RightPane]  initialize() failed:", err);
       fnDoneInitializing();
     }
   };
 
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   // DRAW
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   RightPane.prototype.draw = function (oControlHost) {
-    console.log("[RightPane] 🖼 draw() called");
+    console.log("[RightPane]  draw() called");
 
     try {
       if (!this.domNode) {
-        console.warn("[RightPane] ⚠️ domNode not initialized, aborting draw");
+        console.warn("[RightPane]  domNode not initialized, aborting draw");
         return;
       }
 
       this.cardsContainer.innerHTML = "";
-      console.log("[RightPane] 🧹 Cleared previous cards");
+      console.log("[RightPane]  Cleared previous cards");
 
       this.cards.forEach((cardObject) => {
         this._renderCard(cardObject);
       });
-      console.log("[RightPane] ✅ Rendered", this.cards.length, "cards");
+      console.log("[RightPane]  Rendered", this.cards.length, "cards");
     } catch (err) {
-      console.error("[RightPane] ❌ draw() failed:", err);
+      console.error("[RightPane]  draw() failed:", err);
     }
   };
 
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   // SET DATA STORES
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   RightPane.prototype.setDataStores = function (dataStores) {
-    console.log("[RightPane] 📦 setDataStores() called");
+    console.log("[RightPane]  setDataStores() called");
     this.dataStores = dataStores || {};
-    console.log("[RightPane] 💾 Available DataStores:", Object.keys(this.dataStores));
+    console.log("[RightPane]  Available DataStores:", Object.keys(this.dataStores));
 
     Object.keys(this.dataStores).forEach((key) => {
       const ds = this.dataStores[key];
-      console.log(`[RightPane] 📊 DataStore "${key}": ${ds.rowCount} rows`);
+      console.log(`[RightPane]  DataStore "${key}": ${ds.rowCount} rows`);
     });
   };
 
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   // HAS CARD - Check if card exists for paramName
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   RightPane.prototype.hasCard = function (paramName) {
     const exists = this.cards.some((card) => {
       if (card.config.paramName === paramName) {
@@ -124,52 +124,52 @@ define([], function () {
       }
       return false;
     });
-    console.log(`[RightPane] 🔍 hasCard(${paramName}):`, exists);
+    console.log(`[RightPane]  hasCard(${paramName}):`, exists);
     return exists;
   };
 
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   // ADD CARD
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   RightPane.prototype.addCard = function (cardData) {
-    console.log("[RightPane] ➕ addCard() called!");
-    console.log("[RightPane] 📦 Received cardData:", JSON.stringify(cardData, null, 2));
+    console.log("[RightPane]  addCard() called!");
+    console.log("[RightPane]  Received cardData:", JSON.stringify(cardData, null, 2));
 
     try {
       if (!cardData.fullConfig) {
-        console.error("[RightPane] ❌ cardData.fullConfig is missing! Cannot create card.");
-        console.log("[RightPane] ↩ Aborting card creation");
+        console.error("[RightPane]  cardData.fullConfig is missing! Cannot create card.");
+        console.log("[RightPane]  Aborting card creation");
         return;
       }
 
-      console.log("[RightPane] ✅ fullConfig found:", JSON.stringify(cardData.fullConfig, null, 2));
+      console.log("[RightPane]  fullConfig found:", JSON.stringify(cardData.fullConfig, null, 2));
 
       const cardObject = this._createCardObject(cardData);
-      console.log("[RightPane] 🏗 Card object created:", cardObject);
+      console.log("[RightPane]  Card object created:", cardObject);
 
       this.cards.push(cardObject);
-      console.log("[RightPane] 💾 Card object stored in cards array");
-      console.log("[RightPane] 📊 Total cards now:", this.cards.length);
+      console.log("[RightPane]  Card object stored in cards array");
+      console.log("[RightPane]  Total cards now:", this.cards.length);
 
       if (this.cardsContainer) {
         this._renderCard(cardObject);
-        console.log("[RightPane] ✅ Card rendered to DOM");
+        console.log("[RightPane]  Card rendered to DOM");
       } else {
-        console.warn("[RightPane] ⚠️ cardsContainer not initialized, card will render on draw()");
+        console.warn("[RightPane]  cardsContainer not initialized, card will render on draw()");
       }
     } catch (err) {
-      console.error("[RightPane] ❌ addCard() failed:", err);
+      console.error("[RightPane]  addCard() failed:", err);
     }
   };
 
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   // CREATE CARD OBJECT
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   RightPane.prototype._createCardObject = function (cardData) {
-    console.log("[RightPane] 🏗 _createCardObject() called");
+    console.log("[RightPane]  _createCardObject() called");
 
     const config = cardData.fullConfig;
-    console.log("[RightPane] 🔍 Extracting config:", JSON.stringify(config, null, 2));
+    console.log("[RightPane]  Extracting config:", JSON.stringify(config, null, 2));
 
     const cardObject = {
       config: config,
@@ -181,25 +181,25 @@ define([], function () {
       isRequired: cardData.isRequired || false,
       dateFromInput: null,
       dateToInput: null,
-      suggestionBox: null, // ✨ For searchSelect
+      suggestionBox: null, //  For searchSelect
 
-      // ═══════════════════════════════════════════════════════════════════════
+      // ===========================================================================
       // GET PARAMETERS - Called by Cognos on finish
-      // ═══════════════════════════════════════════════════════════════════════
+      // ===========================================================================
       getParameters: function () {
-        console.log("[RightPane] 📋 Card getParameters() called for:", this.config.label);
-        console.log("[RightPane] 🔍 promptType:", this.config.promptType);
+        console.log("[RightPane]  Card getParameters() called for:", this.config.label);
+        console.log("[RightPane]  promptType:", this.config.promptType);
 
         const promptType = this.config.promptType || "";
 
-        // ═══════════════════════════════════════════════════════════════════════
+        // ===========================================================================
         // TYPE: dateRange - Single parameter with range format for in_range()
-        // ═══════════════════════════════════════════════════════════════════════
+        // ===========================================================================
         if (promptType === "dateRange") {
-          console.log("[RightPane] 📅 Processing dateRange type");
+          console.log("[RightPane]  Processing dateRange type");
 
           if (!this.config.paramName) {
-            console.error("[RightPane] ❌ paramName missing for dateRange!");
+            console.error("[RightPane]  paramName missing for dateRange!");
             return [];
           }
 
@@ -207,7 +207,7 @@ define([], function () {
           const toValue = this.dateToInput ? this.dateToInput.value : "";
 
           if (!fromValue || !toValue) {
-            console.log("[RightPane] ⚠️ Date range incomplete - returning empty");
+            console.log("[RightPane]  Date range incomplete - returning empty");
             return [
               {
                 parameter: this.config.paramName,
@@ -234,18 +234,18 @@ define([], function () {
             },
           ];
 
-          console.log("[RightPane] 📅 DateRange returning RangeParameter:", JSON.stringify(result, null, 2));
+          console.log("[RightPane]  DateRange returning RangeParameter:", JSON.stringify(result, null, 2));
           return result;
         }
 
-        // ═══════════════════════════════════════════════════════════════════════
+        // ===========================================================================
         // TYPE: dateFromTo - Two separate parameters for BETWEEN ? AND ?
-        // ═══════════════════════════════════════════════════════════════════════
+        // ===========================================================================
         if (promptType === "dateFromTo") {
-          console.log("[RightPane] 📅 Processing dateFromTo type");
+          console.log("[RightPane]  Processing dateFromTo type");
 
           if (!this.config.paramNames || !this.config.paramNames.from || !this.config.paramNames.to) {
-            console.error("[RightPane] ❌ paramNames.from/to missing for dateFromTo!");
+            console.error("[RightPane]  paramNames.from/to missing for dateFromTo!");
             return [];
           }
 
@@ -278,18 +278,18 @@ define([], function () {
             });
           }
 
-          console.log("[RightPane] 📅 DateFromTo returning two parameters:", JSON.stringify(result, null, 2));
+          console.log("[RightPane]  DateFromTo returning two parameters:", JSON.stringify(result, null, 2));
           return result;
         }
 
-        // ═══════════════════════════════════════════════════════════════════════
+        // ===========================================================================
         // TYPE: date - Single date value
-        // ═══════════════════════════════════════════════════════════════════════
+        // ===========================================================================
         if (promptType === "date") {
-          console.log("[RightPane] 📅 Processing date type");
+          console.log("[RightPane]  Processing date type");
 
           if (!this.config.paramName) {
-            console.error("[RightPane] ❌ paramName missing for date!");
+            console.error("[RightPane]  paramName missing for date!");
             return [];
           }
 
@@ -303,15 +303,15 @@ define([], function () {
             },
           ];
 
-          console.log("[RightPane] 📅 Date returning:", JSON.stringify(result, null, 2));
+          console.log("[RightPane]  Date returning:", JSON.stringify(result, null, 2));
           return result;
         }
 
-        // ═══════════════════════════════════════════════════════════════════════
+        // ===========================================================================
         // DEFAULT: Regular value prompt (bubble-based) - includes searchSelect
-        // ═══════════════════════════════════════════════════════════════════════
+        // ===========================================================================
         if (!this.config.paramName) {
-          console.error("[RightPane] ❌ paramName missing in config!");
+          console.error("[RightPane]  paramName missing in config!");
           return [];
         }
 
@@ -325,64 +325,64 @@ define([], function () {
           },
         ];
 
-        console.log("[RightPane] 📤 Returning:", JSON.stringify(result, null, 2));
+        console.log("[RightPane]  Returning:", JSON.stringify(result, null, 2));
         return result;
       },
     };
 
-    console.log("[RightPane] ✅ Card object structure created");
+    console.log("[RightPane]  Card object structure created");
     return cardObject;
   };
 
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   // REMOVE CARD
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   RightPane.prototype.removeCard = function (cardObject) {
-    console.log(`[RightPane] 🗑 removeCard() called for:`, cardObject.config.label);
+    console.log(`[RightPane]  removeCard() called for:`, cardObject.config.label);
 
     if (cardObject.isRequired) {
-      console.warn(`[RightPane] ⚠️ Cannot remove required card: ${cardObject.config.label}`);
+      console.warn(`[RightPane]  Cannot remove required card: ${cardObject.config.label}`);
       return;
     }
 
-    console.log(`[RightPane] 🧹 Clearing bubbledValues before removal`);
+    console.log(`[RightPane]  Clearing bubbledValues before removal`);
     cardObject.bubbledValues = [];
 
     if (this.m_oControlHost) {
       try {
         this.m_oControlHost.valueChanged();
-        console.log(`[RightPane] ✅ Cognos notified of parameter clearing`);
+        console.log(`[RightPane]  Cognos notified of parameter clearing`);
       } catch (err) {
-        console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
+        console.error(`[RightPane]  Error notifying Cognos:`, err);
       }
     }
 
     const index = this.cards.indexOf(cardObject);
     if (index > -1) {
       this.cards.splice(index, 1);
-      console.log(`[RightPane] 💾 Removed from cards array at index ${index}`);
-      console.log(`[RightPane] 💾 After removal, total cards:`, this.cards.length);
+      console.log(`[RightPane]  Removed from cards array at index ${index}`);
+      console.log(`[RightPane]  After removal, total cards:`, this.cards.length);
     } else {
-      console.warn(`[RightPane] ⚠️ Card not found in cards array!`);
+      console.warn(`[RightPane]  Card not found in cards array!`);
     }
 
     if (cardObject.domElement && cardObject.domElement.parentNode) {
       cardObject.domElement.parentNode.removeChild(cardObject.domElement);
-      console.log(`[RightPane] ✅ Removed card DOM element`);
+      console.log(`[RightPane]  Removed card DOM element`);
     }
 
     if (cardObject.sourceButton) {
       cardObject.sourceButton.classList.remove("disabled");
-      console.log(`[RightPane] 🎨 Re-enabled source button`);
+      console.log(`[RightPane]  Re-enabled source button`);
     }
   };
 
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   // RENDER CARD
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   RightPane.prototype._renderCard = function (cardObject) {
-    console.log("[RightPane] 🛠 _renderCard() called");
-    console.log("[RightPane] 📦 Card config:", JSON.stringify(cardObject.config, null, 2));
+    console.log("[RightPane]  _renderCard() called");
+    console.log("[RightPane]  Card config:", JSON.stringify(cardObject.config, null, 2));
 
     try {
       const config = cardObject.config;
@@ -409,11 +409,11 @@ define([], function () {
       if (!cardObject.isRequired && !config.required) {
         const removeCardBtn = document.createElement("button");
         removeCardBtn.className = "card-remove-btn";
-        removeCardBtn.textContent = "×";
+        removeCardBtn.textContent = "";
         removeCardBtn.title = "Remove card";
 
         removeCardBtn.addEventListener("click", () => {
-          console.log(`[RightPane] 🗑 Card remove button clicked for: ${config.label}`);
+          console.log(`[RightPane]  Card remove button clicked for: ${config.label}`);
           this.removeCard(cardObject);
         });
 
@@ -446,7 +446,7 @@ define([], function () {
       if (config.required || cardObject.isRequired) {
         const requiredDiv = document.createElement("div");
         requiredDiv.className = "right-pane-card-required";
-        requiredDiv.textContent = "☆ Required";
+        requiredDiv.textContent = " Required";
         card.appendChild(requiredDiv);
         cardObject.requiredIndicator = requiredDiv;
       }
@@ -457,7 +457,7 @@ define([], function () {
       } else if (promptType === "date") {
         this._renderDateInput(card, cardObject);
       } else if (promptType === "searchSelect") {
-        // ✨ Search & Select type
+        //  Search & Select type
         this._renderSearchSelectInput(card, cardObject);
       } else {
         // Default: bubble input (value prompt or text)
@@ -466,15 +466,15 @@ define([], function () {
 
       this.cardsContainer.appendChild(card);
       cardObject.domElement = card;
-      console.log("[RightPane] ✅ Card rendered to DOM:", config.label);
+      console.log("[RightPane]  Card rendered to DOM:", config.label);
     } catch (err) {
-      console.error("[RightPane] ❌ _renderCard() failed:", err);
+      console.error("[RightPane]  _renderCard() failed:", err);
     }
   };
 
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   // RENDER DATE RANGE INPUT (used by both dateRange and dateFromTo)
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   RightPane.prototype._renderDateRangeInput = function (card, cardObject) {
     const container = document.createElement("div");
     container.className = "date-range-container";
@@ -512,14 +512,14 @@ define([], function () {
       if (this.m_oControlHost) {
         try {
           this.m_oControlHost.valueChanged();
-          console.log(`[RightPane] ✅ Date range changed - Cognos notified`);
+          console.log(`[RightPane]  Date range changed - Cognos notified`);
 
           if (cardObject.isRequired || cardObject.config.required) {
             this.m_oControlHost.validStateChanged();
-            console.log(`[RightPane] ✅ Cognos notified of valid state change (required card)`);
+            console.log(`[RightPane]  Cognos notified of valid state change (required card)`);
           }
         } catch (err) {
-          console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
+          console.error(`[RightPane]  Error notifying Cognos:`, err);
         }
       }
       this._updateRequiredIndicator(cardObject);
@@ -529,9 +529,9 @@ define([], function () {
     toInput.addEventListener("change", notifyChange);
   };
 
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   // RENDER SINGLE DATE INPUT
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   RightPane.prototype._renderDateInput = function (card, cardObject) {
     const input = document.createElement("input");
     input.type = "date";
@@ -552,14 +552,14 @@ define([], function () {
         if (this.m_oControlHost) {
           try {
             this.m_oControlHost.valueChanged();
-            console.log(`[RightPane] ✅ Date selected - Cognos notified`);
+            console.log(`[RightPane]  Date selected - Cognos notified`);
 
             if (cardObject.isRequired || cardObject.config.required) {
               this.m_oControlHost.validStateChanged();
-              console.log(`[RightPane] ✅ Cognos notified of valid state change (required card)`);
+              console.log(`[RightPane]  Cognos notified of valid state change (required card)`);
             }
           } catch (err) {
-            console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
+            console.error(`[RightPane]  Error notifying Cognos:`, err);
           }
         }
         this._updateRequiredIndicator(cardObject);
@@ -567,17 +567,17 @@ define([], function () {
     });
   };
 
-  // ═══════════════════════════════════════════════════════════════════════════
-  // ✨ RENDER SEARCH & SELECT INPUT
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
+  //  RENDER SEARCH & SELECT INPUT
+  // ===========================================================================
   RightPane.prototype._renderSearchSelectInput = function (card, cardObject) {
     const config = cardObject.config;
     const self = this;
-    console.log("[RightPane] 🔍 Rendering searchSelect input for:", config.label);
+    console.log("[RightPane]  Rendering searchSelect input for:", config.label);
 
     // Validate required config
     if (!config.sspBlockName) {
-      console.error(`[RightPane] ❌ searchSelect type requires sspBlockName property for: ${config.label}`);
+      console.error(`[RightPane]  searchSelect type requires sspBlockName property for: ${config.label}`);
     }
 
     // Input wrapper
@@ -594,7 +594,7 @@ define([], function () {
     input.className = "right-pane-card-input ss-search-input";
     input.type = "text";
     input.placeholder =
-      this.locale === "de" ? "Tippen und ENTER drücken zum Suchen..." : "Type and press ENTER to search...";
+      this.locale === "de" ? "Tippen und ENTER drcken zum Suchen..." : "Type and press ENTER to search...";
 
     inputWrapper.appendChild(input);
 
@@ -611,32 +611,32 @@ define([], function () {
     cardObject.inputElement = input;
     cardObject.bubblesContainer = bubblesContainer;
 
-    // ✨ ENTER key handler - triggers search
+    //  ENTER key handler - triggers search
     input.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
         e.preventDefault();
         const searchTerm = input.value.trim();
         if (searchTerm) {
-          console.log(`[RightPane] 🔍 Search triggered for: "${searchTerm}"`);
+          console.log(`[RightPane]  Search triggered for: "${searchTerm}"`);
           this._triggerSearchAndSelect(cardObject, searchTerm);
         }
       }
-      // ═══════════════════════════════════════════════════════════════════════
-      // 🐛 BugFix #3: TAB key in input field - confirm checked items or create free bubble
-      // ═══════════════════════════════════════════════════════════════════════
+      // ===========================================================================
+      //  BugFix #3: TAB key in input field - confirm checked items or create free bubble
+      // ===========================================================================
       if (e.key === "Tab") {
         const suggestionBox = cardObject.suggestionBox;
         if (suggestionBox && suggestionBox.style.display !== "none") {
           const checkedBoxes = suggestionBox.querySelectorAll('input[type="checkbox"]:checked');
           if (checkedBoxes.length > 0) {
             e.preventDefault();
-            console.log(`[RightPane] ⌨️ Tab pressed with ${checkedBoxes.length} checked items - confirming`);
+            console.log(`[RightPane]  Tab pressed with ${checkedBoxes.length} checked items - confirming`);
             // Confirm checked items and mirror to native
             checkedBoxes.forEach((cb) => {
               const useValue = cb.value;
               const displayValue = cb.dataset.display;
               self._createBubble(cardObject, displayValue, useValue);
-              // 🐛 BugFix #5: Mirror to native SS prompt
+              //  BugFix #5: Mirror to native SS prompt
               self._mirrorToNativeSSPrompt(cardObject, displayValue, useValue);
             });
             input.value = "";
@@ -649,7 +649,7 @@ define([], function () {
                   self.m_oControlHost.validStateChanged();
                 }
               } catch (err) {
-                console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
+                console.error(`[RightPane]  Error notifying Cognos:`, err);
               }
             }
           } else {
@@ -657,7 +657,7 @@ define([], function () {
             const inputValue = input.value.trim();
             if (inputValue) {
               e.preventDefault();
-              console.log(`[RightPane] ⌨️ Tab pressed with text but no selections - creating free bubble`);
+              console.log(`[RightPane]  Tab pressed with text but no selections - creating free bubble`);
               const parsed = self._parseSSResultValue(inputValue, config);
               self._createBubble(cardObject, parsed.display, parsed.use);
               self._mirrorToNativeSSPrompt(cardObject, parsed.display, parsed.use);
@@ -671,7 +671,7 @@ define([], function () {
                     self.m_oControlHost.validStateChanged();
                   }
                 } catch (err) {
-                  console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
+                  console.error(`[RightPane]  Error notifying Cognos:`, err);
                 }
               }
             }
@@ -680,50 +680,50 @@ define([], function () {
       }
     });
 
-    // ✨ PASTE handler for searchSelect
+    //  PASTE handler for searchSelect
     inputWrapper.addEventListener("paste", (e) => {
       e.preventDefault();
       const pastedText = e.clipboardData.getData("text");
-      console.log(`[RightPane] 📋 Paste detected in searchSelect:`, pastedText);
+      console.log(`[RightPane]  Paste detected in searchSelect:`, pastedText);
 
       const values = pastedText
         .split(/[\n\r\t,;]+/)
         .map((v) => v.trim())
         .filter((v) => v);
-      console.log(`[RightPane] 📋 Parsed ${values.length} values:`, values);
+      console.log(`[RightPane]  Parsed ${values.length} values:`, values);
 
       values.forEach((val) => {
         const parsed = this._parseSSResultValue(val, config);
         this._createBubble(cardObject, parsed.display, parsed.use);
-        // 🐛 BugFix #5: Mirror pasted values to native SS prompt
+        //  BugFix #5: Mirror pasted values to native SS prompt
         this._mirrorToNativeSSPrompt(cardObject, parsed.display, parsed.use);
       });
 
       if (this.m_oControlHost) {
         try {
           this.m_oControlHost.valueChanged();
-          console.log(`[RightPane] ✅ Paste complete - Cognos notified`);
+          console.log(`[RightPane]  Paste complete - Cognos notified`);
 
           if (cardObject.isRequired || cardObject.config.required) {
             this.m_oControlHost.validStateChanged();
           }
         } catch (err) {
-          console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
+          console.error(`[RightPane]  Error notifying Cognos:`, err);
         }
       }
     });
   };
 
-  // ═══════════════════════════════════════════════════════════════════════════
-  // ✨ GET SS PROMPT ELEMENTS
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
+  //  GET SS PROMPT ELEMENTS
+  // ===========================================================================
   RightPane.prototype._getSSPromptElements = function (sspBlockName) {
-    console.log(`[RightPane] 🔍 Looking for SS prompt block: ${sspBlockName}`);
+    console.log(`[RightPane]  Looking for SS prompt block: ${sspBlockName}`);
 
     const block = document.querySelector(`[lid="${sspBlockName}"]`);
 
     if (!block) {
-      console.error(`[RightPane] ❌ SS Prompt block not found: ${sspBlockName}`);
+      console.error(`[RightPane]  SS Prompt block not found: ${sspBlockName}`);
       return null;
     }
 
@@ -739,7 +739,7 @@ define([], function () {
       selectedList: block.querySelector(".clsListViewReportView"),
     };
 
-    console.log(`[RightPane] ✅ Found SS prompt elements:`, {
+    console.log(`[RightPane]  Found SS prompt elements:`, {
       block: !!elements.block,
       searchInput: !!elements.searchInput,
       searchButton: !!elements.searchButton,
@@ -752,18 +752,18 @@ define([], function () {
     return elements;
   };
 
-  // ═══════════════════════════════════════════════════════════════════════════
-  // ✨ TRIGGER SEARCH AND SELECT
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
+  //  TRIGGER SEARCH AND SELECT
+  // ===========================================================================
   RightPane.prototype._triggerSearchAndSelect = function (cardObject, searchTerm) {
     const config = cardObject.config;
     const self = this;
-    console.log(`[RightPane] 🔍 _triggerSearchAndSelect() for "${searchTerm}" using block: ${config.sspBlockName}`);
+    console.log(`[RightPane]  _triggerSearchAndSelect() for "${searchTerm}" using block: ${config.sspBlockName}`);
 
     const elements = this._getSSPromptElements(config.sspBlockName);
 
     if (!elements || !elements.searchInput || !elements.searchButton) {
-      console.error(`[RightPane] ❌ Cannot find SS prompt elements for: ${config.sspBlockName}`);
+      console.error(`[RightPane]  Cannot find SS prompt elements for: ${config.sspBlockName}`);
       // Fallback: create bubble directly from input
       const parsed = this._parseSSResultValue(searchTerm, config);
       this._createBubble(cardObject, parsed.display, parsed.use);
@@ -775,9 +775,9 @@ define([], function () {
       return;
     }
 
-    // ═══════════════════════════════════════════════════════════════════════════
-    // 🐛 BugFix #2 & #4: Show loading spinner IMMEDIATELY before search
-    // ═══════════════════════════════════════════════════════════════════════════
+    // ===========================================================================
+    //  BugFix #2 & #4: Show loading spinner IMMEDIATELY before search
+    // ===========================================================================
     let suggestionBox = cardObject.suggestionBox;
     if (!suggestionBox) {
       suggestionBox = this._createSuggestionBox(cardObject);
@@ -798,57 +798,73 @@ define([], function () {
 
     // Update header to show searching
     suggestionBox.querySelector(".ss-result-count").textContent =
-      this.locale === "de" ? "Suche läuft..." : "Searching...";
+      this.locale === "de" ? "Suche luft..." : "Searching...";
 
     // Show the suggestion box immediately with loading state
     suggestionBox.style.display = "flex";
-    console.log(`[RightPane] ⏳ Showing loading spinner`);
+    console.log(`[RightPane]  Showing loading spinner`);
 
     // Set search value
     elements.searchInput.value = searchTerm;
-    console.log(`[RightPane] ✅ Set search input to: "${searchTerm}"`);
+    console.log(`[RightPane]  Set search input to: "${searchTerm}"`);
 
-    // ═══════════════════════════════════════════════════════════════════════════
-    // 🐛 BugFix #1: Remove disabled attribute before clicking search button
-    // ═══════════════════════════════════════════════════════════════════════════
+    // ===========================================================================
+    //  BugFix #1: Remove disabled attribute before clicking search button
+    // ===========================================================================
     elements.searchButton.removeAttribute("disabled");
     elements.searchButton.disabled = false;
     elements.searchButton.style.pointerEvents = "auto";
-    console.log(`[RightPane] 🔓 Removed disabled from search button`);
+    console.log(`[RightPane]  Removed disabled from search button`);
 
     // Click search button
     elements.searchButton.click();
-    console.log(`[RightPane] ✅ Clicked search button`);
+    console.log(`[RightPane] Clicked search button`);
 
-    // Wait for results using MutationObserver
+    // ========================================================================
+    // BugFix #7: DEBOUNCED MutationObserver - wait for mutations to settle
+    // ========================================================================
+    let debounceTimer;
+    let mutationCount = 0;
     const observer = new MutationObserver((mutations) => {
-      const nativeResultsList = elements.resultsList;
-      if (nativeResultsList) {
-        const rows = nativeResultsList.querySelectorAll("tr");
+      mutationCount++;
+      console.log(`[RightPane] Mutation #${mutationCount} detected - resetting timer`);
+
+      // Clear previous timer
+      clearTimeout(debounceTimer);
+
+      // Wait 400ms after LAST mutation before extracting
+      debounceTimer = setTimeout(() => {
+        const rows = elements.resultsList.querySelectorAll("tr");
         if (rows.length > 0) {
-          console.log(`[RightPane] 📋 Found ${rows.length} search results`);
+          console.log(`[RightPane] Mutations settled after ${mutationCount} changes - extracting ${rows.length} rows`);
           observer.disconnect();
           self._extractAndDisplayResults(cardObject, elements);
+        } else {
+          console.log(`[RightPane] Mutations settled but no rows found`);
         }
-      }
+      }, 400); // 400ms after last change = Cognos is done
     });
 
     if (elements.resultsList) {
       observer.observe(elements.resultsList, { childList: true, subtree: true });
+      console.log(`[RightPane] MutationObserver started - watching for DOM changes`);
     }
 
-    // ═══════════════════════════════════════════════════════════════════════════
-    // 🐛 BugFix #4: Timeout fallback - show "no results" message
-    // ═══════════════════════════════════════════════════════════════════════════
+    // ========================================================================
+    // BugFix #4: Timeout fallback - show "no results" message (extended for large datasets)
+    // ========================================================================
     setTimeout(() => {
+      clearTimeout(debounceTimer);
       observer.disconnect();
+      console.log(`[RightPane] Timeout reached after 30 seconds`);
+
       if (elements.resultsList) {
         const rows = elements.resultsList.querySelectorAll("tr");
         if (rows.length > 0) {
-          console.log(`[RightPane] ⏰ Timeout: Found ${rows.length} results`);
+          console.log(`[RightPane] Timeout: Found ${rows.length} results after long wait`);
           self._extractAndDisplayResults(cardObject, elements);
         } else {
-          console.log(`[RightPane] ⚠️ No results found after timeout`);
+          console.log(`[RightPane] No results found after 30 second timeout`);
           // Show no results message
           resultsList.innerHTML = "";
           const noResultsDiv = document.createElement("div");
@@ -862,18 +878,18 @@ define([], function () {
             self.locale === "de" ? "0 Ergebnisse gefunden" : "0 results found";
         }
       }
-    }, 3000);
+    }, 30000); // 30 second timeout for very large datasets
   };
 
-  // ═══════════════════════════════════════════════════════════════════════════
-  // ✨ EXTRACT AND DISPLAY RESULTS
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
+  //  EXTRACT AND DISPLAY RESULTS
+  // ===========================================================================
   RightPane.prototype._extractAndDisplayResults = function (cardObject, elements) {
     const config = cardObject.config;
     const results = [];
 
     const rows = elements.resultsList.querySelectorAll("tr");
-    console.log(`[RightPane] 📋 Extracting ${rows.length} results`);
+    console.log(`[RightPane]  Extracting ${rows.length} results`);
 
     rows.forEach((row, idx) => {
       const label = row.querySelector(".clsListItemLabel") || row.querySelector("td");
@@ -883,18 +899,18 @@ define([], function () {
         results.push(parsed);
 
         if (idx < 3) {
-          console.log(`[RightPane] 📋 Row ${idx}: display="${parsed.display}", use="${parsed.use}"`);
+          console.log(`[RightPane]  Row ${idx}: display="${parsed.display}", use="${parsed.use}"`);
         }
       }
     });
 
-    console.log(`[RightPane] ✅ Extracted ${results.length} results`);
+    console.log(`[RightPane]  Extracted ${results.length} results`);
     this._displaySearchResults(cardObject, results);
   };
 
-  // ═══════════════════════════════════════════════════════════════════════════
-  // ✨ PARSE SS RESULT VALUE
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
+  //  PARSE SS RESULT VALUE
+  // ===========================================================================
   RightPane.prototype._parseSSResultValue = function (resultText, config) {
     let useValue, displayValue;
 
@@ -904,23 +920,23 @@ define([], function () {
       // Extract first N characters as USE value
       useValue = resultText.substring(0, config.useValueLength).trim();
 
-      console.log(`[RightPane] 🔍 Parsed with length=${config.useValueLength}:`);
-      console.log(`  Display: "${displayValue}"`);
-      console.log(`  Use: "${useValue}"`);
+      console.log(`[RightPane]  Parsed with length=${config.useValueLength}:`);
+      // console.log(`  Display: "${displayValue}"`);
+      // console.log(`  Use: "${useValue}"`);
     } else {
       // Use full string for both
       useValue = displayValue;
-      console.log(`[RightPane] 🔄 Using full value: "${useValue}"`);
+      console.log(`[RightPane]  Using full value: "${useValue}"`);
     }
 
     return { use: useValue, display: displayValue };
   };
 
-  // ═══════════════════════════════════════════════════════════════════════════
-  // ✨ CREATE SUGGESTION BOX
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
+  //  CREATE SUGGESTION BOX
+  // ===========================================================================
   RightPane.prototype._createSuggestionBox = function (cardObject) {
-    console.log(`[RightPane] 🔨 Creating suggestion box`);
+    console.log(`[RightPane]  Creating suggestion box`);
     const self = this;
 
     const suggestionBox = document.createElement("div");
@@ -941,12 +957,12 @@ define([], function () {
 
     const selectAllBtn = document.createElement("button");
     selectAllBtn.className = "ss-select-all";
-    selectAllBtn.textContent = this.locale === "de" ? "Alle auswählen" : "Select All";
+    selectAllBtn.textContent = this.locale === "de" ? "Alle auswhlen" : "Select All";
     selectAllBtn.type = "button";
 
     const deselectAllBtn = document.createElement("button");
     deselectAllBtn.className = "ss-deselect-all";
-    deselectAllBtn.textContent = this.locale === "de" ? "Alle abwählen" : "Deselect All";
+    deselectAllBtn.textContent = this.locale === "de" ? "Alle abwhlen" : "Deselect All";
     deselectAllBtn.type = "button";
 
     actions.appendChild(selectAllBtn);
@@ -970,7 +986,7 @@ define([], function () {
 
     const confirmBtn = document.createElement("button");
     confirmBtn.className = "ss-confirm";
-    confirmBtn.textContent = this.locale === "de" ? "Hinzufügen" : "Add Selected";
+    confirmBtn.textContent = this.locale === "de" ? "Hinzufgen" : "Add Selected";
     confirmBtn.type = "button";
 
     const cancelBtn = document.createElement("button");
@@ -999,15 +1015,15 @@ define([], function () {
 
     confirmBtn.addEventListener("click", () => {
       const selectedCheckboxes = resultsList.querySelectorAll('input[type="checkbox"]:checked');
-      console.log(`[RightPane] ✅ Confirming ${selectedCheckboxes.length} selections`);
+      console.log(`[RightPane]  Confirming ${selectedCheckboxes.length} selections`);
 
       selectedCheckboxes.forEach((cb) => {
         const useValue = cb.value;
         const displayValue = cb.dataset.display;
         self._createBubble(cardObject, displayValue, useValue);
-        // ═══════════════════════════════════════════════════════════════════════
-        // 🐛 BugFix #5: Mirror selection to native SS prompt
-        // ═══════════════════════════════════════════════════════════════════════
+        // ===========================================================================
+        //  BugFix #5: Mirror selection to native SS prompt
+        // ===========================================================================
         self._mirrorToNativeSSPrompt(cardObject, displayValue, useValue);
       });
 
@@ -1018,13 +1034,13 @@ define([], function () {
       if (self.m_oControlHost) {
         try {
           self.m_oControlHost.valueChanged();
-          console.log(`[RightPane] ✅ Cognos notified of value change`);
+          console.log(`[RightPane]  Cognos notified of value change`);
 
           if (cardObject.isRequired || cardObject.config.required) {
             self.m_oControlHost.validStateChanged();
           }
         } catch (err) {
-          console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
+          console.error(`[RightPane]  Error notifying Cognos:`, err);
         }
       }
     });
@@ -1033,15 +1049,15 @@ define([], function () {
       suggestionBox.style.display = "none";
     });
 
-    // ═══════════════════════════════════════════════════════════════════════════
-    // 🐛 BugFix #3: TAB key handler on suggestion box
-    // ═══════════════════════════════════════════════════════════════════════════
+    // ===========================================================================
+    //  BugFix #3: TAB key handler on suggestion box
+    // ===========================================================================
     suggestionBox.addEventListener("keydown", (e) => {
       if (e.key === "Tab") {
         const checkedBoxes = resultsList.querySelectorAll('input[type="checkbox"]:checked');
         if (checkedBoxes.length > 0) {
           e.preventDefault();
-          console.log(`[RightPane] ⌨️ Tab on suggestion box - confirming ${checkedBoxes.length} selections`);
+          console.log(`[RightPane]  Tab on suggestion box - confirming ${checkedBoxes.length} selections`);
           confirmBtn.click();
         }
       }
@@ -1058,11 +1074,11 @@ define([], function () {
     return suggestionBox;
   };
 
-  // ═══════════════════════════════════════════════════════════════════════════
-  // ✨ DISPLAY SEARCH RESULTS
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
+  //  DISPLAY SEARCH RESULTS
+  // ===========================================================================
   RightPane.prototype._displaySearchResults = function (cardObject, results) {
-    console.log(`[RightPane] 📋 Displaying ${results.length} search results`);
+    console.log(`[RightPane]  Displaying ${results.length} search results`);
 
     // Create or get existing suggestion box
     let suggestionBox = cardObject.suggestionBox;
@@ -1126,30 +1142,30 @@ define([], function () {
     this._updateSelectedCount(suggestionBox);
   };
 
-  // ═══════════════════════════════════════════════════════════════════════════
-  // ✨ UPDATE SELECTED COUNT
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
+  //  UPDATE SELECTED COUNT
+  // ===========================================================================
   RightPane.prototype._updateSelectedCount = function (suggestionBox) {
     const selectedCount = suggestionBox.querySelectorAll('input[type="checkbox"]:checked').length;
     const countSpan = suggestionBox.querySelector(".ss-selected-count");
-    countSpan.textContent = `${selectedCount} ${this.locale === "de" ? "ausgewählt" : "selected"}`;
+    countSpan.textContent = `${selectedCount} ${this.locale === "de" ? "ausgewhlt" : "selected"}`;
   };
 
-  // ═══════════════════════════════════════════════════════════════════════════
-  // 🐛 BugFix #5: MIRROR TO NATIVE SS PROMPT
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
+  //  BugFix #5: MIRROR TO NATIVE SS PROMPT
+  // ===========================================================================
   RightPane.prototype._mirrorToNativeSSPrompt = function (cardObject, displayValue, useValue) {
     const config = cardObject.config;
-    console.log(`[RightPane] 🔄 Mirroring to native SS prompt: "${displayValue}" (use: "${useValue}")`);
+    console.log(`[RightPane]  Mirroring to native SS prompt: "${displayValue}" (use: "${useValue}")`);
 
     if (!config.sspBlockName) {
-      console.warn(`[RightPane] ⚠️ No sspBlockName configured - cannot mirror to native prompt`);
+      console.warn(`[RightPane]  No sspBlockName configured - cannot mirror to native prompt`);
       return;
     }
 
     const elements = this._getSSPromptElements(config.sspBlockName);
     if (!elements || !elements.resultsList || !elements.addButton) {
-      console.warn(`[RightPane] ⚠️ Cannot find native SS prompt elements for mirroring`);
+      console.warn(`[RightPane]  Cannot find native SS prompt elements for mirroring`);
       return;
     }
 
@@ -1176,38 +1192,38 @@ define([], function () {
         // Trigger change event
         const event = new Event("change", { bubbles: true });
         checkbox.dispatchEvent(event);
-        console.log(`[RightPane] ✅ Checked native row for: "${displayValue}"`);
+        console.log(`[RightPane]  Checked native row for: "${displayValue}"`);
       }
 
       // Click the native Add button after a short delay
       setTimeout(() => {
         if (elements.addButton) {
           elements.addButton.click();
-          console.log(`[RightPane] ✅ Clicked native Add button`);
+          console.log(`[RightPane]  Clicked native Add button`);
         }
       }, 100);
     } else {
-      console.warn(`[RightPane] ⚠️ Could not find matching row in native prompt for: "${displayValue}"`);
+      console.warn(`[RightPane]  Could not find matching row in native prompt for: "${displayValue}"`);
       // Even if not found, try to add by manipulating the prompt differently
       // This handles cases where the search results have changed
     }
   };
 
-  // ═══════════════════════════════════════════════════════════════════════════
-  // 🐛 BugFix #6: REMOVE FROM NATIVE SS PROMPT
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
+  //  BugFix #6: REMOVE FROM NATIVE SS PROMPT
+  // ===========================================================================
   RightPane.prototype._removeFromNativeSSPrompt = function (cardObject, displayValue, useValue) {
     const config = cardObject.config;
-    console.log(`[RightPane] 🔄 Removing from native SS prompt: "${displayValue}"`);
+    console.log(`[RightPane]  Removing from native SS prompt: "${displayValue}"`);
 
     if (!config.sspBlockName) {
-      console.warn(`[RightPane] ⚠️ No sspBlockName configured - cannot remove from native prompt`);
+      console.warn(`[RightPane]  No sspBlockName configured - cannot remove from native prompt`);
       return;
     }
 
     const elements = this._getSSPromptElements(config.sspBlockName);
     if (!elements || !elements.selectedList || !elements.removeButton) {
-      console.warn(`[RightPane] ⚠️ Cannot find native SS prompt elements for removal`);
+      console.warn(`[RightPane]  Cannot find native SS prompt elements for removal`);
       return;
     }
 
@@ -1229,23 +1245,23 @@ define([], function () {
     if (foundRow) {
       // Click the row to select it (native SS uses click to select for removal)
       foundRow.click();
-      console.log(`[RightPane] ✅ Clicked native selected row for: "${displayValue}"`);
+      console.log(`[RightPane]  Clicked native selected row for: "${displayValue}"`);
 
       // Click the native Remove button after a short delay
       setTimeout(() => {
         if (elements.removeButton) {
           elements.removeButton.click();
-          console.log(`[RightPane] ✅ Clicked native Remove button`);
+          console.log(`[RightPane]  Clicked native Remove button`);
         }
       }, 100);
     } else {
-      console.warn(`[RightPane] ⚠️ Could not find matching row in native selected list for: "${displayValue}"`);
+      console.warn(`[RightPane]  Could not find matching row in native selected list for: "${displayValue}"`);
     }
   };
 
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   // RENDER BUBBLE INPUT (Regular/Text)
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   RightPane.prototype._renderBubbleInput = function (card, cardObject) {
     const config = cardObject.config;
     const queryName = config.queryName;
@@ -1254,26 +1270,26 @@ define([], function () {
 
     // Create datalist only if NOT text type and has queryName
     if (promptType !== "text" && queryName && this.dataStores && this.dataStores[queryName]) {
-      console.log(`[RightPane] ✅ Found DataStore for ${queryName}`);
+      console.log(`[RightPane]  Found DataStore for ${queryName}`);
 
       const dataStore = this.dataStores[queryName];
       let useCol = config.useColumn !== undefined ? config.useColumn : 0;
       let displayCol = config.displayColumn !== undefined ? config.displayColumn : 1;
 
-      console.log(`[RightPane] 📋 Config requested useColumn: ${useCol}, displayColumn: ${displayCol}`);
-      console.log(`[RightPane] 📋 DataStore "${queryName}" has ${dataStore.columnCount} column(s)`);
+      console.log(`[RightPane]  Config requested useColumn: ${useCol}, displayColumn: ${displayCol}`);
+      console.log(`[RightPane]  DataStore "${queryName}" has ${dataStore.columnCount} column(s)`);
 
       if (useCol >= dataStore.columnCount) {
-        console.warn(`[RightPane] ⚠️ useColumn ${useCol} out of bounds`);
+        console.warn(`[RightPane]  useColumn ${useCol} out of bounds`);
         useCol = 0;
       }
 
       if (displayCol >= dataStore.columnCount) {
-        console.warn(`[RightPane] ⚠️ displayColumn ${displayCol} out of bounds`);
+        console.warn(`[RightPane]  displayColumn ${displayCol} out of bounds`);
         displayCol = useCol;
       }
 
-      console.log(`[RightPane] ✅ Final validated columns - useColumn: ${useCol}, displayColumn: ${displayCol}`);
+      console.log(`[RightPane]  Final validated columns - useColumn: ${useCol}, displayColumn: ${displayCol}`);
 
       cardObject.validatedUseCol = useCol;
       cardObject.validatedDisplayCol = displayCol;
@@ -1282,7 +1298,7 @@ define([], function () {
       const datalist = document.createElement("datalist");
       datalist.id = datalistId;
 
-      console.log(`[RightPane] 📋 Populating datalist with ${dataStore.rowCount} values`);
+      console.log(`[RightPane]  Populating datalist with ${dataStore.rowCount} values`);
       for (let i = 0; i < dataStore.rowCount; i++) {
         const displayValue = dataStore.getCellValue(i, displayCol);
         const useValue = dataStore.getCellValue(i, useCol);
@@ -1293,16 +1309,16 @@ define([], function () {
         datalist.appendChild(option);
 
         if (i < 3) {
-          console.log(`[RightPane] 📋 Row ${i}: display="${displayValue}", use="${useValue}"`);
+          console.log(`[RightPane]  Row ${i}: display="${displayValue}", use="${useValue}"`);
         }
       }
 
       card.appendChild(datalist);
-      console.log(`[RightPane] ✅ Created datalist with ID: ${datalistId}`);
+      console.log(`[RightPane]  Created datalist with ID: ${datalistId}`);
     } else if (promptType === "text") {
-      console.log(`[RightPane] 🔍 Text-only input - no datalist`);
+      console.log(`[RightPane]  Text-only input - no datalist`);
     } else {
-      console.log(`[RightPane] ⚠️ No DataStore found for queryName: ${queryName}`);
+      console.log(`[RightPane]  No DataStore found for queryName: ${queryName}`);
     }
 
     // Input wrapper
@@ -1322,7 +1338,7 @@ define([], function () {
 
     if (datalistId) {
       input.setAttribute("list", datalistId);
-      console.log(`[RightPane] 🔗 Input linked to datalist: ${datalistId}`);
+      console.log(`[RightPane]  Input linked to datalist: ${datalistId}`);
     }
 
     inputWrapper.appendChild(input);
@@ -1335,17 +1351,17 @@ define([], function () {
       }
     });
 
-    // ✨ PASTE HANDLER
+    //  PASTE HANDLER
     inputWrapper.addEventListener("paste", (e) => {
       e.preventDefault();
       const pastedText = e.clipboardData.getData("text");
-      console.log(`[RightPane] 📋 Paste detected:`, pastedText);
+      console.log(`[RightPane]  Paste detected:`, pastedText);
 
       const values = pastedText
         .split(/[\n\r\t,;]+/)
         .map((v) => v.trim())
         .filter((v) => v);
-      console.log(`[RightPane] 📋 Parsed ${values.length} values:`, values);
+      console.log(`[RightPane]  Parsed ${values.length} values:`, values);
 
       values.forEach((val) => {
         let useValue = val;
@@ -1374,14 +1390,14 @@ define([], function () {
       if (this.m_oControlHost) {
         try {
           this.m_oControlHost.valueChanged();
-          console.log(`[RightPane] ✅ Paste complete - Cognos notified`);
+          console.log(`[RightPane]  Paste complete - Cognos notified`);
 
           if (cardObject.isRequired || cardObject.config.required) {
             this.m_oControlHost.validStateChanged();
-            console.log(`[RightPane] ✅ Cognos notified of valid state change (required card)`);
+            console.log(`[RightPane]  Cognos notified of valid state change (required card)`);
           }
         } catch (err) {
-          console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
+          console.error(`[RightPane]  Error notifying Cognos:`, err);
         }
       }
     });
@@ -1410,27 +1426,27 @@ define([], function () {
               const dsDisplay = dataStore.getCellValue(i, displayCol);
               if (dsDisplay === displayValue) {
                 useValue = dataStore.getCellValue(i, useCol);
-                console.log(`[RightPane] 🔍 Mapped "${displayValue}" → use="${useValue}"`);
+                console.log(`[RightPane]  Mapped "${displayValue}"  use="${useValue}"`);
                 break;
               }
             }
           }
 
-          console.log(`[RightPane] 🎯 Creating bubble: display="${displayValue}", use="${useValue}"`);
+          console.log(`[RightPane]  Creating bubble: display="${displayValue}", use="${useValue}"`);
           this._createBubble(cardObject, displayValue, useValue);
           input.value = "";
 
           if (this.m_oControlHost) {
             try {
               this.m_oControlHost.valueChanged();
-              console.log(`[RightPane] ✅ Cognos notified of value change`);
+              console.log(`[RightPane]  Cognos notified of value change`);
 
               if (cardObject.isRequired || cardObject.config.required) {
                 this.m_oControlHost.validStateChanged();
-                console.log(`[RightPane] ✅ Cognos notified of valid state change (required card)`);
+                console.log(`[RightPane]  Cognos notified of valid state change (required card)`);
               }
             } catch (err) {
-              console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
+              console.error(`[RightPane]  Error notifying Cognos:`, err);
             }
           }
         }
@@ -1453,43 +1469,43 @@ define([], function () {
             const dsDisplay = dataStore.getCellValue(i, displayCol);
             if (dsDisplay === displayValue) {
               useValue = dataStore.getCellValue(i, useCol);
-              console.log(`[RightPane] 🔍 Mapped "${displayValue}" → use="${useValue}"`);
+              console.log(`[RightPane]  Mapped "${displayValue}"  use="${useValue}"`);
               break;
             }
           }
         }
 
-        console.log(`[RightPane] 🎯 Datalist selection confirmed: display="${displayValue}", use="${useValue}"`);
+        console.log(`[RightPane]  Datalist selection confirmed: display="${displayValue}", use="${useValue}"`);
         this._createBubble(cardObject, displayValue, useValue);
         input.value = "";
 
         if (this.m_oControlHost) {
           try {
             this.m_oControlHost.valueChanged();
-            console.log(`[RightPane] ✅ Cognos notified of value change`);
+            console.log(`[RightPane]  Cognos notified of value change`);
 
             if (cardObject.isRequired || cardObject.config.required) {
               this.m_oControlHost.validStateChanged();
-              console.log(`[RightPane] ✅ Cognos notified of valid state change (required card)`);
+              console.log(`[RightPane]  Cognos notified of valid state change (required card)`);
             }
           } catch (err) {
-            console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
+            console.error(`[RightPane]  Error notifying Cognos:`, err);
           }
         }
       }
     });
   };
 
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   // CREATE BUBBLE (with maxValues enforcement)
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   RightPane.prototype._createBubble = function (cardObject, displayValue, useValue) {
-    console.log(`[RightPane] 🫧 Creating bubble: display="${displayValue}", use="${useValue}"`);
+    console.log(`[RightPane]  Creating bubble: display="${displayValue}", use="${useValue}"`);
 
     // Check maxValues
     const maxValues = cardObject.config.maxValues;
     if (maxValues && cardObject.bubbledValues.length >= maxValues) {
-      console.warn(`[RightPane] ⚠️ maxValues limit reached (${maxValues}) - clearing existing values`);
+      console.warn(`[RightPane]  maxValues limit reached (${maxValues}) - clearing existing values`);
       cardObject.bubbledValues = [];
       if (cardObject.bubblesContainer) {
         cardObject.bubblesContainer.innerHTML = "";
@@ -1498,7 +1514,7 @@ define([], function () {
 
     // Check for duplicate
     if (cardObject.bubbledValues.some((v) => v.display === displayValue)) {
-      console.warn(`[RightPane] ⚠️ Value "${displayValue}" already exists as bubble`);
+      console.warn(`[RightPane]  Value "${displayValue}" already exists as bubble`);
       return;
     }
 
@@ -1507,7 +1523,7 @@ define([], function () {
       display: displayValue,
       use: useValue || displayValue,
     });
-    console.log(`[RightPane] 💾 Added to bubbledValues:`, cardObject.bubbledValues);
+    console.log(`[RightPane]  Added to bubbledValues:`, cardObject.bubbledValues);
 
     // Create bubble DOM
     const bubble = document.createElement("span");
@@ -1520,45 +1536,45 @@ define([], function () {
 
     const removeBtn = document.createElement("button");
     removeBtn.className = "bubble-remove";
-    removeBtn.textContent = "×";
+    removeBtn.textContent = "";
 
     const self = this;
     removeBtn.addEventListener("click", () => {
-      console.log(`[RightPane] 🗑 Remove button clicked for: "${displayValue}"`);
+      console.log(`[RightPane]  Remove button clicked for: "${displayValue}"`);
       self._removeBubble(cardObject, displayValue, bubble, useValue);
     });
 
     bubble.appendChild(removeBtn);
     cardObject.bubblesContainer.appendChild(bubble);
-    console.log(`[RightPane] ✅ Bubble added to DOM`);
+    console.log(`[RightPane]  Bubble added to DOM`);
 
     this._updateRequiredIndicator(cardObject);
   };
 
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   // REMOVE BUBBLE
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   RightPane.prototype._removeBubble = function (cardObject, displayValue, bubbleElement, useValue) {
-    console.log(`[RightPane] 🗑 Removing bubble: "${displayValue}"`);
-    console.log(`[RightPane] 🔍 Before removal, bubbledValues:`, cardObject.bubbledValues);
+    console.log(`[RightPane]  Removing bubble: "${displayValue}"`);
+    console.log(`[RightPane]  Before removal, bubbledValues:`, cardObject.bubbledValues);
 
     const index = cardObject.bubbledValues.findIndex((v) => v.display === displayValue);
     if (index > -1) {
       cardObject.bubbledValues.splice(index, 1);
-      console.log(`[RightPane] 💾 Removed from bubbledValues at index ${index}`);
-      console.log(`[RightPane] 💾 After removal, bubbledValues:`, cardObject.bubbledValues);
+      console.log(`[RightPane]  Removed from bubbledValues at index ${index}`);
+      console.log(`[RightPane]  After removal, bubbledValues:`, cardObject.bubbledValues);
     } else {
-      console.warn(`[RightPane] ⚠️ Value "${displayValue}" not found in bubbledValues!`);
+      console.warn(`[RightPane]  Value "${displayValue}" not found in bubbledValues!`);
     }
 
     if (bubbleElement && bubbleElement.parentNode) {
       bubbleElement.parentNode.removeChild(bubbleElement);
-      console.log(`[RightPane] ✅ Bubble removed from DOM`);
+      console.log(`[RightPane]  Bubble removed from DOM`);
     }
 
-    // ═══════════════════════════════════════════════════════════════════════════
-    // 🐛 BugFix #6: Sync removal to native SS prompt
-    // ═══════════════════════════════════════════════════════════════════════════
+    // ===========================================================================
+    //  BugFix #6: Sync removal to native SS prompt
+    // ===========================================================================
     if (cardObject.config.promptType === "searchSelect") {
       this._removeFromNativeSSPrompt(cardObject, displayValue, useValue);
     }
@@ -1566,22 +1582,22 @@ define([], function () {
     if (this.m_oControlHost) {
       try {
         this.m_oControlHost.valueChanged();
-        console.log(`[RightPane] ✅ Cognos notified of value removal`);
+        console.log(`[RightPane]  Cognos notified of value removal`);
 
         if (cardObject.isRequired || cardObject.config.required) {
           this.m_oControlHost.validStateChanged();
-          console.log(`[RightPane] ✅ Cognos notified of valid state change (required card)`);
+          console.log(`[RightPane]  Cognos notified of valid state change (required card)`);
         }
       } catch (err) {
-        console.error(`[RightPane] ❌ Error notifying Cognos:`, err);
+        console.error(`[RightPane]  Error notifying Cognos:`, err);
       }
     }
     this._updateRequiredIndicator(cardObject);
   };
 
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   // UPDATE REQUIRED INDICATOR
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   RightPane.prototype._updateRequiredIndicator = function (cardObject) {
     if (!cardObject.requiredIndicator) return;
 
@@ -1601,25 +1617,25 @@ define([], function () {
     }
 
     if (hasFilled) {
-      cardObject.requiredIndicator.textContent = "✓ Required";
+      cardObject.requiredIndicator.textContent = " Required";
       cardObject.requiredIndicator.classList.add("filled");
     } else {
-      cardObject.requiredIndicator.textContent = "☆ Required";
+      cardObject.requiredIndicator.textContent = " Required";
       cardObject.requiredIndicator.classList.remove("filled");
     }
   };
 
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   // CHECK IF ALL REQUIRED CARDS ARE FILLED
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   RightPane.prototype.areRequiredCardsFilled = function () {
-    console.log("[RightPane] 🔍 Checking if all required cards are filled");
+    console.log("[RightPane]  Checking if all required cards are filled");
 
     const requiredCards = this.cards.filter((card) => card.isRequired || card.config.required);
-    console.log(`[RightPane] 📋 Found ${requiredCards.length} required cards`);
+    console.log(`[RightPane]  Found ${requiredCards.length} required cards`);
 
     if (requiredCards.length === 0) {
-      console.log("[RightPane] ✅ No required cards - validation passes");
+      console.log("[RightPane]  No required cards - validation passes");
       return true;
     }
 
@@ -1630,66 +1646,66 @@ define([], function () {
 
       if (promptType === "dateRange" || promptType === "dateFromTo") {
         isFilled = card.dateFromInput && card.dateFromInput.value && card.dateToInput && card.dateToInput.value;
-        console.log(`[RightPane] 📅 Date card "${config.label}": filled=${isFilled}`);
+        console.log(`[RightPane]  Date card "${config.label}": filled=${isFilled}`);
       } else if (promptType === "date") {
         isFilled = card.inputElement && card.inputElement.value;
-        console.log(`[RightPane] 📅 Single date card "${config.label}": filled=${isFilled}`);
+        console.log(`[RightPane]  Single date card "${config.label}": filled=${isFilled}`);
       } else {
         isFilled = card.bubbledValues && card.bubbledValues.length > 0;
         console.log(
-          `[RightPane] 🫧 Bubble card "${config.label}": filled=${isFilled} (${card.bubbledValues.length} values)`,
+          `[RightPane]  Bubble card "${config.label}": filled=${isFilled} (${card.bubbledValues.length} values)`,
         );
       }
 
       if (!isFilled) {
-        console.log(`[RightPane] ❌ Required card "${config.label}" is NOT filled`);
+        console.log(`[RightPane]  Required card "${config.label}" is NOT filled`);
         return false;
       }
     }
 
-    console.log("[RightPane] ✅ All required cards are filled");
+    console.log("[RightPane]  All required cards are filled");
     return true;
   };
 
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   // GET PARAMETERS (Called by Cognos)
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   RightPane.prototype.getParameters = function () {
-    console.log("[RightPane] 📋 getParameters() called");
-    console.log("[RightPane] 📊 Total cards to check:", this.cards.length);
+    console.log("[RightPane]  getParameters() called");
+    console.log("[RightPane]  Total cards to check:", this.cards.length);
 
     try {
       const allParams = [];
 
       this.cards.forEach((cardObject, idx) => {
-        console.log(`[RightPane] 🔍 Checking card ${idx}:`, cardObject.config.label);
-        console.log(`[RightPane] 🔍 Card ${idx} bubbledValues:`, cardObject.bubbledValues);
+        console.log(`[RightPane]  Checking card ${idx}:`, cardObject.config.label);
+        console.log(`[RightPane]  Card ${idx} bubbledValues:`, cardObject.bubbledValues);
 
         const cardParams = cardObject.getParameters();
 
         if (cardParams && cardParams.length > 0) {
           allParams.push(...cardParams);
-          console.log(`[RightPane] ✅ Card ${idx} returned parameters:`, JSON.stringify(cardParams, null, 2));
+          console.log(`[RightPane]  Card ${idx} returned parameters:`, JSON.stringify(cardParams, null, 2));
         } else {
-          console.log(`[RightPane] ⚠️ Card ${idx} has no parameters`);
+          console.log(`[RightPane]  Card ${idx} has no parameters`);
         }
       });
 
-      console.log("[RightPane] 📤 Final collected parameters:", JSON.stringify(allParams, null, 2));
-      console.log("[RightPane] 📊 Total parameters collected:", allParams.length);
+      console.log("[RightPane]  Final collected parameters:", JSON.stringify(allParams, null, 2));
+      console.log("[RightPane]  Total parameters collected:", allParams.length);
 
       return allParams;
     } catch (err) {
-      console.error("[RightPane] ❌ getParameters() failed:", err);
+      console.error("[RightPane]  getParameters() failed:", err);
       return [];
     }
   };
 
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   // DESTROY
-  // ═══════════════════════════════════════════════════════════════════════════
+  // ===========================================================================
   RightPane.prototype.destroy = function () {
-    console.log("[RightPane] 🧨 destroy() called");
+    console.log("[RightPane]  destroy() called");
 
     try {
       if (this.cardsContainer) {
@@ -1707,9 +1723,9 @@ define([], function () {
       this.m_oControlHost = null;
       this.dataStores = {};
 
-      console.log("[RightPane] ✅ destroy() complete — cleanup successful");
+      console.log("[RightPane]  destroy() complete  cleanup successful");
     } catch (err) {
-      console.error("[RightPane] ❌ destroy() failed:", err);
+      console.error("[RightPane]  destroy() failed:", err);
     }
   };
 
