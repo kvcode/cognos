@@ -446,7 +446,7 @@ define([], function () {
       if (config.required || cardObject.isRequired) {
         const requiredDiv = document.createElement("div");
         requiredDiv.className = "right-pane-card-required";
-        requiredDiv.textContent = "â˜† Required";
+        requiredDiv.textContent = "☆ Required";
         card.appendChild(requiredDiv);
         cardObject.requiredIndicator = requiredDiv;
       }
@@ -611,6 +611,21 @@ define([], function () {
     cardObject.inputElement = input;
     cardObject.bubblesContainer = bubblesContainer;
 
+    // Click handler - re-show suggestion box if it exists with results
+    input.addEventListener("click", () => {
+      const suggestionBox = cardObject.suggestionBox;
+      if (suggestionBox) {
+        const resultsList = suggestionBox.querySelector(".ss-results-list");
+        const hasResults = resultsList && resultsList.children.length > 0;
+        if (hasResults) {
+          console.log(`[RightPane]  Input clicked - re-showing suggestion box with existing results`);
+          suggestionBox.style.display = "flex";
+          // Update checked states based on current bubbles (Point 4)
+          this._syncCheckboxesWithBubbles(cardObject);
+        }
+      }
+    });
+
     //  ENTER key handler - triggers search
     input.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
@@ -636,8 +651,6 @@ define([], function () {
               const useValue = cb.value;
               const displayValue = cb.dataset.display;
               self._createBubble(cardObject, displayValue, useValue);
-              //  BugFix #5: Mirror to native SS prompt
-              self._mirrorToNativeSSPrompt(cardObject, displayValue, useValue);
             });
             input.value = "";
             suggestionBox.style.display = "none";
@@ -660,7 +673,6 @@ define([], function () {
               console.log(`[RightPane]  Tab pressed with text but no selections - creating free bubble`);
               const parsed = self._parseSSResultValue(inputValue, config);
               self._createBubble(cardObject, parsed.display, parsed.use);
-              self._mirrorToNativeSSPrompt(cardObject, parsed.display, parsed.use);
               input.value = "";
               suggestionBox.style.display = "none";
 
@@ -695,8 +707,6 @@ define([], function () {
       values.forEach((val) => {
         const parsed = this._parseSSResultValue(val, config);
         this._createBubble(cardObject, parsed.display, parsed.use);
-        //  BugFix #5: Mirror pasted values to native SS prompt
-        this._mirrorToNativeSSPrompt(cardObject, parsed.display, parsed.use);
       });
 
       if (this.m_oControlHost) {
@@ -1155,7 +1165,38 @@ define([], function () {
     // Show suggestion box
     suggestionBox.style.display = "flex";
 
-    // Reset selected count
+    // Sync checkboxes with already bubbled values (Point 4)
+    this._syncCheckboxesWithBubbles(cardObject);
+  };
+
+  // ===========================================================================
+  //  SYNC CHECKBOXES WITH BUBBLES - Visual tracking of selected items
+  // ===========================================================================
+  RightPane.prototype._syncCheckboxesWithBubbles = function (cardObject) {
+    const suggestionBox = cardObject.suggestionBox;
+    if (!suggestionBox) return;
+
+    const checkboxes = suggestionBox.querySelectorAll('input[type="checkbox"]');
+    const bubbledValues = cardObject.bubbledValues || [];
+
+    console.log(`[RightPane]  Syncing ${checkboxes.length} checkboxes with ${bubbledValues.length} bubbled values`);
+
+    checkboxes.forEach((cb) => {
+      const useValue = cb.value;
+      const displayValue = cb.dataset.display;
+
+      // Check if this value is already bubbled
+      const isAlreadyBubbled = bubbledValues.some((v) => v.use === useValue || v.display === displayValue);
+
+      if (isAlreadyBubbled) {
+        cb.checked = true;
+        console.log(`[RightPane]  ✓ Checked: "${displayValue}" (already bubbled)`);
+      } else {
+        cb.checked = false;
+      }
+    });
+
+    // Update the selected count
     this._updateSelectedCount(suggestionBox);
   };
 
@@ -1450,7 +1491,7 @@ define([], function () {
 
     const removeBtn = document.createElement("button");
     removeBtn.className = "bubble-remove";
-    removeBtn.textContent = "Ã—";
+    removeBtn.textContent = "×";
 
     const self = this;
     removeBtn.addEventListener("click", () => {
@@ -1486,11 +1527,7 @@ define([], function () {
       console.log(`[RightPane]  Bubble removed from DOM`);
     }
 
-    // ===========================================================================
-    //  BugFix #6: Sync removal to native SS prompt
-    // ===========================================================================
     if (cardObject.config.promptType === "searchSelect") {
-      this._removeFromNativeSSPrompt(cardObject, displayValue, useValue);
     }
 
     if (this.m_oControlHost) {
@@ -1531,10 +1568,10 @@ define([], function () {
     }
 
     if (hasFilled) {
-      cardObject.requiredIndicator.textContent = "âœ“ Required";
+      cardObject.requiredIndicator.textContent = "✓ Required";
       cardObject.requiredIndicator.classList.add("filled");
     } else {
-      cardObject.requiredIndicator.textContent = "â˜† Required";
+      cardObject.requiredIndicator.textContent = "☆ Required";
       cardObject.requiredIndicator.classList.remove("filled");
     }
   };
