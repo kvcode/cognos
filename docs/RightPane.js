@@ -1041,6 +1041,9 @@ define([], function () {
         const useValue = cb.value;
         const displayValue = cb.dataset.display;
         self._createBubble(cardObject, displayValue, useValue);
+        // ===========================================================================
+        //  BugFix #5: Mirror selection to native SS prompt
+        // ===========================================================================
         self._mirrorToNativeSSPrompt(cardObject, displayValue, useValue);
       });
 
@@ -1211,18 +1214,20 @@ define([], function () {
         console.log(`[RightPane] ℹ️ Row already checked: "${displayValue}"`);
       }
 
-      // Click native Add button ONCE after all rows are checked
+      // Click the native Add button after a short delay
       setTimeout(() => {
-        const elements = self._getSSPromptElements(cardObject.config.sspBlockName);
-        if (elements && elements.addButton) {
+        if (elements.addButton) {
+          // Enable the button first (remove disabled state)
           elements.addButton.removeAttribute("disabled");
           elements.addButton.disabled = false;
           elements.addButton.removeAttribute("hal_disabled");
           elements.addButton.setAttribute("hal_disabled", "false");
+          console.log(`[RightPane]  Enabled Add button`);
+
           elements.addButton.click();
-          console.log("[RightPane] ✅ Clicked native Add button ONCE for all selections");
+          console.log(`[RightPane]  Clicked native Add button`);
         }
-      }, 200);
+      }, 100);
     } else {
       console.warn(`[RightPane]  Could not find matching row in native prompt for: "${displayValue}"`);
       // Even if not found, try to add by manipulating the prompt differently
