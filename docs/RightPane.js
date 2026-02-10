@@ -1205,13 +1205,14 @@ define([], function () {
     });
 
     if (foundRow) {
-      const listItem = foundRow.querySelector(".clsListItem");
-      const checkboxImg = foundRow.querySelector(".clsListViewCheckboxImg");
-      if (checkboxImg && !checkboxImg.classList.contains("clsLVCheckbox_checked")) {
-        listItem.click();
-        console.log(`[RightPane] ✅ Clicked native row to select: "${displayValue}"`);
-      } else {
-        console.log(`[RightPane] ℹ️ Row already checked: "${displayValue}"`);
+      // Check the checkbox in native prompt
+      const checkbox = foundRow.querySelector('input[type="checkbox"]');
+      if (checkbox && !checkbox.checked) {
+        checkbox.checked = true;
+        // Trigger change event
+        const event = new Event("change", { bubbles: true });
+        checkbox.dispatchEvent(event);
+        console.log(`[RightPane]  Checked native row for: "${displayValue}"`);
       }
 
       // Click the native Add button after a short delay
