@@ -621,7 +621,6 @@ define([], function () {
           console.log(`[RightPane]  Input clicked - re-showing suggestion box with existing results`);
           suggestionBox.style.display = "flex";
           // Update checked states based on current bubbles (Point 4)
-          this._syncCheckboxesWithBubbles(cardObject);
         }
       }
     });
@@ -642,35 +641,22 @@ define([], function () {
       if (e.key === "Tab") {
         const suggestionBox = cardObject.suggestionBox;
         if (suggestionBox && suggestionBox.style.display !== "none") {
+          // Suggestion box is visible
           const checkedBoxes = suggestionBox.querySelectorAll('input[type="checkbox"]:checked');
           if (checkedBoxes.length > 0) {
+            // Has checked items - they're already bubbled in real-time, just close
             e.preventDefault();
-            console.log(`[RightPane]  Tab pressed with ${checkedBoxes.length} checked items - confirming`);
-            // Confirm checked items and mirror to native
-            checkedBoxes.forEach((cb) => {
-              const useValue = cb.value;
-              const displayValue = cb.dataset.display;
-              self._createBubble(cardObject, displayValue, useValue);
-            });
+            console.log(
+              `[RightPane] Tab pressed - closing suggestion box (${checkedBoxes.length} items already bubbled)`,
+            );
             input.value = "";
             suggestionBox.style.display = "none";
-
-            if (self.m_oControlHost) {
-              try {
-                self.m_oControlHost.valueChanged();
-                if (cardObject.isRequired || cardObject.config.required) {
-                  self.m_oControlHost.validStateChanged();
-                }
-              } catch (err) {
-                console.error(`[RightPane]  Error notifying Cognos:`, err);
-              }
-            }
           } else {
             // No checked items - create free input bubble if there's text
             const inputValue = input.value.trim();
             if (inputValue) {
               e.preventDefault();
-              console.log(`[RightPane]  Tab pressed with text but no selections - creating free bubble`);
+              console.log(`[RightPane] Tab pressed with text but no selections - creating free bubble`);
               const parsed = self._parseSSResultValue(inputValue, config);
               self._createBubble(cardObject, parsed.display, parsed.use);
               input.value = "";
@@ -683,8 +669,29 @@ define([], function () {
                     self.m_oControlHost.validStateChanged();
                   }
                 } catch (err) {
-                  console.error(`[RightPane]  Error notifying Cognos:`, err);
+                  console.error(`[RightPane] Error notifying Cognos:`, err);
                 }
+              }
+            }
+          }
+        } else {
+          // No suggestion box visible - create free bubble from input text
+          const inputValue = input.value.trim();
+          if (inputValue) {
+            e.preventDefault();
+            console.log(`[RightPane] Tab pressed - creating free bubble from input`);
+            const parsed = self._parseSSResultValue(inputValue, config);
+            self._createBubble(cardObject, parsed.display, parsed.use);
+            input.value = "";
+
+            if (self.m_oControlHost) {
+              try {
+                self.m_oControlHost.valueChanged();
+                if (cardObject.isRequired || cardObject.config.required) {
+                  self.m_oControlHost.validStateChanged();
+                }
+              } catch (err) {
+                console.error(`[RightPane] Error notifying Cognos:`, err);
               }
             }
           }
@@ -1031,45 +1038,29 @@ define([], function () {
     // Event handlers
     selectAllBtn.addEventListener("click", () => {
       resultsList.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
-        cb.checked = true;
+        if (!cb.checked) {
+          cb.checked = true;
+          // Trigger change event for real-time bubbling
+          cb.dispatchEvent(new Event("change", { bubbles: true }));
+        }
       });
-      this._updateSelectedCount(suggestionBox);
     });
 
     deselectAllBtn.addEventListener("click", () => {
       resultsList.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
-        cb.checked = false;
+        if (cb.checked) {
+          cb.checked = false;
+          // Trigger change event for real-time bubbling
+          cb.dispatchEvent(new Event("change", { bubbles: true }));
+        }
       });
-      this._updateSelectedCount(suggestionBox);
     });
 
     confirmBtn.addEventListener("click", () => {
-      const selectedCheckboxes = resultsList.querySelectorAll('input[type="checkbox"]:checked');
-      console.log(`[RightPane]  Confirming ${selectedCheckboxes.length} selections`);
-
-      selectedCheckboxes.forEach((cb) => {
-        const useValue = cb.value;
-        const displayValue = cb.dataset.display;
-        console.log(`[RightPane] DEBUG: About to create bubble - use="${useValue}", display="${displayValue}"`);
-        self._createBubble(cardObject, displayValue, useValue);
-      });
-
+      console.log(`[RightPane] Closing suggestion box`);
       // Clear input and hide suggestion box
       cardObject.inputElement.value = "";
       suggestionBox.style.display = "none";
-
-      if (self.m_oControlHost) {
-        try {
-          self.m_oControlHost.valueChanged();
-          console.log(`[RightPane]  Cognos notified of value change`);
-
-          if (cardObject.isRequired || cardObject.config.required) {
-            self.m_oControlHost.validStateChanged();
-          }
-        } catch (err) {
-          console.error(`[RightPane]  Error notifying Cognos:`, err);
-        }
-      }
     });
 
     cancelBtn.addEventListener("click", () => {
@@ -1141,8 +1132,41 @@ define([], function () {
       item.appendChild(text);
       resultsList.appendChild(item);
 
-      // Checkbox change handler
+      // Checkbox change handler - REAL-TIME BUBBLING
       checkbox.addEventListener("change", () => {
+        const useValue = checkbox.value;
+        const displayValue = checkbox.dataset.display;
+
+        if (checkbox.checked) {
+          // Checked → Create bubble immediately
+          console.log(`[RightPane] ✓ Checkbox checked - creating bubble for: "${displayValue}"`);
+          self._createBubble(cardObject, displayValue, useValue);
+
+          // Notify Cognos
+          if (self.m_oControlHost) {
+            try {
+              self.m_oControlHost.valueChanged();
+              if (cardObject.isRequired || cardObject.config.required) {
+                self.m_oControlHost.validStateChanged();
+              }
+            } catch (err) {
+              console.error(`[RightPane] Error notifying Cognos:`, err);
+            }
+          }
+        } else {
+          // Unchecked → Remove bubble immediately
+          console.log(`[RightPane] ☐ Checkbox unchecked - removing bubble for: "${displayValue}"`);
+
+          // Find and remove the bubble
+          const bubbleToRemove = Array.from(cardObject.bubblesContainer.querySelectorAll(".bubble")).find(
+            (bubble) => bubble.title === displayValue,
+          );
+
+          if (bubbleToRemove) {
+            self._removeBubble(cardObject, displayValue, bubbleToRemove, useValue);
+          }
+        }
+
         self._updateSelectedCount(suggestionBox);
       });
 
@@ -1154,9 +1178,12 @@ define([], function () {
           const end = Math.max(self._lastCheckedIndex, idx);
 
           for (let i = start; i <= end; i++) {
-            checkboxes[i].checked = true;
+            if (!checkboxes[i].checked) {
+              checkboxes[i].checked = true;
+              // Trigger change event for real-time bubbling
+              checkboxes[i].dispatchEvent(new Event("change", { bubbles: true }));
+            }
           }
-          self._updateSelectedCount(suggestionBox);
         }
         self._lastCheckedIndex = idx;
       });
@@ -1164,40 +1191,6 @@ define([], function () {
 
     // Show suggestion box
     suggestionBox.style.display = "flex";
-
-    // Sync checkboxes with already bubbled values (Point 4)
-    this._syncCheckboxesWithBubbles(cardObject);
-  };
-
-  // ===========================================================================
-  //  SYNC CHECKBOXES WITH BUBBLES - Visual tracking of selected items
-  // ===========================================================================
-  RightPane.prototype._syncCheckboxesWithBubbles = function (cardObject) {
-    const suggestionBox = cardObject.suggestionBox;
-    if (!suggestionBox) return;
-
-    const checkboxes = suggestionBox.querySelectorAll('input[type="checkbox"]');
-    const bubbledValues = cardObject.bubbledValues || [];
-
-    console.log(`[RightPane]  Syncing ${checkboxes.length} checkboxes with ${bubbledValues.length} bubbled values`);
-
-    checkboxes.forEach((cb) => {
-      const useValue = cb.value;
-      const displayValue = cb.dataset.display;
-
-      // Check if this value is already bubbled
-      const isAlreadyBubbled = bubbledValues.some((v) => v.use === useValue || v.display === displayValue);
-
-      if (isAlreadyBubbled) {
-        cb.checked = true;
-        console.log(`[RightPane]  ✓ Checked: "${displayValue}" (already bubbled)`);
-      } else {
-        cb.checked = false;
-      }
-    });
-
-    // Update the selected count
-    this._updateSelectedCount(suggestionBox);
   };
 
   // ===========================================================================
