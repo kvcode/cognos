@@ -1213,7 +1213,7 @@ define([], function () {
 
       // Click native Add button ONCE after all rows are checked
       setTimeout(() => {
-        const elements = this._getSSPromptElements(cardObject.config.sspBlockName);
+        const elements = self._getSSPromptElements(cardObject.config.sspBlockName);
         if (elements && elements.addButton) {
           elements.addButton.removeAttribute("disabled");
           elements.addButton.disabled = false;
