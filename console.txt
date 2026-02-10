@@ -1,5 +1,6 @@
-<tr id="hal__dom__uniqueID__121"><td style="width: 100%; white-space: nowrap;"><div class="clsListItem_normal clsListItem" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"><img src="hal/images/lv_checkbox_checked.svg" class="clsListViewCheckboxImg clsLVCheckbox_checked" alt="" style="margin: 2px 2px 2px 4px;"><span class="clsListItemLabel" style="vertical-align: middle; padding-left: 2px; padding-right: 2px;">CD122X - Golf 2.0&nbsp; &nbsp;  TL&nbsp;  DT085 TDIM6F</span></div></td></tr>
-
-
-
-<tr id="hal__dom__uniqueID__121"><td style="width: 100%; white-space: nowrap;"><div class="clsListItem_normal clsListItem" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"><img src="hal/images/lv_checkbox.svg" class="clsListViewCheckboxImg clsLVCheckbox" alt="" style="margin: 2px 2px 2px 4px;"><span class="clsListItemLabel" style="vertical-align: middle; padding-left: 2px; padding-right: 2px;">CD122X - Golf 2.0&nbsp; &nbsp;  TL&nbsp;  DT085 TDIM6F</span></div></td></tr>
+[RightPane] ⌨️ [V2] User typed in "Marke (2-stellig) (FZ)": A
+RightPane.js?v=123456&v=1736447937:346  Uncaught TypeError: Cannot read properties of undefined (reading 'offsetWidth')
+(anonymous) @ RightPane.js?v=123456&v=1736447937:346
+RightPane.js?v=123456&v=1736447937:345 [RightPane] ⌨️ [V2] User typed in "Marke (2-stellig) (FZ)": Au
+RightPane.js?v=123456&v=1736447937:346  Uncaught TypeError: Cannot read properties of undefined (reading 'offsetWidth')
+(anonymous) @ RightPane.js?v=123456&v=1736447937:346
