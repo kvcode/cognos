@@ -446,7 +446,7 @@ define([], function () {
       if (config.required || cardObject.isRequired) {
         const requiredDiv = document.createElement("div");
         requiredDiv.className = "right-pane-card-required";
-        requiredDiv.textContent = "☆ Required";
+        requiredDiv.textContent = "â˜† Required";
         card.appendChild(requiredDiv);
         cardObject.requiredIndicator = requiredDiv;
       }
@@ -722,7 +722,7 @@ define([], function () {
           btn.setAttribute("hal_disabled", "false");
         }
       });
-      console.log("[RightPane] ✅ Force-enabled all native SS buttons");
+      console.log("[RightPane] âœ… Force-enabled all native SS buttons");
     }
   };
 
@@ -1040,11 +1040,8 @@ define([], function () {
       selectedCheckboxes.forEach((cb) => {
         const useValue = cb.value;
         const displayValue = cb.dataset.display;
+        console.log(`[RightPane] DEBUG: About to create bubble - use="${useValue}", display="${displayValue}"`);
         self._createBubble(cardObject, displayValue, useValue);
-        // ===========================================================================
-        //  BugFix #5: Mirror selection to native SS prompt
-        // ===========================================================================
-        self._mirrorToNativeSSPrompt(cardObject, displayValue, useValue);
       });
 
       // Clear input and hide suggestion box
@@ -1174,110 +1171,6 @@ define([], function () {
   // ===========================================================================
   //  BugFix #5: MIRROR TO NATIVE SS PROMPT
   // ===========================================================================
-  RightPane.prototype._mirrorToNativeSSPrompt = function (cardObject, displayValue, useValue) {
-    const config = cardObject.config;
-    console.log(`[RightPane]  Mirroring to native SS prompt: "${displayValue}" (use: "${useValue}")`);
-
-    if (!config.sspBlockName) {
-      console.warn(`[RightPane]  No sspBlockName configured - cannot mirror to native prompt`);
-      return;
-    }
-
-    const elements = this._getSSPromptElements(config.sspBlockName);
-    if (!elements || !elements.resultsList || !elements.addButton) {
-      console.warn(`[RightPane]  Cannot find native SS prompt elements for mirroring`);
-      return;
-    }
-
-    // Find the matching row in native results list and check it
-    const rows = elements.resultsList.querySelectorAll("tr");
-    let foundRow = null;
-
-    rows.forEach((row) => {
-      const label = row.querySelector(".clsListItemLabel") || row.querySelector("td");
-      if (label) {
-        const rowText = label.textContent.trim();
-        // Match by display value or use value
-        if (rowText === displayValue || rowText.startsWith(useValue)) {
-          foundRow = row;
-        }
-      }
-    });
-
-    if (foundRow) {
-      // Check the checkbox in native prompt
-      const checkbox = foundRow.querySelector('input[type="checkbox"]');
-      if (checkbox && !checkbox.checked) {
-        checkbox.checked = true;
-        // Trigger change event
-        const event = new Event("change", { bubbles: true });
-        checkbox.dispatchEvent(event);
-        console.log(`[RightPane]  Checked native row for: "${displayValue}"`);
-      }
-
-      // Click the native Add button after a short delay
-      setTimeout(() => {
-        if (elements.addButton) {
-          elements.addButton.click();
-          console.log(`[RightPane]  Clicked native Add button`);
-        }
-      }, 100);
-    } else {
-      console.warn(`[RightPane]  Could not find matching row in native prompt for: "${displayValue}"`);
-      // Even if not found, try to add by manipulating the prompt differently
-      // This handles cases where the search results have changed
-    }
-  };
-
-  // ===========================================================================
-  //  BugFix #6: REMOVE FROM NATIVE SS PROMPT
-  // ===========================================================================
-  RightPane.prototype._removeFromNativeSSPrompt = function (cardObject, displayValue, useValue) {
-    const config = cardObject.config;
-    console.log(`[RightPane]  Removing from native SS prompt: "${displayValue}"`);
-
-    if (!config.sspBlockName) {
-      console.warn(`[RightPane]  No sspBlockName configured - cannot remove from native prompt`);
-      return;
-    }
-
-    const elements = this._getSSPromptElements(config.sspBlockName);
-    if (!elements || !elements.selectedList || !elements.removeButton) {
-      console.warn(`[RightPane]  Cannot find native SS prompt elements for removal`);
-      return;
-    }
-
-    // Find the matching row in native selected list
-    const rows = elements.selectedList.querySelectorAll("tr");
-    let foundRow = null;
-
-    rows.forEach((row) => {
-      const label = row.querySelector(".clsListItemLabel") || row.querySelector("td");
-      if (label) {
-        const rowText = label.textContent.trim();
-        // Match by display value or use value
-        if (rowText === displayValue || rowText.startsWith(useValue)) {
-          foundRow = row;
-        }
-      }
-    });
-
-    if (foundRow) {
-      // Click the row to select it (native SS uses click to select for removal)
-      foundRow.click();
-      console.log(`[RightPane]  Clicked native selected row for: "${displayValue}"`);
-
-      // Click the native Remove button after a short delay
-      setTimeout(() => {
-        if (elements.removeButton) {
-          elements.removeButton.click();
-          console.log(`[RightPane]  Clicked native Remove button`);
-        }
-      }, 100);
-    } else {
-      console.warn(`[RightPane]  Could not find matching row in native selected list for: "${displayValue}"`);
-    }
-  };
 
   // ===========================================================================
   // RENDER BUBBLE INPUT (Regular/Text)
@@ -1543,7 +1436,8 @@ define([], function () {
       display: displayValue,
       use: useValue || displayValue,
     });
-    console.log(`[RightPane]  Added to bubbledValues:`, cardObject.bubbledValues);
+    console.log(`[RightPane]  Added to bubbledValues - use:"${useValue || displayValue}", display:"${displayValue}"`);
+    console.log(`[RightPane]  Full bubbledValues array:`, JSON.stringify(cardObject.bubbledValues, null, 2));
 
     // Create bubble DOM
     const bubble = document.createElement("span");
@@ -1556,7 +1450,7 @@ define([], function () {
 
     const removeBtn = document.createElement("button");
     removeBtn.className = "bubble-remove";
-    removeBtn.textContent = "×";
+    removeBtn.textContent = "Ã—";
 
     const self = this;
     removeBtn.addEventListener("click", () => {
@@ -1637,10 +1531,10 @@ define([], function () {
     }
 
     if (hasFilled) {
-      cardObject.requiredIndicator.textContent = "✓ Required";
+      cardObject.requiredIndicator.textContent = "âœ“ Required";
       cardObject.requiredIndicator.classList.add("filled");
     } else {
-      cardObject.requiredIndicator.textContent = "☆ Required";
+      cardObject.requiredIndicator.textContent = "â˜† Required";
       cardObject.requiredIndicator.classList.remove("filled");
     }
   };
