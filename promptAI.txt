@@ -1,0 +1,40 @@
+I want to get a CustomPromptPage JSON configuration based on:
+
+LANGUAGES: [comma-separated 2-letter locale codes, e.g. "en, de, fr"]
+
+BUTTON GROUPS (list each group):
+
+Group: [Group Name]
+  Icon: [describe icon or "none"]
+  Expanded by default: [yes/no]
+  Items:
+    - Subgroup: [Subgroup Name] (expanded: [yes/no])
+        - [Button Label] | param: [P_ParamName] | type: [value/text/date/dateRange/dateFromTo/searchSelect] | query: [queryName or "none"] | useCol: [0] | displayCol: [1] | required: [yes/no] | helpText: [short description]
+        - [Button Label] | param: [P_ParamName] | type: ...
+    - [Standalone Button Label] | param: [P_ParamName] | type: ...
+    - [Standalone Button Label] | paramFrom: [P_From] | paramTo: [P_To] | type: dateFromTo | ...
+
+Group: [Group Name]
+  ...
+
+PRESETS (optional):
+  - [Preset Label]: [P_Param1, P_Param2, P_Param3]
+
+SEARCH & SELECT DETAILS (for each searchSelect button):
+  - [P_ParamName]: sspBlockName=[block lid] | useValueLength=[number or "full"]
+
+ADDITIONAL NOTES:
+  - selectFirstGroupExpanded: [true/false]
+  - [any other constraints, e.g. "all date fields use yyyy-MM-dd format"]
+
+---
+Generate a valid JSON configuration following the CustomPromptPage JSON Schema.
+Rules:
+- Every button must have label, labels (for each locale), tooltip, tooltips, helpText, helpTexts.
+- Use promptType explicitly on every button (never omit it).
+- For "value" type: include queryName, useColumn, displayColumn where applicable.
+- For "dateFromTo" type: use "paramNames": {"from": "...", "to": "..."} instead of "paramName".
+- For "searchSelect" type: include sspBlockName and optionally useValueLength.
+- For "text" type: no queryName needed.
+- groupIcon can be set to a placeholder SVG comment like "<!-- icon -->" if not provided.
+- Output valid JSON only, with inline comments removed.
