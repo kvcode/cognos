@@ -580,22 +580,6 @@ define([], function () {
       console.error(`[RightPane]  searchSelect type requires sspBlockName property for: ${config.label}`);
     }
 
-    // =========================================================================
-    // VALIDATE PARSE CONFIG AND SHOW WARNING IF CONFLICT DETECTED
-    // =========================================================================
-    const validation = this._validateSSParseConfig(config);
-    if (validation.warning) {
-      console.warn(`[RightPane]  Config warning for ${config.label}:`, validation.message);
-
-      const warningDiv = document.createElement("div");
-      warningDiv.className = "config-warning";
-      warningDiv.innerHTML = `
-        <strong>⚠ Configuration Warning:</strong><br>
-        ${validation.message}
-      `;
-      card.appendChild(warningDiv);
-    }
-
     // Input wrapper
     const inputWrapper = document.createElement("div");
     inputWrapper.className = "input-wrapper ss-input-wrapper";
@@ -964,73 +948,20 @@ define([], function () {
   // ===========================================================================
   //  PARSE SS RESULT VALUE
   // ===========================================================================
-  // VALIDATE SS PARSE CONFIG - Detects conflicts between useDelimiter and useValueLength
-  // ===========================================================================
-  RightPane.prototype._validateSSParseConfig = function (config) {
-    const hasLength = config.useValueLength && typeof config.useValueLength === "number" && config.useValueLength > 0;
-
-    const hasDelimiter =
-      config.useDelimiter && typeof config.useDelimiter === "string" && config.useDelimiter.length > 0;
-
-    if (hasLength && hasDelimiter) {
-      return {
-        method: "length",
-        warning: true,
-        message:
-          "Both useValueLength and useDelimiter are defined. Defaulting to useValueLength. Please remove one to avoid ambiguity.",
-      };
-    } else if (hasDelimiter) {
-      return { method: "delimiter", warning: false };
-    } else if (hasLength) {
-      return { method: "length", warning: false };
-    } else {
-      return { method: "full", warning: false };
-    }
-  };
-
-  // ===========================================================================
   RightPane.prototype._parseSSResultValue = function (resultText, config) {
     let useValue, displayValue;
 
     displayValue = resultText.trim();
 
-    // Validate config to determine parsing method
-    const validation = this._validateSSParseConfig(config);
-
-    if (validation.method === "delimiter") {
-      // OPTION 1: Delimiter-based parsing
-      const delimiter = config.useDelimiter;
-
-      if (resultText.includes(delimiter)) {
-        // Split at FIRST occurrence of delimiter
-        const firstDelimiterIndex = resultText.indexOf(delimiter);
-        const beforeDelimiter = resultText.substring(0, firstDelimiterIndex).trim();
-
-        if (beforeDelimiter.length > 0) {
-          // Valid split - use first part as useValue
-          useValue = beforeDelimiter;
-          console.log(`[RightPane]  Parsed with delimiter="${delimiter}":`);
-          console.log(`  Display: "${displayValue}"`);
-          console.log(`  Use: "${useValue}"`);
-        } else {
-          // Empty before delimiter - fall back to full string
-          useValue = displayValue;
-          console.warn(`[RightPane]  Delimiter found but nothing before it - using full value: "${useValue}"`);
-        }
-      } else {
-        // Delimiter not found in string - fall back to full string
-        useValue = displayValue;
-        console.warn(`[RightPane]  Delimiter "${delimiter}" not found in result - using full value: "${useValue}"`);
-      }
-    } else if (validation.method === "length") {
-      // OPTION 2: Length-based parsing (CURRENT)
+    if (config.useValueLength && typeof config.useValueLength === "number") {
+      // Extract first N characters as USE value
       useValue = resultText.substring(0, config.useValueLength).trim();
 
       console.log(`[RightPane]  Parsed with length=${config.useValueLength}:`);
       console.log(`  Display: "${displayValue}"`);
       console.log(`  Use: "${useValue}"`);
     } else {
-      // OPTION 3: Full string (DEFAULT)
+      // Use full string for both
       useValue = displayValue;
       console.log(`[RightPane]  Using full value: "${useValue}"`);
     }
