@@ -949,21 +949,40 @@ define([], function () {
   //  PARSE SS RESULT VALUE
   // ===========================================================================
   RightPane.prototype._parseSSResultValue = function (resultText, config) {
-    let useValue, displayValue;
+    let useValue;
+    var displayValue = resultText; // RAW - untouched from source
+    var cleanText = resultText.trim(); // Trimmed copy for use-value extraction
 
-    displayValue = resultText.trim();
-
-    if (config.useValueLength && typeof config.useValueLength === "number") {
-      // Extract first N characters as USE value
-      useValue = resultText.substring(0, config.useValueLength).trim();
-
-      console.log(`[RightPane]  Parsed with length=${config.useValueLength}:`);
-      console.log(`  Display: "${displayValue}"`);
-      console.log(`  Use: "${useValue}"`);
+    if (config.useDelimiter && typeof config.useDelimiter === "string") {
+      var delimIdx = cleanText.indexOf(config.useDelimiter);
+      if (delimIdx > -1) {
+        useValue = cleanText.substring(0, delimIdx).trim();
+      } else {
+        useValue = cleanText;
+      }
+      console.log(
+        '[RightPane] Parsed with delimiter="' +
+          config.useDelimiter +
+          '": use="' +
+          useValue +
+          '", display="' +
+          displayValue +
+          '"',
+      );
+    } else if (config.useValueLength && typeof config.useValueLength === "number") {
+      useValue = cleanText.substring(0, config.useValueLength).trim();
+      console.log(
+        "[RightPane] Parsed with length=" +
+          config.useValueLength +
+          ': use="' +
+          useValue +
+          '", display="' +
+          displayValue +
+          '"',
+      );
     } else {
-      // Use full string for both
-      useValue = displayValue;
-      console.log(`[RightPane]  Using full value: "${useValue}"`);
+      useValue = cleanText;
+      console.log('[RightPane] Using full value: use="' + useValue + '", display="' + displayValue + '"');
     }
 
     return { use: useValue, display: displayValue };
