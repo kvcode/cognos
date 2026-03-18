@@ -256,9 +256,28 @@ define([], function () {
           if (this.activePreset && presetParam) {
             // PRESET MODE: pass preset param only, explicitly clear date params
             console.log("[RightPane]  DateFromTo preset mode:", this.activePreset);
+
+            // Resolve localized display label from relativeTimes config
+            var presetDisplayValue = this.activePreset;
+            if (Array.isArray(this.config.relativeTimes)) {
+              var matchedPreset = this.config.relativeTimes.find(function (p) {
+                return p.value === this.activePreset;
+              }, this);
+              if (matchedPreset) {
+                presetDisplayValue =
+                  (matchedPreset.labels &&
+                    (matchedPreset.labels[
+                      this.m_oControlHost.locale ? this.m_oControlHost.locale.substring(0, 2) : "en"
+                    ] ||
+                      matchedPreset.labels["en"])) ||
+                  matchedPreset.label ||
+                  this.activePreset;
+              }
+            }
+
             result.push({
               parameter: presetParam,
-              values: [{ use: this.activePreset, display: this.activePreset }],
+              values: [{ use: this.activePreset, display: presetDisplayValue }],
             });
             result.push({ parameter: this.config.paramNames.from, values: [] });
             result.push({ parameter: this.config.paramNames.to, values: [] });
