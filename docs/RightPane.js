@@ -258,7 +258,7 @@ define([], function () {
             console.log("[RightPane]  DateFromTo preset mode:", this.activePreset);
             result.push({
               parameter: presetParam,
-              values: [{ use: this.activePreset, display: this.activePreset }],
+              values: [{ use: this.activePreset, display: this.activePresetDisplay || this.activePreset }],
             });
             result.push({ parameter: this.config.paramNames.from, values: [] });
             result.push({ parameter: this.config.paramNames.to, values: [] });
@@ -564,6 +564,7 @@ define([], function () {
 
           // Store preset on cardObject
           cardObject.activePreset = preset.value;
+          cardObject.activePresetDisplay = label;
           console.log("[RightPane]  Relative time preset selected:", preset.value);
 
           if (this.m_oControlHost) {
@@ -623,6 +624,7 @@ define([], function () {
     const notifyChange = () => {
       // Manual edit clears active preset
       cardObject.activePreset = null;
+      cardObject.activePresetDisplay = null;
       const strip = card.querySelector(".rt-strip");
       if (strip) {
         strip.querySelectorAll(".rt-btn").forEach((b) => b.classList.remove("rt-btn-active"));
