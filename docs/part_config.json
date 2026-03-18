@@ -1,0 +1,13 @@
+{
+  "promptType": "dateFromTo",
+  "paramNames": { "from": "P_DateFrom", "to": "P_DateTo", "preset": "P_DatePresetOrManual" },
+  "hasRelativeTimes": true,
+  "relativeTimes": [
+    { "labels": { "en": "Yesterday", "de": "Gestern" }, "value": "YESTERDAY" },
+    { "labels": { "en": "Last 7 Days", "de": "Letzte 7 Tage" }, "value": "LAST_7" },
+    { "labels": { "en": "Month to Date", "de": "Monat bis heute" }, "value": "MTD" },
+    { "labels": { "en": "Last Month", "de": "Letzter Monat" }, "value": "LAST_MONTH" },
+    { "labels": { "en": "Year to Date", "de": "Jahr bis heute" }, "value": "YTD" },
+    { "labels": { "en": "Last Year", "de": "Letztes Jahr" }, "value": "LAST_YEAR" }
+  ]
+}
