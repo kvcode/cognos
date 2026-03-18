@@ -638,3 +638,66 @@
   font-style: italic;
   text-align: center;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   📅 RELATIVE TIMES STRIP
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.rt-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+  margin-bottom: 6px;
+  padding: 6px 8px;
+  background-color: #f0f4f8;
+  border: 1px solid #c8d0d8;
+  border-radius: 4px;
+}
+
+.rt-btn {
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  background-color: #ffffff;
+  color: #1b3e4a;
+  border: 1px solid #8aacba;
+  border-radius: 3px;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.rt-btn:hover {
+  background-color: #1b3e4a;
+  color: #ffffff;
+  border-color: #1b3e4a;
+}
+
+.rt-btn-active {
+  background-color: #1b3e4a;
+  color: #ffffff;
+  border-color: #1b3e4a;
+  font-weight: 700;
+}
+
+.rt-btn-active:hover {
+  background-color: #0f2730;
+  border-color: #0f2730;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ⚠ CONFIG WARNING BAR
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.rt-config-warning {
+  font-size: 11px;
+  color: #7a5c00;
+  background-color: #fff8dc;
+  border: 1px solid #e6c200;
+  border-left: 4px solid #e6c200;
+  border-radius: 3px;
+  padding: 5px 10px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
