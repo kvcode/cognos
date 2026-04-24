@@ -660,6 +660,10 @@ define([], function () {
     let from, to;
 
     switch (presetValue) {
+      case "TODAY": {
+        from = to = fmt(today);
+        break;
+      }
       case "YESTERDAY": {
         const y = new Date(today);
         y.setDate(y.getDate() - 1);
