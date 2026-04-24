@@ -737,6 +737,13 @@ define([], function () {
         to = fmt(new Date(today.getFullYear() - 1, 11, 31));
         break;
       }
+      case "LAST_12M": {
+        const s = new Date(today);
+        s.setFullYear(s.getFullYear() - 1);
+        from = fmt(s);
+        to = fmt(today);
+        break;
+      }
       default:
         console.warn("[RightPane]  Unknown relative time preset:", presetValue);
         return null;
