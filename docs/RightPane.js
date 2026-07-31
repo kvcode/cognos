@@ -12,6 +12,7 @@ define([], function () {
     this.cards = [];
     this.dataStores = {};
     this.locale = "en";
+    this.globalCardText = {}; // Root-level "cardText" from config.json (global defaults)
   }
 
   // ===========================================================================
@@ -34,6 +35,201 @@ define([], function () {
     }
 
     return config[property] || "";
+  };
+
+  // ===========================================================================
+  // BUILT-IN CARD TEXT (last-resort fallback - level 3 of the cascade)
+  // ---------------------------------------------------------------------------
+  // Non-ASCII characters are written as \uXXXX escapes ON PURPOSE.
+  // The source file then contains pure ASCII and cannot be damaged by an
+  // encoding-lossy build/deploy pipeline, while still rendering correct German.
+  //
+  // Value shapes accepted everywhere in the cascade:
+  //   "plain string"                                  -> locale-agnostic
+  //   { "de": "...", "en": "..." }                    -> locale map
+  //   { "de": { "one": "...", "other": "..." }, ... } -> locale map + plural map
+  //
+  // Tokens: {count} and {term} are substituted at render time.
+  // ===========================================================================
+  RightPane.prototype._builtInCardText = {
+    searchPlaceholder: {
+      de: "Tippen und ENTER dr\u00FCcken zum Suchen...",
+      en: "Type and press ENTER to search...",
+    },
+    searching: {
+      de: "Suche l\u00E4uft...",
+      en: "Searching...",
+    },
+    searchingFor: {
+      de: 'Suche nach "{term}"...',
+      en: 'Searching for "{term}"...',
+    },
+    resultsFound: {
+      de: { one: "{count} Ergebnis gefunden", other: "{count} Ergebnisse gefunden" },
+      en: { one: "{count} result found", other: "{count} results found" },
+    },
+    noResults: {
+      de: 'Keine Ergebnisse f\u00FCr "{term}" gefunden',
+      en: 'No results found for "{term}"',
+    },
+    selectAll: {
+      de: "Alle ausw\u00E4hlen",
+      en: "Select All",
+    },
+    deselectAll: {
+      de: "Alle abw\u00E4hlen",
+      en: "Deselect All",
+    },
+    selectedCount: {
+      de: "{count} ausgew\u00E4hlt",
+      en: "{count} selected",
+    },
+    confirm: {
+      de: "Hinzuf\u00FCgen",
+      en: "Add Selected",
+    },
+    cancel: {
+      de: "Abbrechen",
+      en: "Cancel",
+    },
+
+    // --- date range card (same cascade, proves the mechanism is card-type agnostic)
+    rangeFrom: {
+      de: "VON",
+      en: "FROM",
+    },
+    rangeTo: {
+      de: "BIS",
+      en: "TO",
+    },
+  };
+
+  // Recognised CLDR plural categories (de/en only ever use "one" and "other")
+  RightPane.prototype._pluralCategories = ["zero", "one", "two", "few", "many", "other"];
+
+  // ===========================================================================
+  // HELPER: Is this object a plural map (rather than a locale map)?
+  // ===========================================================================
+  RightPane.prototype._isPluralMap = function (value) {
+    if (!value || typeof value !== "object") {
+      return false;
+    }
+    const keys = Object.keys(value);
+    if (keys.length === 0) {
+      return false;
+    }
+    return keys.every((k) => this._pluralCategories.indexOf(k) > -1);
+  };
+
+  // ===========================================================================
+  // HELPER: Resolve the locale layer
+  // ===========================================================================
+  RightPane.prototype._resolveLocaleValue = function (value) {
+    if (value === null || value === undefined) {
+      return null;
+    }
+    if (typeof value === "string") {
+      return value;
+    }
+    if (typeof value !== "object") {
+      return String(value);
+    }
+
+    // Locale layer skipped - the value is already a plural map
+    if (this._isPluralMap(value)) {
+      return value;
+    }
+
+    if (value[this.locale] !== undefined) {
+      return value[this.locale];
+    }
+    if (value["en"] !== undefined) {
+      return value["en"];
+    }
+    const keys = Object.keys(value);
+    return keys.length > 0 ? value[keys[0]] : null;
+  };
+
+  // ===========================================================================
+  // HELPER: Resolve the plural layer
+  // ===========================================================================
+  RightPane.prototype._resolvePlural = function (value, count) {
+    if (value === null || value === undefined) {
+      return "";
+    }
+    if (typeof value === "string") {
+      return value;
+    }
+    if (typeof value !== "object") {
+      return String(value);
+    }
+
+    if (typeof count === "number") {
+      if (count === 0 && value.zero !== undefined) {
+        return value.zero;
+      }
+      if (count === 1 && value.one !== undefined) {
+        return value.one;
+      }
+    }
+    if (value.other !== undefined) {
+      return value.other;
+    }
+    if (value.one !== undefined) {
+      return value.one;
+    }
+    const keys = Object.keys(value);
+    return keys.length > 0 ? String(value[keys[0]]) : "";
+  };
+
+  // ===========================================================================
+  // HELPER: Substitute {token} placeholders
+  // Unknown tokens are left untouched so typos stay visible during testing.
+  // ===========================================================================
+  RightPane.prototype._substituteTokens = function (template, params) {
+    if (template === null || template === undefined) {
+      return "";
+    }
+    if (!params) {
+      return String(template);
+    }
+    return String(template).replace(/\{(\w+)\}/g, function (match, name) {
+      return Object.prototype.hasOwnProperty.call(params, name) ? String(params[name]) : match;
+    });
+  };
+
+  // ===========================================================================
+  // HELPER: Get Card Text  (CSS-specificity style cascade)
+  //   1. config.cardText[key]      - per-card override   (highest precedence)
+  //   2. this.globalCardText[key]  - root-level defaults from config.json
+  //   3. this._builtInCardText[key]- hardcoded fallback  (lowest precedence)
+  //
+  // Override is per KEY, not a deep merge - exactly like a CSS property.
+  // If you override a key, supply every locale you care about.
+  //
+  // Usage: this.getCardText(config, "resultsFound", { count: 3 })
+  // ===========================================================================
+  RightPane.prototype.getCardText = function (config, key, params) {
+    let raw;
+
+    if (config && config.cardText && config.cardText[key] !== undefined) {
+      raw = config.cardText[key];
+    } else if (this.globalCardText && this.globalCardText[key] !== undefined) {
+      raw = this.globalCardText[key];
+    } else {
+      raw = this._builtInCardText[key];
+    }
+
+    if (raw === undefined) {
+      console.warn(`[RightPane] getCardText(): unknown key "${key}"`);
+      return "";
+    }
+
+    const localized = this._resolveLocaleValue(raw);
+    const count = params && typeof params.count === "number" ? params.count : undefined;
+    const chosen = this._resolvePlural(localized, count);
+
+    return this._substituteTokens(chosen, params);
   };
 
   // ===========================================================================
@@ -64,6 +260,10 @@ define([], function () {
 
       this.autocompleteData = config.autocompleteTags || {};
       console.log("[RightPane]  Autocomplete data loaded:", this.autocompleteData);
+
+      // Global (root-level) card text defaults - level 2 of the text cascade
+      this.globalCardText = config.cardText || {};
+      console.log("[RightPane]  Global cardText keys:", Object.keys(this.globalCardText));
 
       console.log("[RightPane]  Initialization complete");
       fnDoneInitializing();
@@ -181,7 +381,6 @@ define([], function () {
       isRequired: cardData.isRequired || false,
       dateFromInput: null,
       dateToInput: null,
-      activePreset: null, //  For relative time presets (dateFromTo)
       suggestionBox: null, //  For searchSelect
 
       // ===========================================================================
@@ -250,42 +449,36 @@ define([], function () {
             return [];
           }
 
+          const fromValue = this.dateFromInput ? this.dateFromInput.value : "";
+          const toValue = this.dateToInput ? this.dateToInput.value : "";
+
           const result = [];
-          const presetParam = this.config.paramNames.preset;
 
-          if (this.activePreset && presetParam) {
-            // PRESET MODE: pass preset param only, explicitly clear date params
-            console.log("[RightPane]  DateFromTo preset mode:", this.activePreset);
-            result.push({
-              parameter: presetParam,
-              values: [{ use: this.activePreset, display: this.activePresetDisplay || this.activePreset }],
-            });
-            result.push({ parameter: this.config.paramNames.from, values: [] });
-            result.push({ parameter: this.config.paramNames.to, values: [] });
-          } else {
-            // MANUAL MODE: pass date params, set preset to 'manual' if param exists
-            console.log("[RightPane]  DateFromTo manual mode");
-            if (presetParam) {
-              result.push({
-                parameter: presetParam,
-                values: [{ use: "manual", display: "manual" }],
-              });
-            }
-
-            const fromValue = this.dateFromInput ? this.dateFromInput.value : "";
-            const toValue = this.dateToInput ? this.dateToInput.value : "";
-
+          if (fromValue) {
             result.push({
               parameter: this.config.paramNames.from,
-              values: fromValue ? [{ use: fromValue, display: fromValue }] : [],
+              values: [{ use: fromValue, display: fromValue }],
             });
+          } else {
             result.push({
-              parameter: this.config.paramNames.to,
-              values: toValue ? [{ use: toValue, display: toValue }] : [],
+              parameter: this.config.paramNames.from,
+              values: [],
             });
           }
 
-          console.log("[RightPane]  DateFromTo returning parameters:", JSON.stringify(result, null, 2));
+          if (toValue) {
+            result.push({
+              parameter: this.config.paramNames.to,
+              values: [{ use: toValue, display: toValue }],
+            });
+          } else {
+            result.push({
+              parameter: this.config.paramNames.to,
+              values: [],
+            });
+          }
+
+          console.log("[RightPane]  DateFromTo returning two parameters:", JSON.stringify(result, null, 2));
           return result;
         }
 
@@ -416,7 +609,7 @@ define([], function () {
       if (!cardObject.isRequired && !config.required) {
         const removeCardBtn = document.createElement("button");
         removeCardBtn.className = "card-remove-btn";
-        removeCardBtn.textContent = "×";
+        removeCardBtn.textContent = "\u00D7"; // multiplication sign - escaped so an encoding-lossy pipeline cannot eat it
         removeCardBtn.title = "Remove card";
 
         removeCardBtn.addEventListener("click", () => {
@@ -434,51 +627,11 @@ define([], function () {
       paramInfo.className = "right-pane-card-param-info";
 
       if (promptType === "dateFromTo" && config.paramNames) {
-        const paramParts = [config.paramNames.from, config.paramNames.to];
-        if (config.paramNames.preset) {
-          paramParts.push(config.paramNames.preset);
-        }
-        paramInfo.textContent = "Params: " + paramParts.join(" / ");
+        paramInfo.textContent = `Params: ${config.paramNames.from} / ${config.paramNames.to}`;
       } else {
         paramInfo.textContent = `Param: ${config.paramName || "MISSING!"}`;
       }
       card.appendChild(paramInfo);
-
-      // Config warning bar (dateFromTo relative times consistency check - non-blocking)
-      if (promptType === "dateFromTo") {
-        const warnings = [];
-        const hasRT = config.hasRelativeTimes === true;
-        const hasPresetParam = !!(config.paramNames && config.paramNames.preset);
-
-        if (hasRT && !hasPresetParam) {
-          warnings.push(
-            this.locale === "de"
-              ? "hasRelativeTimes aktiv, aber paramNames.preset fehlt"
-              : "hasRelativeTimes enabled but paramNames.preset missing",
-          );
-        }
-        if (!hasRT && hasPresetParam) {
-          warnings.push(
-            this.locale === "de"
-              ? "paramNames.preset definiert, aber hasRelativeTimes nicht aktiviert"
-              : "paramNames.preset defined but hasRelativeTimes not enabled",
-          );
-        }
-        if (hasRT && (!Array.isArray(config.relativeTimes) || config.relativeTimes.length === 0)) {
-          warnings.push(
-            this.locale === "de"
-              ? "hasRelativeTimes aktiv, aber keine relativeTimes-Buttons konfiguriert"
-              : "hasRelativeTimes enabled but no relativeTimes buttons configured",
-          );
-        }
-
-        if (warnings.length > 0) {
-          const warningBar = document.createElement("div");
-          warningBar.className = "rt-config-warning";
-          warningBar.textContent = "\u26A0 " + warnings.join(" \u2502 ");
-          card.appendChild(warningBar);
-        }
-      }
 
       // Help text (localized)
       const helpText = this.getLocalizedText(config, "helpText");
@@ -493,7 +646,7 @@ define([], function () {
       if (config.required || cardObject.isRequired) {
         const requiredDiv = document.createElement("div");
         requiredDiv.className = "right-pane-card-required";
-        requiredDiv.textContent = "☆ Required";
+        requiredDiv.textContent = "\u2606 Required"; // white star
         card.appendChild(requiredDiv);
         cardObject.requiredIndicator = requiredDiv;
       }
@@ -523,79 +676,13 @@ define([], function () {
   // RENDER DATE RANGE INPUT (used by both dateRange and dateFromTo)
   // ===========================================================================
   RightPane.prototype._renderDateRangeInput = function (card, cardObject) {
-    const config = cardObject.config;
-
-    // ===========================================================================
-    // RELATIVE TIMES STRIP (dateFromTo with hasRelativeTimes: true only)
-    // ===========================================================================
-    if (
-      config.promptType === "dateFromTo" &&
-      config.hasRelativeTimes === true &&
-      Array.isArray(config.relativeTimes) &&
-      config.relativeTimes.length > 0
-    ) {
-      const rtStrip = document.createElement("div");
-      rtStrip.className = "rt-strip";
-
-      config.relativeTimes.forEach((preset) => {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "rt-btn";
-
-        const label =
-          (preset.labels && preset.labels[this.locale]) ||
-          (preset.labels && preset.labels["en"]) ||
-          preset.label ||
-          preset.value;
-        btn.textContent = label;
-        btn.dataset.rtValue = preset.value;
-
-        btn.addEventListener("click", () => {
-          // Update active button state
-          rtStrip.querySelectorAll(".rt-btn").forEach((b) => b.classList.remove("rt-btn-active"));
-          btn.classList.add("rt-btn-active");
-
-          // Show calculated dates visually
-          const dates = this._calculateRelativeDates(preset.value);
-          if (dates) {
-            cardObject.dateFromInput.value = dates.from;
-            cardObject.dateToInput.value = dates.to;
-          }
-
-          // Store preset on cardObject
-          cardObject.activePreset = preset.value;
-          cardObject.activePresetDisplay = label;
-          console.log("[RightPane]  Relative time preset selected:", preset.value);
-
-          if (this.m_oControlHost) {
-            try {
-              this.m_oControlHost.valueChanged();
-              if (cardObject.isRequired || config.required) {
-                this.m_oControlHost.validStateChanged();
-              }
-            } catch (err) {
-              console.error("[RightPane]  Error notifying Cognos:", err);
-            }
-          }
-          this._updateRequiredIndicator(cardObject);
-        });
-
-        rtStrip.appendChild(btn);
-      });
-
-      card.appendChild(rtStrip);
-    }
-
-    // ===========================================================================
-    // DATE INPUTS
-    // ===========================================================================
     const container = document.createElement("div");
     container.className = "date-range-container";
 
     const fromField = document.createElement("div");
     fromField.className = "date-range-field";
     const fromLabel = document.createElement("label");
-    fromLabel.textContent = this.locale === "de" ? "VON" : "FROM";
+    fromLabel.textContent = this.getCardText(cardObject.config, "rangeFrom");
     fromField.appendChild(fromLabel);
 
     const fromInput = document.createElement("input");
@@ -606,7 +693,7 @@ define([], function () {
     const toField = document.createElement("div");
     toField.className = "date-range-field";
     const toLabel = document.createElement("label");
-    toLabel.textContent = this.locale === "de" ? "BIS" : "TO";
+    toLabel.textContent = this.getCardText(cardObject.config, "rangeTo");
     toField.appendChild(toLabel);
 
     const toInput = document.createElement("input");
@@ -622,14 +709,6 @@ define([], function () {
     cardObject.dateToInput = toInput;
 
     const notifyChange = () => {
-      // Manual edit clears active preset
-      cardObject.activePreset = null;
-      cardObject.activePresetDisplay = null;
-      const strip = card.querySelector(".rt-strip");
-      if (strip) {
-        strip.querySelectorAll(".rt-btn").forEach((b) => b.classList.remove("rt-btn-active"));
-      }
-
       if (this.m_oControlHost) {
         try {
           this.m_oControlHost.valueChanged();
@@ -648,113 +727,6 @@ define([], function () {
 
     fromInput.addEventListener("change", notifyChange);
     toInput.addEventListener("change", notifyChange);
-  };
-
-  // ===========================================================================
-  // CALCULATE RELATIVE DATES
-  // ===========================================================================
-  RightPane.prototype._calculateRelativeDates = function (presetValue) {
-    const today = new Date();
-    const pad = (n) => (n < 10 ? "0" + n : "" + n);
-    const fmt = (d) => d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
-    let from, to;
-
-    switch (presetValue) {
-      case "TODAY": {
-        from = to = fmt(today);
-        break;
-      }
-      case "YESTERDAY": {
-        const y = new Date(today);
-        y.setDate(y.getDate() - 1);
-        from = to = fmt(y);
-        break;
-      }
-      case "LAST_7": {
-        const s = new Date(today);
-        s.setDate(s.getDate() - 6);
-        from = fmt(s);
-        to = fmt(today);
-        break;
-      }
-      case "LAST_30": {
-        const s = new Date(today);
-        s.setDate(s.getDate() - 29);
-        from = fmt(s);
-        to = fmt(today);
-        break;
-      }
-      case "LAST_WEEK": {
-        // Last full Mon-Sun week
-        const dow = today.getDay(); // 0=Sun, 1=Mon...
-        const daysToLastMon = dow === 0 ? 6 : dow - 1;
-        const lastMon = new Date(today);
-        lastMon.setDate(today.getDate() - daysToLastMon - 7);
-        const lastSun = new Date(lastMon);
-        lastSun.setDate(lastMon.getDate() + 6);
-        from = fmt(lastMon);
-        to = fmt(lastSun);
-        break;
-      }
-      case "MTD": {
-        from = fmt(new Date(today.getFullYear(), today.getMonth(), 1));
-        to = fmt(today);
-        break;
-      }
-      case "LAST_MONTH": {
-        const lmStart =
-          today.getMonth() === 0
-            ? new Date(today.getFullYear() - 1, 11, 1)
-            : new Date(today.getFullYear(), today.getMonth() - 1, 1);
-        const lmEnd = new Date(today.getFullYear(), today.getMonth(), 0);
-        from = fmt(lmStart);
-        to = fmt(lmEnd);
-        break;
-      }
-      case "QTD": {
-        const q = Math.floor(today.getMonth() / 3);
-        from = fmt(new Date(today.getFullYear(), q * 3, 1));
-        to = fmt(today);
-        break;
-      }
-      case "LAST_QUARTER": {
-        const q = Math.floor(today.getMonth() / 3);
-        let lqStart, lqEnd;
-        if (q === 0) {
-          lqStart = new Date(today.getFullYear() - 1, 9, 1);
-          lqEnd = new Date(today.getFullYear() - 1, 11, 31);
-        } else {
-          lqStart = new Date(today.getFullYear(), (q - 1) * 3, 1);
-          lqEnd = new Date(today.getFullYear(), q * 3, 0);
-        }
-        from = fmt(lqStart);
-        to = fmt(lqEnd);
-        break;
-      }
-      case "YTD": {
-        from = fmt(new Date(today.getFullYear(), 0, 1));
-        to = fmt(today);
-        break;
-      }
-      case "LAST_YEAR": {
-        from = fmt(new Date(today.getFullYear() - 1, 0, 1));
-        to = fmt(new Date(today.getFullYear() - 1, 11, 31));
-        break;
-      }
-      case "LAST_12M": {
-        const s = new Date(today);
-        s.setFullYear(s.getFullYear() - 1);
-        from = fmt(s);
-        to = fmt(today);
-        break;
-      }
-      default:
-        console.warn("[RightPane]  Unknown relative time preset:", presetValue);
-        return null;
-    }
-
-    console.log("[RightPane]  Calculated dates for " + presetValue + ": from=" + from + " to=" + to);
-    return { from: from, to: to };
   };
 
   // ===========================================================================
@@ -821,8 +793,7 @@ define([], function () {
     const input = document.createElement("input");
     input.className = "right-pane-card-input ss-search-input";
     input.type = "text";
-    input.placeholder =
-      this.locale === "de" ? "Tippen und ENTER drcken zum Suchen..." : "Type and press ENTER to search...";
+    input.placeholder = this.getCardText(config, "searchPlaceholder");
 
     inputWrapper.appendChild(input);
 
@@ -967,7 +938,7 @@ define([], function () {
           btn.setAttribute("hal_disabled", "false");
         }
       });
-      console.log("[RightPane] âœ… Force-enabled all native SS buttons");
+      console.log("[RightPane] Force-enabled all native SS buttons");
     }
   };
 
@@ -1047,15 +1018,20 @@ define([], function () {
     // Show loading spinner
     const loadingDiv = document.createElement("div");
     loadingDiv.className = "ss-loading";
-    loadingDiv.innerHTML = `
-      <div class="ss-spinner"></div>
-      <span>${this.locale === "de" ? "Suche nach" : "Searching for"} "${searchTerm}"...</span>
-    `;
+
+    const spinnerDiv = document.createElement("div");
+    spinnerDiv.className = "ss-spinner";
+    loadingDiv.appendChild(spinnerDiv);
+
+    const loadingLabel = document.createElement("span");
+    // textContent (not innerHTML) - searchTerm is raw user input
+    loadingLabel.textContent = this.getCardText(config, "searchingFor", { term: searchTerm });
+    loadingDiv.appendChild(loadingLabel);
+
     resultsList.appendChild(loadingDiv);
 
     // Update header to show searching
-    suggestionBox.querySelector(".ss-result-count").textContent =
-      this.locale === "de" ? "Suche luft..." : "Searching...";
+    suggestionBox.querySelector(".ss-result-count").textContent = this.getCardText(config, "searching");
 
     // Show the suggestion box immediately with loading state
     suggestionBox.style.display = "flex";
@@ -1105,13 +1081,11 @@ define([], function () {
             resultsList.innerHTML = "";
             const noResultsDiv = document.createElement("div");
             noResultsDiv.className = "ss-no-results";
-            noResultsDiv.textContent =
-              self.locale === "de"
-                ? `Keine Ergebnisse fuer "${searchTerm}" gefunden`
-                : `No results found for "${searchTerm}"`;
+            noResultsDiv.textContent = self.getCardText(config, "noResults", { term: searchTerm, count: 0 });
             resultsList.appendChild(noResultsDiv);
-            suggestionBox.querySelector(".ss-result-count").textContent =
-              self.locale === "de" ? "0 Ergebnisse gefunden" : "0 results found";
+            suggestionBox.querySelector(".ss-result-count").textContent = self.getCardText(config, "resultsFound", {
+              count: 0,
+            });
           }
         } else {
           console.error(`[RightPane] Could not re-fetch elements`);
@@ -1131,13 +1105,11 @@ define([], function () {
             resultsList.innerHTML = "";
             const noResultsDiv = document.createElement("div");
             noResultsDiv.className = "ss-no-results";
-            noResultsDiv.textContent =
-              self.locale === "de"
-                ? `Keine Ergebnisse fuer "${searchTerm}" gefunden`
-                : `No results found for "${searchTerm}"`;
+            noResultsDiv.textContent = self.getCardText(config, "noResults", { term: searchTerm, count: 0 });
             resultsList.appendChild(noResultsDiv);
-            suggestionBox.querySelector(".ss-result-count").textContent =
-              self.locale === "de" ? "0 Ergebnisse gefunden" : "0 results found";
+            suggestionBox.querySelector(".ss-result-count").textContent = self.getCardText(config, "resultsFound", {
+              count: 0,
+            });
           }
         } else {
           console.error(`[RightPane] Timeout: Could not fetch elements`);
@@ -1231,9 +1203,11 @@ define([], function () {
     const header = document.createElement("div");
     header.className = "ss-header";
 
+    const config = cardObject.config;
+
     const resultCount = document.createElement("span");
     resultCount.className = "ss-result-count";
-    resultCount.textContent = "0 results found";
+    resultCount.textContent = this.getCardText(config, "resultsFound", { count: 0 });
     header.appendChild(resultCount);
 
     const actions = document.createElement("div");
@@ -1241,12 +1215,12 @@ define([], function () {
 
     const selectAllBtn = document.createElement("button");
     selectAllBtn.className = "ss-select-all";
-    selectAllBtn.textContent = this.locale === "de" ? "Alle auswhlen" : "Select All";
+    selectAllBtn.textContent = this.getCardText(config, "selectAll");
     selectAllBtn.type = "button";
 
     const deselectAllBtn = document.createElement("button");
     deselectAllBtn.className = "ss-deselect-all";
-    deselectAllBtn.textContent = this.locale === "de" ? "Alle abwhlen" : "Deselect All";
+    deselectAllBtn.textContent = this.getCardText(config, "deselectAll");
     deselectAllBtn.type = "button";
 
     actions.appendChild(selectAllBtn);
@@ -1265,17 +1239,17 @@ define([], function () {
 
     const selectedCount = document.createElement("span");
     selectedCount.className = "ss-selected-count";
-    selectedCount.textContent = "0 selected";
+    selectedCount.textContent = this.getCardText(config, "selectedCount", { count: 0 });
     footer.appendChild(selectedCount);
 
     const confirmBtn = document.createElement("button");
     confirmBtn.className = "ss-confirm";
-    confirmBtn.textContent = this.locale === "de" ? "Hinzufgen" : "Add Selected";
+    confirmBtn.textContent = this.getCardText(config, "confirm");
     confirmBtn.type = "button";
 
     const cancelBtn = document.createElement("button");
     cancelBtn.className = "ss-cancel";
-    cancelBtn.textContent = this.locale === "de" ? "Abbrechen" : "Cancel";
+    cancelBtn.textContent = this.getCardText(config, "cancel");
     cancelBtn.type = "button";
 
     footer.appendChild(confirmBtn);
@@ -1355,9 +1329,10 @@ define([], function () {
     const resultsList = suggestionBox.querySelector(".ss-results-list");
     resultsList.innerHTML = "";
 
-    // Update result count
-    suggestionBox.querySelector(".ss-result-count").textContent =
-      `${results.length} ${this.locale === "de" ? "Ergebnisse gefunden" : "results found"}`;
+    // Update result count (plural-aware: "1 Ergebnis" vs "5 Ergebnisse")
+    suggestionBox.querySelector(".ss-result-count").textContent = this.getCardText(cardObject.config, "resultsFound", {
+      count: results.length,
+    });
 
     // Populate with new results
     const self = this;
@@ -1414,7 +1389,7 @@ define([], function () {
           }
         }
 
-        self._updateSelectedCount(suggestionBox);
+        self._updateSelectedCount(cardObject, suggestionBox);
       });
 
       // Shift+Click for range selection
@@ -1443,10 +1418,10 @@ define([], function () {
   // ===========================================================================
   //  UPDATE SELECTED COUNT
   // ===========================================================================
-  RightPane.prototype._updateSelectedCount = function (suggestionBox) {
+  RightPane.prototype._updateSelectedCount = function (cardObject, suggestionBox) {
     const selectedCount = suggestionBox.querySelectorAll('input[type="checkbox"]:checked').length;
     const countSpan = suggestionBox.querySelector(".ss-selected-count");
-    countSpan.textContent = `${selectedCount} ${this.locale === "de" ? "ausgewhlt" : "selected"}`;
+    countSpan.textContent = this.getCardText(cardObject.config, "selectedCount", { count: selectedCount });
   };
 
   // ===========================================================================
@@ -1731,7 +1706,7 @@ define([], function () {
 
     const removeBtn = document.createElement("button");
     removeBtn.className = "bubble-remove";
-    removeBtn.textContent = "×";
+    removeBtn.textContent = "\u00D7"; // multiplication sign - escaped so an encoding-lossy pipeline cannot eat it
 
     const self = this;
     removeBtn.addEventListener("click", () => {
@@ -1797,11 +1772,10 @@ define([], function () {
 
     if (config.promptType === "dateRange" || config.promptType === "dateFromTo") {
       hasFilled =
-        cardObject.activePreset ||
-        (cardObject.dateFromInput &&
-          cardObject.dateFromInput.value &&
-          cardObject.dateToInput &&
-          cardObject.dateToInput.value);
+        cardObject.dateFromInput &&
+        cardObject.dateFromInput.value &&
+        cardObject.dateToInput &&
+        cardObject.dateToInput.value;
     } else if (config.promptType === "date") {
       hasFilled = cardObject.inputElement && cardObject.inputElement.value;
     } else {
@@ -1809,10 +1783,10 @@ define([], function () {
     }
 
     if (hasFilled) {
-      cardObject.requiredIndicator.textContent = "✓ Required";
+      cardObject.requiredIndicator.textContent = "\u2713 Required"; // check mark
       cardObject.requiredIndicator.classList.add("filled");
     } else {
-      cardObject.requiredIndicator.textContent = "☆ Required";
+      cardObject.requiredIndicator.textContent = "\u2606 Required"; // white star
       cardObject.requiredIndicator.classList.remove("filled");
     }
   };
@@ -1837,9 +1811,7 @@ define([], function () {
       let isFilled = false;
 
       if (promptType === "dateRange" || promptType === "dateFromTo") {
-        isFilled =
-          card.activePreset ||
-          (card.dateFromInput && card.dateFromInput.value && card.dateToInput && card.dateToInput.value);
+        isFilled = card.dateFromInput && card.dateFromInput.value && card.dateToInput && card.dateToInput.value;
         console.log(`[RightPane]  Date card "${config.label}": filled=${isFilled}`);
       } else if (promptType === "date") {
         isFilled = card.inputElement && card.inputElement.value;
