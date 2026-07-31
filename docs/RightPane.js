@@ -52,6 +52,7 @@ define([], function () {
   // Tokens: {count} and {term} are substituted at render time.
   // ===========================================================================
   RightPane.prototype._builtInCardText = {
+    // --- searchSelect card ---
     searchPlaceholder: {
       de: "Tippen und ENTER dr\u00FCcken zum Suchen...",
       en: "Type and press ENTER to search...",
@@ -93,7 +94,7 @@ define([], function () {
       en: "Cancel",
     },
 
-    // --- date range card (same cascade, proves the mechanism is card-type agnostic)
+    // --- dateRange / dateFromTo cards ---
     rangeFrom: {
       de: "VON",
       en: "FROM",
@@ -101,6 +102,20 @@ define([], function () {
     rangeTo: {
       de: "BIS",
       en: "TO",
+    },
+
+    // --- dateFromTo config warnings (dev-time diagnostics, yellow bar) ---
+    warnPresetParamMissing: {
+      de: "hasRelativeTimes aktiv, aber paramNames.preset fehlt",
+      en: "hasRelativeTimes enabled but paramNames.preset missing",
+    },
+    warnRelativeTimesNotEnabled: {
+      de: "paramNames.preset definiert, aber hasRelativeTimes nicht aktiviert",
+      en: "paramNames.preset defined but hasRelativeTimes not enabled",
+    },
+    warnNoPresetsConfigured: {
+      de: "hasRelativeTimes aktiv, aber keine relativeTimes-Buttons konfiguriert",
+      en: "hasRelativeTimes enabled but no relativeTimes buttons configured",
     },
   };
 
@@ -200,9 +215,9 @@ define([], function () {
 
   // ===========================================================================
   // HELPER: Get Card Text  (CSS-specificity style cascade)
-  //   1. config.cardText[key]      - per-card override   (highest precedence)
-  //   2. this.globalCardText[key]  - root-level defaults from config.json
-  //   3. this._builtInCardText[key]- hardcoded fallback  (lowest precedence)
+  //   1. config.cardText[key]       - per-card override   (highest precedence)
+  //   2. this.globalCardText[key]   - root-level defaults from config.json
+  //   3. this._builtInCardText[key] - hardcoded fallback  (lowest precedence)
   //
   // Override is per KEY, not a deep merge - exactly like a CSS property.
   // If you override a key, supply every locale you care about.
@@ -259,11 +274,11 @@ define([], function () {
       console.log("[RightPane]  Configuration received:", config);
 
       this.autocompleteData = config.autocompleteTags || {};
-      console.log("[RightPane]  Autocomplete data loaded:", this.autocompleteData);
 
       // Global (root-level) card text defaults - level 2 of the text cascade
       this.globalCardText = config.cardText || {};
       console.log("[RightPane]  Global cardText keys:", Object.keys(this.globalCardText));
+      console.log("[RightPane]  Autocomplete data loaded:", this.autocompleteData);
 
       console.log("[RightPane]  Initialization complete");
       fnDoneInitializing();
@@ -381,6 +396,7 @@ define([], function () {
       isRequired: cardData.isRequired || false,
       dateFromInput: null,
       dateToInput: null,
+      activePreset: null, //  For relative time presets (dateFromTo)
       suggestionBox: null, //  For searchSelect
 
       // ===========================================================================
@@ -449,36 +465,42 @@ define([], function () {
             return [];
           }
 
-          const fromValue = this.dateFromInput ? this.dateFromInput.value : "";
-          const toValue = this.dateToInput ? this.dateToInput.value : "";
-
           const result = [];
+          const presetParam = this.config.paramNames.preset;
 
-          if (fromValue) {
+          if (this.activePreset && presetParam) {
+            // PRESET MODE: pass preset param only, explicitly clear date params
+            console.log("[RightPane]  DateFromTo preset mode:", this.activePreset);
             result.push({
-              parameter: this.config.paramNames.from,
-              values: [{ use: fromValue, display: fromValue }],
+              parameter: presetParam,
+              values: [{ use: this.activePreset, display: this.activePresetDisplay || this.activePreset }],
             });
+            result.push({ parameter: this.config.paramNames.from, values: [] });
+            result.push({ parameter: this.config.paramNames.to, values: [] });
           } else {
+            // MANUAL MODE: pass date params, set preset to 'manual' if param exists
+            console.log("[RightPane]  DateFromTo manual mode");
+            if (presetParam) {
+              result.push({
+                parameter: presetParam,
+                values: [{ use: "manual", display: "manual" }],
+              });
+            }
+
+            const fromValue = this.dateFromInput ? this.dateFromInput.value : "";
+            const toValue = this.dateToInput ? this.dateToInput.value : "";
+
             result.push({
               parameter: this.config.paramNames.from,
-              values: [],
+              values: fromValue ? [{ use: fromValue, display: fromValue }] : [],
+            });
+            result.push({
+              parameter: this.config.paramNames.to,
+              values: toValue ? [{ use: toValue, display: toValue }] : [],
             });
           }
 
-          if (toValue) {
-            result.push({
-              parameter: this.config.paramNames.to,
-              values: [{ use: toValue, display: toValue }],
-            });
-          } else {
-            result.push({
-              parameter: this.config.paramNames.to,
-              values: [],
-            });
-          }
-
-          console.log("[RightPane]  DateFromTo returning two parameters:", JSON.stringify(result, null, 2));
+          console.log("[RightPane]  DateFromTo returning parameters:", JSON.stringify(result, null, 2));
           return result;
         }
 
@@ -627,11 +649,39 @@ define([], function () {
       paramInfo.className = "right-pane-card-param-info";
 
       if (promptType === "dateFromTo" && config.paramNames) {
-        paramInfo.textContent = `Params: ${config.paramNames.from} / ${config.paramNames.to}`;
+        const paramParts = [config.paramNames.from, config.paramNames.to];
+        if (config.paramNames.preset) {
+          paramParts.push(config.paramNames.preset);
+        }
+        paramInfo.textContent = "Params: " + paramParts.join(" / ");
       } else {
         paramInfo.textContent = `Param: ${config.paramName || "MISSING!"}`;
       }
       card.appendChild(paramInfo);
+
+      // Config warning bar (dateFromTo relative times consistency check - non-blocking)
+      if (promptType === "dateFromTo") {
+        const warnings = [];
+        const hasRT = config.hasRelativeTimes === true;
+        const hasPresetParam = !!(config.paramNames && config.paramNames.preset);
+
+        if (hasRT && !hasPresetParam) {
+          warnings.push(this.getCardText(config, "warnPresetParamMissing"));
+        }
+        if (!hasRT && hasPresetParam) {
+          warnings.push(this.getCardText(config, "warnRelativeTimesNotEnabled"));
+        }
+        if (hasRT && (!Array.isArray(config.relativeTimes) || config.relativeTimes.length === 0)) {
+          warnings.push(this.getCardText(config, "warnNoPresetsConfigured"));
+        }
+
+        if (warnings.length > 0) {
+          const warningBar = document.createElement("div");
+          warningBar.className = "rt-config-warning";
+          warningBar.textContent = "\u26A0 " + warnings.join(" \u2502 ");
+          card.appendChild(warningBar);
+        }
+      }
 
       // Help text (localized)
       const helpText = this.getLocalizedText(config, "helpText");
@@ -676,13 +726,79 @@ define([], function () {
   // RENDER DATE RANGE INPUT (used by both dateRange and dateFromTo)
   // ===========================================================================
   RightPane.prototype._renderDateRangeInput = function (card, cardObject) {
+    const config = cardObject.config;
+
+    // ===========================================================================
+    // RELATIVE TIMES STRIP (dateFromTo with hasRelativeTimes: true only)
+    // ===========================================================================
+    if (
+      config.promptType === "dateFromTo" &&
+      config.hasRelativeTimes === true &&
+      Array.isArray(config.relativeTimes) &&
+      config.relativeTimes.length > 0
+    ) {
+      const rtStrip = document.createElement("div");
+      rtStrip.className = "rt-strip";
+
+      config.relativeTimes.forEach((preset) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "rt-btn";
+
+        const label =
+          (preset.labels && preset.labels[this.locale]) ||
+          (preset.labels && preset.labels["en"]) ||
+          preset.label ||
+          preset.value;
+        btn.textContent = label;
+        btn.dataset.rtValue = preset.value;
+
+        btn.addEventListener("click", () => {
+          // Update active button state
+          rtStrip.querySelectorAll(".rt-btn").forEach((b) => b.classList.remove("rt-btn-active"));
+          btn.classList.add("rt-btn-active");
+
+          // Show calculated dates visually
+          const dates = this._calculateRelativeDates(preset.value);
+          if (dates) {
+            cardObject.dateFromInput.value = dates.from;
+            cardObject.dateToInput.value = dates.to;
+          }
+
+          // Store preset on cardObject
+          cardObject.activePreset = preset.value;
+          cardObject.activePresetDisplay = label;
+          console.log("[RightPane]  Relative time preset selected:", preset.value);
+
+          if (this.m_oControlHost) {
+            try {
+              this.m_oControlHost.valueChanged();
+              if (cardObject.isRequired || config.required) {
+                this.m_oControlHost.validStateChanged();
+              }
+            } catch (err) {
+              console.error("[RightPane]  Error notifying Cognos:", err);
+            }
+          }
+          this._updateRequiredIndicator(cardObject);
+        });
+
+        rtStrip.appendChild(btn);
+      });
+
+      card.appendChild(rtStrip);
+    }
+
+    // ===========================================================================
+    // DATE INPUTS
+    // ===========================================================================
     const container = document.createElement("div");
     container.className = "date-range-container";
 
     const fromField = document.createElement("div");
     fromField.className = "date-range-field";
     const fromLabel = document.createElement("label");
-    fromLabel.textContent = this.getCardText(cardObject.config, "rangeFrom");
+    fromLabel.textContent = this.getCardText(config, "rangeFrom");
     fromField.appendChild(fromLabel);
 
     const fromInput = document.createElement("input");
@@ -693,7 +809,7 @@ define([], function () {
     const toField = document.createElement("div");
     toField.className = "date-range-field";
     const toLabel = document.createElement("label");
-    toLabel.textContent = this.getCardText(cardObject.config, "rangeTo");
+    toLabel.textContent = this.getCardText(config, "rangeTo");
     toField.appendChild(toLabel);
 
     const toInput = document.createElement("input");
@@ -709,6 +825,14 @@ define([], function () {
     cardObject.dateToInput = toInput;
 
     const notifyChange = () => {
+      // Manual edit clears active preset
+      cardObject.activePreset = null;
+      cardObject.activePresetDisplay = null;
+      const strip = card.querySelector(".rt-strip");
+      if (strip) {
+        strip.querySelectorAll(".rt-btn").forEach((b) => b.classList.remove("rt-btn-active"));
+      }
+
       if (this.m_oControlHost) {
         try {
           this.m_oControlHost.valueChanged();
@@ -727,6 +851,109 @@ define([], function () {
 
     fromInput.addEventListener("change", notifyChange);
     toInput.addEventListener("change", notifyChange);
+  };
+
+  // ===========================================================================
+  // CALCULATE RELATIVE DATES
+  // ===========================================================================
+  RightPane.prototype._calculateRelativeDates = function (presetValue) {
+    const today = new Date();
+    const pad = (n) => (n < 10 ? "0" + n : "" + n);
+    const fmt = (d) => d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+    let from, to;
+
+    switch (presetValue) {
+      case "YESTERDAY": {
+        const y = new Date(today);
+        y.setDate(y.getDate() - 1);
+        from = to = fmt(y);
+        break;
+      }
+      case "LAST_7": {
+        const s = new Date(today);
+        s.setDate(s.getDate() - 6);
+        from = fmt(s);
+        to = fmt(today);
+        break;
+      }
+      case "LAST_30": {
+        const s = new Date(today);
+        s.setDate(s.getDate() - 29);
+        from = fmt(s);
+        to = fmt(today);
+        break;
+      }
+      case "LAST_WEEK": {
+        // Last full Mon-Sun week
+        const dow = today.getDay(); // 0=Sun, 1=Mon...
+        const daysToLastMon = dow === 0 ? 6 : dow - 1;
+        const lastMon = new Date(today);
+        lastMon.setDate(today.getDate() - daysToLastMon - 7);
+        const lastSun = new Date(lastMon);
+        lastSun.setDate(lastMon.getDate() + 6);
+        from = fmt(lastMon);
+        to = fmt(lastSun);
+        break;
+      }
+      case "MTD": {
+        from = fmt(new Date(today.getFullYear(), today.getMonth(), 1));
+        to = fmt(today);
+        break;
+      }
+      case "LAST_MONTH": {
+        const lmStart =
+          today.getMonth() === 0
+            ? new Date(today.getFullYear() - 1, 11, 1)
+            : new Date(today.getFullYear(), today.getMonth() - 1, 1);
+        const lmEnd = new Date(today.getFullYear(), today.getMonth(), 0);
+        from = fmt(lmStart);
+        to = fmt(lmEnd);
+        break;
+      }
+      case "QTD": {
+        const q = Math.floor(today.getMonth() / 3);
+        from = fmt(new Date(today.getFullYear(), q * 3, 1));
+        to = fmt(today);
+        break;
+      }
+      case "LAST_QUARTER": {
+        const q = Math.floor(today.getMonth() / 3);
+        let lqStart, lqEnd;
+        if (q === 0) {
+          lqStart = new Date(today.getFullYear() - 1, 9, 1);
+          lqEnd = new Date(today.getFullYear() - 1, 11, 31);
+        } else {
+          lqStart = new Date(today.getFullYear(), (q - 1) * 3, 1);
+          lqEnd = new Date(today.getFullYear(), q * 3, 0);
+        }
+        from = fmt(lqStart);
+        to = fmt(lqEnd);
+        break;
+      }
+      case "YTD": {
+        from = fmt(new Date(today.getFullYear(), 0, 1));
+        to = fmt(today);
+        break;
+      }
+      case "LAST_YEAR": {
+        from = fmt(new Date(today.getFullYear() - 1, 0, 1));
+        to = fmt(new Date(today.getFullYear() - 1, 11, 31));
+        break;
+      }
+      case "LAST_12M": {
+        const s = new Date(today);
+        s.setFullYear(s.getFullYear() - 1);
+        from = fmt(s);
+        to = fmt(today);
+        break;
+      }
+      default:
+        console.warn("[RightPane]  Unknown relative time preset:", presetValue);
+        return null;
+    }
+
+    console.log("[RightPane]  Calculated dates for " + presetValue + ": from=" + from + " to=" + to);
+    return { from: from, to: to };
   };
 
   // ===========================================================================
@@ -1192,6 +1419,7 @@ define([], function () {
   //  CREATE SUGGESTION BOX
   // ===========================================================================
   RightPane.prototype._createSuggestionBox = function (cardObject) {
+    const config = cardObject.config;
     console.log(`[RightPane]  Creating suggestion box`);
     const self = this;
 
@@ -1202,8 +1430,6 @@ define([], function () {
     // Header
     const header = document.createElement("div");
     header.className = "ss-header";
-
-    const config = cardObject.config;
 
     const resultCount = document.createElement("span");
     resultCount.className = "ss-result-count";
@@ -1360,8 +1586,8 @@ define([], function () {
         const displayValue = checkbox.dataset.display;
 
         if (checkbox.checked) {
-          // Checked → Create bubble immediately
-          console.log(`[RightPane] ✓ Checkbox checked - creating bubble for: "${displayValue}"`);
+          // Checked -> Create bubble immediately
+          console.log(`[RightPane] Checkbox checked - creating bubble for: "${displayValue}"`);
           self._createBubble(cardObject, displayValue, useValue);
 
           // Notify Cognos
@@ -1376,8 +1602,8 @@ define([], function () {
             }
           }
         } else {
-          // Unchecked → Remove bubble immediately
-          console.log(`[RightPane] ☐ Checkbox unchecked - removing bubble for: "${displayValue}"`);
+          // Unchecked -> Remove bubble immediately
+          console.log(`[RightPane] Checkbox unchecked - removing bubble for: "${displayValue}"`);
 
           // Find and remove the bubble
           const bubbleToRemove = Array.from(cardObject.bubblesContainer.querySelectorAll(".bubble")).find(
@@ -1772,10 +1998,11 @@ define([], function () {
 
     if (config.promptType === "dateRange" || config.promptType === "dateFromTo") {
       hasFilled =
-        cardObject.dateFromInput &&
-        cardObject.dateFromInput.value &&
-        cardObject.dateToInput &&
-        cardObject.dateToInput.value;
+        cardObject.activePreset ||
+        (cardObject.dateFromInput &&
+          cardObject.dateFromInput.value &&
+          cardObject.dateToInput &&
+          cardObject.dateToInput.value);
     } else if (config.promptType === "date") {
       hasFilled = cardObject.inputElement && cardObject.inputElement.value;
     } else {
@@ -1811,7 +2038,9 @@ define([], function () {
       let isFilled = false;
 
       if (promptType === "dateRange" || promptType === "dateFromTo") {
-        isFilled = card.dateFromInput && card.dateFromInput.value && card.dateToInput && card.dateToInput.value;
+        isFilled =
+          card.activePreset ||
+          (card.dateFromInput && card.dateFromInput.value && card.dateToInput && card.dateToInput.value);
         console.log(`[RightPane]  Date card "${config.label}": filled=${isFilled}`);
       } else if (promptType === "date") {
         isFilled = card.inputElement && card.inputElement.value;
