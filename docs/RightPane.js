@@ -104,6 +104,43 @@ define([], function () {
       en: "TO",
     },
 
+    // --- value prompt / text cards ---
+    valuePlaceholder: {
+      de: "Wert eingeben oder ausw\u00E4hlen...",
+      en: "Type or select value...",
+    },
+    textPlaceholder: {
+      de: "Wert eingeben und ENTER dr\u00FCcken...",
+      en: "Type value and press Enter...",
+    },
+
+    // --- shared across every card type ---
+    removeCard: {
+      de: "Karte entfernen",
+      en: "Remove card",
+    },
+    // Word only - the star/check glyph is prepended in code as \u2606 / \u2713
+    // so it can never be damaged by an encoding-lossy pipeline (JSON gets no
+    // such protection, which is why the glyph does not live in config).
+    requiredLabel: {
+      de: "Pflichtfeld",
+      en: "Required",
+    },
+
+    // --- parameter info line (dev-time) ---
+    paramLabel: {
+      de: "Parameter: {param}",
+      en: "Param: {param}",
+    },
+    paramLabelMulti: {
+      de: "Parameter: {params}",
+      en: "Params: {params}",
+    },
+    paramMissing: {
+      de: "FEHLT!",
+      en: "MISSING!",
+    },
+
     // --- dateFromTo config warnings (dev-time diagnostics, yellow bar) ---
     warnPresetParamMissing: {
       de: "hasRelativeTimes aktiv, aber paramNames.preset fehlt",
@@ -632,7 +669,7 @@ define([], function () {
         const removeCardBtn = document.createElement("button");
         removeCardBtn.className = "card-remove-btn";
         removeCardBtn.textContent = "\u00D7"; // multiplication sign - escaped so an encoding-lossy pipeline cannot eat it
-        removeCardBtn.title = "Remove card";
+        removeCardBtn.title = this.getCardText(config, "removeCard");
 
         removeCardBtn.addEventListener("click", () => {
           console.log(`[RightPane]  Card remove button clicked for: ${config.label}`);
@@ -653,9 +690,11 @@ define([], function () {
         if (config.paramNames.preset) {
           paramParts.push(config.paramNames.preset);
         }
-        paramInfo.textContent = "Params: " + paramParts.join(" / ");
+        paramInfo.textContent = this.getCardText(config, "paramLabelMulti", { params: paramParts.join(" / ") });
       } else {
-        paramInfo.textContent = `Param: ${config.paramName || "MISSING!"}`;
+        paramInfo.textContent = this.getCardText(config, "paramLabel", {
+          param: config.paramName || this.getCardText(config, "paramMissing"),
+        });
       }
       card.appendChild(paramInfo);
 
@@ -696,7 +735,7 @@ define([], function () {
       if (config.required || cardObject.isRequired) {
         const requiredDiv = document.createElement("div");
         requiredDiv.className = "right-pane-card-required";
-        requiredDiv.textContent = "\u2606 Required"; // white star
+        requiredDiv.textContent = "\u2606 " + this.getCardText(config, "requiredLabel"); // white star
         card.appendChild(requiredDiv);
         cardObject.requiredIndicator = requiredDiv;
       }
@@ -1729,7 +1768,7 @@ define([], function () {
     const input = document.createElement("input");
     input.className = "right-pane-card-input";
     input.type = "text";
-    input.placeholder = promptType === "text" ? "Type value and press Enter..." : "Type or select value...";
+    input.placeholder = this.getCardText(config, promptType === "text" ? "textPlaceholder" : "valuePlaceholder");
 
     if (datalistId) {
       input.setAttribute("list", datalistId);
@@ -2010,10 +2049,10 @@ define([], function () {
     }
 
     if (hasFilled) {
-      cardObject.requiredIndicator.textContent = "\u2713 Required"; // check mark
+      cardObject.requiredIndicator.textContent = "\u2713 " + this.getCardText(config, "requiredLabel"); // check mark
       cardObject.requiredIndicator.classList.add("filled");
     } else {
-      cardObject.requiredIndicator.textContent = "\u2606 Required"; // white star
+      cardObject.requiredIndicator.textContent = "\u2606 " + this.getCardText(config, "requiredLabel"); // white star
       cardObject.requiredIndicator.classList.remove("filled");
     }
   };

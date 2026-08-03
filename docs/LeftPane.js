@@ -8,6 +8,7 @@ define([], function () {
     this.groupStates = {};
     this.subgroupStates = {};
     this.locale = "en";
+    this.paneText = {}; // Root-level "paneText" from config.json
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -30,6 +31,140 @@ define([], function () {
     }
 
     return config[property] || "";
+  };
+
+  // ===========================================================================
+  // BUILT-IN PANE TEXT (fallback when config.paneText does not supply a key)
+  // ---------------------------------------------------------------------------
+  // Non-ASCII is written as \uXXXX escapes ON PURPOSE - the source stays pure
+  // ASCII and cannot be damaged by an encoding-lossy deploy pipeline.
+  //
+  // Cascade is TWO levels here (there are no cards in the left pane):
+  //   1. config.paneText[key]  - from config.json
+  //   2. this._builtInPaneText - hardcoded fallback
+  //
+  // Value shapes and locale fallback match RightPane.getCardText exactly:
+  //   "plain string" | { de: "...", en: "..." } | { de: {one,other}, ... }
+  // Locale resolution: current locale -> "en" -> first key present.
+  // ===========================================================================
+  LeftPane.prototype._builtInPaneText = {
+    noGroups: {
+      de: "Keine Schaltfl\u00E4chengruppen konfiguriert.",
+      en: "No button groups configured.",
+    },
+    presetsLabel: {
+      de: "Voreinstellungen",
+      en: "Presets",
+    },
+    presetsTooltip: {
+      de: "H\u00E4ufige Parameterkombinationen schnell laden",
+      en: "Quick-load common parameter combinations",
+    },
+    buttonFallback: {
+      de: "Schaltfl\u00E4che {index}",
+      en: "Button {index}",
+    },
+  };
+
+  LeftPane.prototype._pluralCategories = ["zero", "one", "two", "few", "many", "other"];
+
+  LeftPane.prototype._isPluralMap = function (value) {
+    if (!value || typeof value !== "object") {
+      return false;
+    }
+    const keys = Object.keys(value);
+    if (keys.length === 0) {
+      return false;
+    }
+    return keys.every((k) => this._pluralCategories.indexOf(k) > -1);
+  };
+
+  LeftPane.prototype._resolveLocaleValue = function (value) {
+    if (value === null || value === undefined) {
+      return null;
+    }
+    if (typeof value === "string") {
+      return value;
+    }
+    if (typeof value !== "object") {
+      return String(value);
+    }
+    if (this._isPluralMap(value)) {
+      return value;
+    }
+    if (value[this.locale] !== undefined) {
+      return value[this.locale];
+    }
+    if (value["en"] !== undefined) {
+      return value["en"];
+    }
+    const keys = Object.keys(value);
+    return keys.length > 0 ? value[keys[0]] : null;
+  };
+
+  LeftPane.prototype._resolvePlural = function (value, count) {
+    if (value === null || value === undefined) {
+      return "";
+    }
+    if (typeof value === "string") {
+      return value;
+    }
+    if (typeof value !== "object") {
+      return String(value);
+    }
+    if (typeof count === "number") {
+      if (count === 0 && value.zero !== undefined) {
+        return value.zero;
+      }
+      if (count === 1 && value.one !== undefined) {
+        return value.one;
+      }
+    }
+    if (value.other !== undefined) {
+      return value.other;
+    }
+    if (value.one !== undefined) {
+      return value.one;
+    }
+    const keys = Object.keys(value);
+    return keys.length > 0 ? String(value[keys[0]]) : "";
+  };
+
+  LeftPane.prototype._substituteTokens = function (template, params) {
+    if (template === null || template === undefined) {
+      return "";
+    }
+    if (!params) {
+      return String(template);
+    }
+    return String(template).replace(/\{(\w+)\}/g, function (match, name) {
+      return Object.prototype.hasOwnProperty.call(params, name) ? String(params[name]) : match;
+    });
+  };
+
+  // ===========================================================================
+  // HELPER: Get Pane Text
+  // Usage: this.getPaneText("noGroups")  /  this.getPaneText("buttonFallback", { index: 3 })
+  // ===========================================================================
+  LeftPane.prototype.getPaneText = function (key, params) {
+    let raw;
+
+    if (this.paneText && this.paneText[key] !== undefined) {
+      raw = this.paneText[key];
+    } else {
+      raw = this._builtInPaneText[key];
+    }
+
+    if (raw === undefined) {
+      console.warn(`[LeftPane] getPaneText(): unknown key "${key}"`);
+      return "";
+    }
+
+    const localized = this._resolveLocaleValue(raw);
+    const count = params && typeof params.count === "number" ? params.count : undefined;
+    const chosen = this._resolvePlural(localized, count);
+
+    return this._substituteTokens(chosen, params);
   };
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -57,6 +192,9 @@ define([], function () {
 
       // ✨ Store FULL config (not just presets/buttonGroups)
       this.config = controlConfig;
+
+      // Root-level pane text overrides
+      this.paneText = (controlConfig && controlConfig.paneText) || {};
       this.presets = controlConfig.presets || [];
       this.buttonGroups = controlConfig.buttonGroups || [];
 
@@ -105,7 +243,7 @@ define([], function () {
       // Render button groups
       if (!this.buttonGroups || this.buttonGroups.length === 0) {
         const msg = document.createElement("p");
-        msg.textContent = "No button groups configured.";
+        msg.textContent = this.getPaneText("noGroups");
         this.domNode.appendChild(msg);
       } else {
         this.buttonGroups.forEach((group, idx) => {
@@ -132,20 +270,20 @@ define([], function () {
 
     const header = document.createElement("div");
     header.className = "left-pane-group-header";
-    header.title = "Quick-load common parameter combinations";
+    header.title = this.getPaneText("presetsTooltip");
 
     const labelSpan = document.createElement("span");
 
     // ✨ NEW: Use configurable label instead of hardcoded "⚡ Presets"
-    const presetLabel = this.getLocalizedText(this.config, "presetsLabel") || "Presets";
-    labelSpan.textContent = `⚡ ${presetLabel}`;
+    const presetLabel = this.getLocalizedText(this.config, "presetsLabel") || this.getPaneText("presetsLabel");
+    labelSpan.textContent = "\u26A1 " + presetLabel; // high voltage sign
 
     header.appendChild(labelSpan);
 
     const arrowSpan = document.createElement("span");
     arrowSpan.className = "group-arrow";
     const isExpanded = this.groupStates["__PRESETS__"];
-    arrowSpan.textContent = isExpanded ? "▲" : "▼";
+    arrowSpan.textContent = isExpanded ? "\u25B2" : "\u25BC";
     header.appendChild(arrowSpan);
 
     const buttonsContainer = document.createElement("div");
@@ -155,7 +293,7 @@ define([], function () {
       this.groupStates["__PRESETS__"] = !this.groupStates["__PRESETS__"];
       const newState = this.groupStates["__PRESETS__"];
       buttonsContainer.style.display = newState ? "flex" : "none";
-      arrowSpan.textContent = newState ? "▲" : "▼";
+      arrowSpan.textContent = newState ? "\u25B2" : "\u25BC";
     });
 
     presetsContainer.appendChild(header);
@@ -217,7 +355,7 @@ define([], function () {
     const arrowSpan = document.createElement("span");
     arrowSpan.className = "group-arrow";
     const isExpanded = this.groupStates[label];
-    arrowSpan.textContent = isExpanded ? "▲" : "▼";
+    arrowSpan.textContent = isExpanded ? "\u25B2" : "\u25BC";
     header.appendChild(arrowSpan);
 
     const buttonsContainer = document.createElement("div");
@@ -227,7 +365,7 @@ define([], function () {
       this.groupStates[label] = !this.groupStates[label];
       const newState = this.groupStates[label];
       buttonsContainer.style.display = newState ? "flex" : "none";
-      arrowSpan.textContent = newState ? "▲" : "▼";
+      arrowSpan.textContent = newState ? "\u25B2" : "\u25BC";
     });
 
     groupContainer.appendChild(header);
@@ -256,7 +394,7 @@ define([], function () {
   // RENDER BUTTON
   // ═══════════════════════════════════════════════════════════════════════════
   LeftPane.prototype.renderButton = function (btn, bIdx, container) {
-    const label = this.getLocalizedText(btn, "label") || `Button ${bIdx}`;
+    const label = this.getLocalizedText(btn, "label") || this.getPaneText("buttonFallback", { index: bIdx });
 
     const wrapper = document.createElement("div");
 
@@ -297,7 +435,7 @@ define([], function () {
 
     const subArrow = document.createElement("span");
     const isSubExpanded = this.subgroupStates[stateKey];
-    subArrow.textContent = isSubExpanded ? "▲" : "▼";
+    subArrow.textContent = isSubExpanded ? "\u25B2" : "\u25BC";
     subHeader.appendChild(subArrow);
 
     container.appendChild(subHeader);
@@ -318,7 +456,7 @@ define([], function () {
       this.subgroupStates[stateKey] = !this.subgroupStates[stateKey];
       const newState = this.subgroupStates[stateKey];
       subButtonsContainer.style.display = newState ? "flex" : "none";
-      subArrow.textContent = newState ? "▲" : "▼";
+      subArrow.textContent = newState ? "\u25B2" : "\u25BC";
     });
 
     container.appendChild(subButtonsContainer);
